@@ -3,26 +3,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IGunObjectParent
 {
-    //TODO CodeMokey https://youtu.be/AmGSEH7QcDg?t=8863
 
     public static Player Instance { get; private set; }
 
     public event EventHandler<OnSelectedCoutnerChangedEventArgs> OnSelectedCounterChanged;
     public class OnSelectedCoutnerChangedEventArgs : EventArgs
     {
-        public ClearCounter SelectedCounter;
+        public BaseCounter SelectedCounter;
     }
 
     [SerializeField] private float _moveSpeed = 7f;
     [SerializeField] private float _rotaionSpeed = 10f;
     [SerializeField] private GameInput _gameInput;
     [SerializeField] private LayerMask _counterLayerMask;
+    [SerializeField] private Transform _gunObjectHoldPoint;
 
     private Vector3 lastInteractDir;
     private bool _isWalking;
-    private ClearCounter _selectedCounter;
+    private BaseCounter _selectedCounter;
+    private GunObject _gunObject;
 
     private void Awake()
     {
@@ -53,7 +54,7 @@ public class Player : MonoBehaviour
     {
         if (_selectedCounter != null)
         {
-            _selectedCounter.Interact();
+            _selectedCounter.Interact(this);
         }
     }
 
@@ -71,11 +72,11 @@ public class Player : MonoBehaviour
         float interactDistance = 2f;
         if (Physics.Raycast(transform.position, lastInteractDir, out RaycastHit raycastHit, interactDistance, _counterLayerMask))
         {
-            if (raycastHit.transform.TryGetComponent(out ClearCounter clearCounter))
+            if (raycastHit.transform.TryGetComponent(out BaseCounter baseCounter))
             {
-                if (clearCounter != _selectedCounter)
+                if (baseCounter != _selectedCounter)
                 {
-                    SetSelectedCounter(clearCounter);
+                    SetSelectedCounter(baseCounter);
 
                 }
             }
@@ -141,13 +142,42 @@ public class Player : MonoBehaviour
 
     }
 
-    private void SetSelectedCounter(ClearCounter clearCounter)
+    private void SetSelectedCounter(BaseCounter baseCounter)
     {
-        this._selectedCounter = clearCounter;
+        this._selectedCounter = baseCounter;
         OnSelectedCounterChanged?.Invoke(this, new OnSelectedCoutnerChangedEventArgs
         {
             SelectedCounter = _selectedCounter
         });
     }
 
+    public Transform GetGunObjectFollowTransform()
+    {
+        return _gunObjectHoldPoint;
+    }
+
+    public void SetGunObject(GunObject gunObject)
+    {
+        this._gunObject = gunObject;
+    }
+
+    public GunObject GetGunObject()
+    {
+        return this._gunObject;
+    }
+
+    public void ClearGunObject()
+    {
+        this._gunObject = null;
+    }
+
+    public bool HasGunObject()
+    {
+        return _gunObject != null;
+    }
+
+    public Quaternion GetGunQuaternion()
+    {
+        return Quaternion.identity;
+    }
 }

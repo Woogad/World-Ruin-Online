@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0c07f08734f30943b8dd6cc9f55cad7, type: 3}
+  m_Name: Ak-12
+  m_EditorClassIdentifier: 
+  Prefab: {fileID: 1073768833744428826, guid: 6f335b0692a461449b3e902b1fc58950, type: 3}
+  GunName: Ak-12
