@@ -6,6 +6,7 @@ using UnityEngine;
 public class GameInput : MonoBehaviour
 {
     public event EventHandler OnInteractAction;
+
     private PlayerInputAction _playerInputAction;
 
     private void Awake()
@@ -14,6 +15,7 @@ public class GameInput : MonoBehaviour
         _playerInputAction.Enable();
         _playerInputAction.Player.Interact.performed += InteractPerformed;
     }
+
 
     private void InteractPerformed(UnityEngine.InputSystem.InputAction.CallbackContext context)
     {
@@ -28,4 +30,5 @@ public class GameInput : MonoBehaviour
 
         return inputVector;
     }
+
 }

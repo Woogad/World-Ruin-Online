@@ -19,6 +19,7 @@ public class Player : MonoBehaviour, IGunObjectParent
     [SerializeField] private GameInput _gameInput;
     [SerializeField] private LayerMask _counterLayerMask;
     [SerializeField] private Transform _gunObjectHoldPoint;
+    [SerializeField] private Mouse3D _mouse3D;
 
     private Vector3 lastInteractDir;
     private bool _isWalking;
@@ -42,6 +43,10 @@ public class Player : MonoBehaviour, IGunObjectParent
     private void Update()
     {
         HandleMovement();
+
+        //* Make Player lookAt mouse
+        transform.LookAt(_mouse3D.GetAngleAimRotate());
+
         HandleInteraction();
     }
 

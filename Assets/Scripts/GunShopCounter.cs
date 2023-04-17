@@ -8,8 +8,11 @@ public class GunShopCounter : BaseCounter, IGunObjectParent
 
     public override void Interact(Player player)
     {
-        Transform gunObjectSOTransform = Instantiate(_gunObjectSO.Prefab);
-        gunObjectSOTransform.GetComponent<GunObject>().SetGunObjectParent(player);
+        if (!player.HasGunObject())
+        {
+            Transform gunObjectSOTransform = Instantiate(_gunObjectSO.Prefab);
+            gunObjectSOTransform.GetComponent<GunObject>().SetGunObjectParent(player);
+        }
     }
 
 }
