@@ -7,4 +7,5 @@ public class GunObjectOS : ScriptableObject
 {
     public Transform Prefab;
     public string GunName;
+    public int Price;
 }

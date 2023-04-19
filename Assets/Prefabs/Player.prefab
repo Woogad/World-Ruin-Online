@@ -6654,7 +6654,8 @@ MonoBehaviour:
   _counterLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  _gunObjectHoldPoint: {fileID: 0}
+  _gunObjectHoldPoint: {fileID: 4530553173894285778}
+  _mouse3D: {fileID: 0}
 --- !u!1 &8432650891730831135
 GameObject:
   m_ObjectHideFlags: 0

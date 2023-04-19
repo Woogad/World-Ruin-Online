@@ -8,6 +8,7 @@ public class Player : MonoBehaviour, IGunObjectParent
 
     public static Player Instance { get; private set; }
 
+    public event EventHandler OnInteract;
     public event EventHandler<OnSelectedCoutnerChangedEventArgs> OnSelectedCounterChanged;
     public class OnSelectedCoutnerChangedEventArgs : EventArgs
     {
@@ -20,6 +21,7 @@ public class Player : MonoBehaviour, IGunObjectParent
     [SerializeField] private LayerMask _counterLayerMask;
     [SerializeField] private Transform _gunObjectHoldPoint;
     [SerializeField] private Mouse3D _mouse3D;
+    [SerializeField] private int _playerMoney;
 
     private Vector3 lastInteractDir;
     private bool _isWalking;
@@ -60,6 +62,7 @@ public class Player : MonoBehaviour, IGunObjectParent
         if (_selectedCounter != null)
         {
             _selectedCounter.Interact(this);
+            OnInteract?.Invoke(this, EventArgs.Empty);
         }
     }
 
@@ -154,6 +157,15 @@ public class Player : MonoBehaviour, IGunObjectParent
         {
             SelectedCounter = _selectedCounter
         });
+    }
+
+    public int GetPlayerMoney()
+    {
+        return _playerMoney;
+    }
+    public void SetPlayerMoney(int money)
+    {
+        _playerMoney = money;
     }
 
     public Transform GetGunObjectFollowTransform()

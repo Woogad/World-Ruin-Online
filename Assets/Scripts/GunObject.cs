@@ -37,4 +37,10 @@ public class GunObject : MonoBehaviour
         return _gunObjectParent;
     }
 
+    public void DestroySelf()
+    {
+        _gunObjectParent.ClearGunObject();
+        Destroy(gameObject);
+    }
+
 }

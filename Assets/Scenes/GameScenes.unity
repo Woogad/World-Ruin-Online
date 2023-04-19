@@ -123,6 +123,18 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &9567956 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4647546697828302993, guid: c535be75b37687047a215392c7f9c6c8,
+    type: 3}
+  m_PrefabInstance: {fileID: 2137263957}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 147c71e4b4187b543bf5421a53501e70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &132325778
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1119,12 +1131,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5882a65ec61840148835e2c3dbe400bd, type: 3}
---- !u!4 &1839925977 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4530553173894285778, guid: 58a0066831ef5dd41a3d3d95b8c9cb1b,
-    type: 3}
-  m_PrefabInstance: {fileID: 4506434167553463151}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1961298449
 GameObject:
   m_ObjectHideFlags: 0
@@ -1372,9 +1378,14 @@ PrefabInstance:
       objectReference: {fileID: 1288980586}
     - target: {fileID: 960538289653343553, guid: 58a0066831ef5dd41a3d3d95b8c9cb1b,
         type: 3}
-      propertyPath: _gunObjectHoldPoint
+      propertyPath: _playerMoney
+      value: 10000
+      objectReference: {fileID: 0}
+    - target: {fileID: 3943407402451746608, guid: 58a0066831ef5dd41a3d3d95b8c9cb1b,
+        type: 3}
+      propertyPath: _gunShopCounter
       value: 
-      objectReference: {fileID: 1839925977}
+      objectReference: {fileID: 9567956}
     - target: {fileID: 3981803216398053908, guid: 58a0066831ef5dd41a3d3d95b8c9cb1b,
         type: 3}
       propertyPath: m_IsActive
