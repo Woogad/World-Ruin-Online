@@ -2,10 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class GameInput : MonoBehaviour
 {
     public event EventHandler OnInteractAction;
+    public event EventHandler OnShootWeaponAction;
 
     private PlayerInputAction _playerInputAction;
 
@@ -14,8 +16,13 @@ public class GameInput : MonoBehaviour
         _playerInputAction = new PlayerInputAction();
         _playerInputAction.Enable();
         _playerInputAction.Player.Interact.performed += InteractPerformed;
+        _playerInputAction.Player.ShootWeapon.performed += ShootWeaponPerformed;
     }
 
+    private void ShootWeaponPerformed(InputAction.CallbackContext context)
+    {
+        OnShootWeaponAction?.Invoke(this, EventArgs.Empty);
+    }
 
     private void InteractPerformed(UnityEngine.InputSystem.InputAction.CallbackContext context)
     {

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,12 +7,12 @@ public class Mouse3D : MonoBehaviour
 {
     private Camera _cam;
     private const string CamNameTag = "MainCamera";
+
     [SerializeField] private LayerMask _layerMask;
 
     private void Start()
     {
         _cam = GameObject.FindGameObjectWithTag(CamNameTag).GetComponent<Camera>();
-
     }
 
     private void Update()
