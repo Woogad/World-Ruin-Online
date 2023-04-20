@@ -5,6 +5,7 @@ using UnityEngine;
 public class GunObject : MonoBehaviour
 {
     [SerializeField] private GunObjectOS _gunObjectOS;
+    [SerializeField] private Transform _fireEndPoint;
 
     private IGunObjectParent _gunObjectParent;
 
@@ -41,6 +42,11 @@ public class GunObject : MonoBehaviour
     {
         _gunObjectParent.ClearGunObject();
         Destroy(gameObject);
+    }
+
+    public Transform GetFireEndPointTransform()
+    {
+        return _fireEndPoint;
     }
 
 }

@@ -5,9 +5,13 @@ using UnityEngine;
 
 public class Player : MonoBehaviour, IGunObjectParent
 {
-
     public static Player Instance { get; private set; }
 
+    public event EventHandler<OnShootArgs> OnShoot;
+    public class OnShootArgs : EventArgs
+    {
+        //TODO Add OnshootArgs 
+    }
     public event EventHandler OnInteract;
     public event EventHandler<OnSelectedCoutnerChangedEventArgs> OnSelectedCounterChanged;
     public class OnSelectedCoutnerChangedEventArgs : EventArgs
@@ -22,6 +26,7 @@ public class Player : MonoBehaviour, IGunObjectParent
     [SerializeField] private Transform _gunObjectHoldPoint;
     [SerializeField] private Mouse3D _mouse3D;
     [SerializeField] private int _playerMoney;
+    [SerializeField] private Transform _prefabBullet;
 
     private bool _isWalking;
     private BaseCounter _selectedCounter;
@@ -39,6 +44,7 @@ public class Player : MonoBehaviour, IGunObjectParent
     private void Start()
     {
         _gameInput.OnInteractAction += GameInputOnInteractAction;
+        _gameInput.OnShootWeaponAction += GameInputOnShootAction;
     }
 
 
@@ -56,6 +62,17 @@ public class Player : MonoBehaviour, IGunObjectParent
     public bool IsWalking()
     {
         return _isWalking;
+    }
+
+    private void GameInputOnShootAction(object sender, EventArgs e)
+    {
+        if (HasGunObject())
+        {
+            Transform fireEndPoint = GetGunObject().GetFireEndPointTransform();
+
+            Transform bulletTransform = Instantiate(_prefabBullet, fireEndPoint.position, Quaternion.identity);
+            bulletTransform.GetComponent<BulletObject>().Setup(fireEndPoint);
+        }
     }
 
     private void GameInputOnInteractAction(object sender, System.EventArgs e)
@@ -102,7 +119,7 @@ public class Player : MonoBehaviour, IGunObjectParent
         Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
 
         float moveDistance = _moveSpeed * Time.deltaTime;
-        float playerRadius = 0.6f;
+        float playerRadius = 0.7f;
         float playerHeight = 2.6f;
         bool canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDir, moveDistance);
 

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0c07f08734f30943b8dd6cc9f55cad7, type: 3}
   m_Name: Ak-12
   m_EditorClassIdentifier: 
+  ShootConfigOS: {fileID: 11400000, guid: 00c115436a240ea449be47b8f9cc03b6, type: 2}
   Prefab: {fileID: 1073768833744428826, guid: 6f335b0692a461449b3e902b1fc58950, type: 3}
   GunName: Ak-12
   Price: 50
