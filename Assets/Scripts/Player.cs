@@ -23,7 +23,6 @@ public class Player : MonoBehaviour, IGunObjectParent
     [SerializeField] private Mouse3D _mouse3D;
     [SerializeField] private int _playerMoney;
 
-    private Vector3 lastInteractDir;
     private bool _isWalking;
     private BaseCounter _selectedCounter;
     private GunObject _gunObject;
@@ -42,6 +41,7 @@ public class Player : MonoBehaviour, IGunObjectParent
         _gameInput.OnInteractAction += GameInputOnInteractAction;
     }
 
+
     private void Update()
     {
         HandleMovement();
@@ -51,6 +51,7 @@ public class Player : MonoBehaviour, IGunObjectParent
 
         HandleInteraction();
     }
+
 
     public bool IsWalking()
     {
@@ -72,13 +73,8 @@ public class Player : MonoBehaviour, IGunObjectParent
 
         Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
 
-        if (moveDir != Vector3.zero)
-        {
-            lastInteractDir = moveDir;
-        }
-
         float interactDistance = 2f;
-        if (Physics.Raycast(transform.position, lastInteractDir, out RaycastHit raycastHit, interactDistance, _counterLayerMask))
+        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit raycastHit, interactDistance, _counterLayerMask))
         {
             if (raycastHit.transform.TryGetComponent(out BaseCounter baseCounter))
             {
