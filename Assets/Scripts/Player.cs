@@ -69,9 +69,10 @@ public class Player : MonoBehaviour, IGunObjectParent
         if (HasGunObject())
         {
             Transform fireEndPoint = GetGunObject().GetFireEndPointTransform();
+            ShootConfigOS shootConfigOS = GetGunObject().GetShootConfigOS();
 
             Transform bulletTransform = Instantiate(_prefabBullet, fireEndPoint.position, Quaternion.identity);
-            bulletTransform.GetComponent<BulletObject>().Setup(fireEndPoint);
+            bulletTransform.GetComponent<BulletObject>().Setup(fireEndPoint, shootConfigOS.Damage);
         }
     }
 

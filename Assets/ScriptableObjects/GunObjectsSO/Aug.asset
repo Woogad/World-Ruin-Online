@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Aug
   m_EditorClassIdentifier: 
   ShootConfigOS: {fileID: 11400000, guid: 9aa9ea3b0b48e5e44b9435eacec2e9ae, type: 2}
-  Prefab: {fileID: 1073768833744428826, guid: d87bac64fda21894eb3bded5690b7d90, type: 3}
+  Prefab: {fileID: 1073768833744428826, guid: 3201f71bb3e44284192b3b8069c3103f, type: 3}
   GunName: Aug
   Price: 20

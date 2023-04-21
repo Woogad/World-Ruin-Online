@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5922e339f33f9c645985ac508c7f5071, type: 3}
   m_Name: Aug ShootConfig
   m_EditorClassIdentifier: 
-  Damage: 0
+  Damage: 10
   FireRate: 0
