@@ -11,8 +11,14 @@ public class GunObject : MonoBehaviour
 
     public GunObjectOS GetGunObjectOS()
     {
-        return _gunObjectOS;
+        return this._gunObjectOS;
     }
+
+    public ShootConfigOS GetShootConfigOS()
+    {
+        return this.GetGunObjectOS().ShootConfigOS;
+    }
+
 
     public void SetGunObjectParent(IGunObjectParent gunObjectParent)
     {
@@ -35,7 +41,7 @@ public class GunObject : MonoBehaviour
 
     public IGunObjectParent GetGunObjectParent()
     {
-        return _gunObjectParent;
+        return this._gunObjectParent;
     }
 
     public void DestroySelf()
@@ -46,7 +52,6 @@ public class GunObject : MonoBehaviour
 
     public Transform GetFireEndPointTransform()
     {
-        return _fireEndPoint;
+        return this._fireEndPoint;
     }
-
 }

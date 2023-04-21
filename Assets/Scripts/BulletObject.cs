@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class BulletObject : MonoBehaviour
 {
-    Vector3 shootDir;
+    private float _damage;
 
-    public void Setup(Transform shootDir)
+    public void Setup(Transform shootDir, float damage)
     {
+        this._damage = damage;
         Rigidbody rigidbody = GetComponent<Rigidbody>();
+
         float _moveSpeed = 60f;
         rigidbody.AddForce(shootDir.forward * _moveSpeed, ForceMode.Impulse);
 
@@ -25,7 +27,7 @@ public class BulletObject : MonoBehaviour
 
         if (other.TryGetComponent(out IDamageable Idamageable))
         {
-            Idamageable.TakeDamage();
+            Idamageable.TakeDamage(_damage);
             Destroy(gameObject);
         }
     }
