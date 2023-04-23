@@ -40,7 +40,6 @@ public class GunObject : MonoBehaviour
         Transform bulletTransform = Instantiate(_gunObjectOS.BulletPrefab, _fireEndPoint.position, Quaternion.identity);
         bulletTransform.GetComponent<BulletObject>().Setup(_fireEndPoint, GetShootConfigOS());
         _currentAmmo--;
-        Debug.Log($"OnShoot= Ammo: {_currentAmmo} | Magazine: {_currentMagazine}");
     }
 
     public void Reload()
@@ -49,7 +48,16 @@ public class GunObject : MonoBehaviour
         reloadAmount = (_currentMagazine - reloadAmount) >= 0 ? reloadAmount : _currentMagazine;
         _currentAmmo += reloadAmount;
         _currentMagazine -= reloadAmount;
-        Debug.Log($"OnReload= Ammo: {_currentAmmo} | Magazine: {_currentMagazine}");
+    }
+
+    public void AddMagazine(int magazine)
+    {
+        _currentMagazine += magazine;
+        if (_currentMagazine > _gunObjectOS.MaxMagazine)
+        {
+            _currentMagazine = _gunObjectOS.MaxMagazine;
+        }
+
     }
 
 
@@ -89,6 +97,15 @@ public class GunObject : MonoBehaviour
     {
         _currentAmmo = _gunObjectOS.MaxAmmmo;
         _currentMagazine = _gunObjectOS.MaxMagazine;
+    }
+
+    public int getCurrentAmmo()
+    {
+        return this._currentAmmo;
+    }
+    public int getCurrentMagazine()
+    {
+        return this._currentMagazine;
     }
 
 }

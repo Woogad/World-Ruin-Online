@@ -6,6 +6,8 @@ using UnityEngine.InputSystem;
 
 public class GameInput : MonoBehaviour
 {
+    public static GameInput Instance { get; private set; }
+
     public event EventHandler OnInteractAction;
     public event EventHandler OnReloadAction;
     public event EventHandler<OnShootWeaponActionArgs> OnShootWeaponAction;
@@ -19,6 +21,7 @@ public class GameInput : MonoBehaviour
 
     private void Awake()
     {
+        Instance = this;
         _playerInputAction = new PlayerInputAction();
         _playerInputAction.Enable();
         _playerInputAction.Player.Interact.performed += InteractPerformed;

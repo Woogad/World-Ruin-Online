@@ -45,4 +45,9 @@ public class GunShopCounter : BaseCounter
         }
     }
 
+    public GunObjectOS GetGunObjectOSShop()
+    {
+        return this._gunObjectSO;
+    }
+
 }

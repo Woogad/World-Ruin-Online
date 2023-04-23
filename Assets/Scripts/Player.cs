@@ -7,12 +7,9 @@ public class Player : MonoBehaviour, IGunObjectParent
 {
     public static Player Instance { get; private set; }
 
-    public event EventHandler<OnShootArgs> OnShoot;
-    public class OnShootArgs : EventArgs
-    {
-        //TODO Add OnshootArgs 
-    }
     public event EventHandler OnInteract;
+    public event EventHandler OnUpdateAmmo;
+    public event EventHandler OnUpdateMoney;
     public event EventHandler<OnSelectedCoutnerChangedEventArgs> OnSelectedCounterChanged;
     public class OnSelectedCoutnerChangedEventArgs : EventArgs
     {
@@ -32,6 +29,9 @@ public class Player : MonoBehaviour, IGunObjectParent
     private BaseCounter _selectedCounter;
     private GunObject _gunObject;
     private bool _isHoldShootAction;
+
+
+    //*For Toggle ammo Display
 
     private void Awake()
     {
@@ -57,6 +57,7 @@ public class Player : MonoBehaviour, IGunObjectParent
             if (_isHoldShootAction && GetGunObject().TryShoot())
             {
                 GetGunObject().Shoot();
+                OnUpdateAmmo?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -76,7 +77,11 @@ public class Player : MonoBehaviour, IGunObjectParent
 
     private void GameInputOnReloadAction(object sender, EventArgs e)
     {
-        GetGunObject().Reload();
+        if (HasGunObject())
+        {
+            GetGunObject().Reload();
+            OnUpdateAmmo?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     private void GameInputOnShootAction(object sender, GameInput.OnShootWeaponActionArgs e)
@@ -183,11 +188,12 @@ public class Player : MonoBehaviour, IGunObjectParent
 
     public int GetPlayerMoney()
     {
-        return _playerMoney;
+        return this._playerMoney;
     }
     public void SetPlayerMoney(int money)
     {
         _playerMoney = money;
+        OnUpdateMoney?.Invoke(this, EventArgs.Empty);
     }
 
     public Transform GetGunObjectFollowTransform()
