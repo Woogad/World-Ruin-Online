@@ -26,11 +26,12 @@ public class Player : MonoBehaviour, IGunObjectParent
     [SerializeField] private Transform _gunObjectHoldPoint;
     [SerializeField] private Mouse3D _mouse3D;
     [SerializeField] private int _playerMoney;
-    [SerializeField] private Transform _prefabBullet;
+
 
     private bool _isWalking;
     private BaseCounter _selectedCounter;
     private GunObject _gunObject;
+    private bool _isHoldShootAction;
 
     private void Awake()
     {
@@ -45,11 +46,20 @@ public class Player : MonoBehaviour, IGunObjectParent
     {
         _gameInput.OnInteractAction += GameInputOnInteractAction;
         _gameInput.OnShootWeaponAction += GameInputOnShootAction;
+        _gameInput.OnReloadAction += GameInputOnReloadAction;
     }
 
 
     private void Update()
     {
+        if (HasGunObject())
+        {
+            if (_isHoldShootAction && GetGunObject().TryShoot())
+            {
+                GetGunObject().Shoot();
+            }
+        }
+
         HandleMovement();
 
         //* Make Player lookAt mouse
@@ -64,19 +74,17 @@ public class Player : MonoBehaviour, IGunObjectParent
         return _isWalking;
     }
 
-    private void GameInputOnShootAction(object sender, EventArgs e)
+    private void GameInputOnReloadAction(object sender, EventArgs e)
     {
-        if (HasGunObject())
-        {
-            Transform fireEndPoint = GetGunObject().GetFireEndPointTransform();
-            ShootConfigOS shootConfigOS = GetGunObject().GetShootConfigOS();
-
-            Transform bulletTransform = Instantiate(_prefabBullet, fireEndPoint.position, Quaternion.identity);
-            bulletTransform.GetComponent<BulletObject>().Setup(fireEndPoint, shootConfigOS.Damage);
-        }
+        GetGunObject().Reload();
     }
 
-    private void GameInputOnInteractAction(object sender, System.EventArgs e)
+    private void GameInputOnShootAction(object sender, GameInput.OnShootWeaponActionArgs e)
+    {
+        _isHoldShootAction = e.IsHoldShootAction;
+    }
+
+    private void GameInputOnInteractAction(object sender, EventArgs e)
     {
         if (_selectedCounter != null)
         {

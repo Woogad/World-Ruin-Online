@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Aug ShootConfig
   m_EditorClassIdentifier: 
   Damage: 10
-  FireRate: 0
+  FireRate: 0.1

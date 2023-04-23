@@ -361,5 +361,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e628083ed08ed0e4489dbd8756118eee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gunObjectSO: {fileID: 11400000, guid: e08966c048d36124ca632969f3ac9a7b, type: 2}
   _counterTopPoint: {fileID: 580417371387332596}
+  _gunObjectSO: {fileID: 0}

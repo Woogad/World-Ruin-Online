@@ -8,6 +8,9 @@ public class GunObject : MonoBehaviour
     [SerializeField] private Transform _fireEndPoint;
 
     private IGunObjectParent _gunObjectParent;
+    private float _cooldownTimestamp = 0;
+    private int _currentMagazine;
+    private int _currentAmmo;
 
     public GunObjectOS GetGunObjectOS()
     {
@@ -17,6 +20,36 @@ public class GunObject : MonoBehaviour
     public ShootConfigOS GetShootConfigOS()
     {
         return this.GetGunObjectOS().ShootConfigOS;
+    }
+
+    public bool TryShoot()
+    {
+        if (Time.time > _cooldownTimestamp && _currentAmmo != 0)
+        {
+            _cooldownTimestamp = Time.time + GetShootConfigOS().FireRate;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public void Shoot()
+    {
+        Transform bulletTransform = Instantiate(_gunObjectOS.BulletPrefab, _fireEndPoint.position, Quaternion.identity);
+        bulletTransform.GetComponent<BulletObject>().Setup(_fireEndPoint, GetShootConfigOS());
+        _currentAmmo--;
+        Debug.Log($"OnShoot= Ammo: {_currentAmmo} | Magazine: {_currentMagazine}");
+    }
+
+    public void Reload()
+    {
+        int reloadAmount = _gunObjectOS.MaxAmmmo - _currentAmmo;
+        reloadAmount = (_currentMagazine - reloadAmount) >= 0 ? reloadAmount : _currentMagazine;
+        _currentAmmo += reloadAmount;
+        _currentMagazine -= reloadAmount;
+        Debug.Log($"OnReload= Ammo: {_currentAmmo} | Magazine: {_currentMagazine}");
     }
 
 
@@ -37,6 +70,8 @@ public class GunObject : MonoBehaviour
         transform.localPosition = Vector3.zero;
         transform.localScale = new Vector3(1, 1, 1);
         transform.localRotation = gunObjectParent.GetGunQuaternion();
+
+        SetAmmoAndMagazineMax();
     }
 
     public IGunObjectParent GetGunObjectParent()
@@ -50,8 +85,10 @@ public class GunObject : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public Transform GetFireEndPointTransform()
+    private void SetAmmoAndMagazineMax()
     {
-        return this._fireEndPoint;
+        _currentAmmo = _gunObjectOS.MaxAmmmo;
+        _currentMagazine = _gunObjectOS.MaxMagazine;
     }
+
 }

@@ -6,15 +6,15 @@ public class BulletObject : MonoBehaviour
 {
     private float _damage;
 
-    public void Setup(Transform shootDir, float damage)
+    public void Setup(Transform shootDir, ShootConfigOS shootConfigOS)
     {
-        this._damage = damage;
+        this._damage = shootConfigOS.Damage;
         Rigidbody rigidbody = GetComponent<Rigidbody>();
 
         float _moveSpeed = 60f;
         rigidbody.AddForce(shootDir.forward * _moveSpeed, ForceMode.Impulse);
 
-        float timeDestroySelf = 3f;
+        float timeDestroySelf = 1.5f;
         Destroy(gameObject, timeDestroySelf);
     }
 

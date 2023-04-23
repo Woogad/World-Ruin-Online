@@ -53,6 +53,15 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Reload Weapon"",
+                    ""type"": ""Button"",
+                    ""id"": ""10ff9e67-8bb0-48bd-a151-afce27181b83"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -132,6 +141,17 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""action"": ""Shoot Weapon"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e3522391-8c82-4fd0-9944-f3b4eec81d58"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Reload Weapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -143,6 +163,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_ShootWeapon = m_Player.FindAction("Shoot Weapon", throwIfNotFound: true);
+        m_Player_ReloadWeapon = m_Player.FindAction("Reload Weapon", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -207,6 +228,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_ShootWeapon;
+    private readonly InputAction m_Player_ReloadWeapon;
     public struct PlayerActions
     {
         private @PlayerInputAction m_Wrapper;
@@ -214,6 +236,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
         public InputAction @ShootWeapon => m_Wrapper.m_Player_ShootWeapon;
+        public InputAction @ReloadWeapon => m_Wrapper.m_Player_ReloadWeapon;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -232,6 +255,9 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
             @ShootWeapon.started += instance.OnShootWeapon;
             @ShootWeapon.performed += instance.OnShootWeapon;
             @ShootWeapon.canceled += instance.OnShootWeapon;
+            @ReloadWeapon.started += instance.OnReloadWeapon;
+            @ReloadWeapon.performed += instance.OnReloadWeapon;
+            @ReloadWeapon.canceled += instance.OnReloadWeapon;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -245,6 +271,9 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
             @ShootWeapon.started -= instance.OnShootWeapon;
             @ShootWeapon.performed -= instance.OnShootWeapon;
             @ShootWeapon.canceled -= instance.OnShootWeapon;
+            @ReloadWeapon.started -= instance.OnReloadWeapon;
+            @ReloadWeapon.performed -= instance.OnReloadWeapon;
+            @ReloadWeapon.canceled -= instance.OnReloadWeapon;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -267,5 +296,6 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnShootWeapon(InputAction.CallbackContext context);
+        void OnReloadWeapon(InputAction.CallbackContext context);
     }
 }

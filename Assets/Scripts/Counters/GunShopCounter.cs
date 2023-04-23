@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GunShopCounter : BaseCounter, IGunObjectParent
+public class GunShopCounter : BaseCounter
 {
     [SerializeField] private GunObjectOS _gunObjectSO;
 

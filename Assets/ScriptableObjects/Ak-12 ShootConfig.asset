@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Ak-12 ShootConfig
   m_EditorClassIdentifier: 
   Damage: 20
-  FireRate: 0
+  FireRate: 0.1

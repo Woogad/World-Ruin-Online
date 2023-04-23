@@ -7,7 +7,13 @@ using UnityEngine.InputSystem;
 public class GameInput : MonoBehaviour
 {
     public event EventHandler OnInteractAction;
-    public event EventHandler OnShootWeaponAction;
+    public event EventHandler OnReloadAction;
+    public event EventHandler<OnShootWeaponActionArgs> OnShootWeaponAction;
+    public class OnShootWeaponActionArgs : EventArgs
+    {
+        public bool IsHoldShootAction;
+    }
+    bool _isHoldShootAction = false;
 
     private PlayerInputAction _playerInputAction;
 
@@ -17,11 +23,30 @@ public class GameInput : MonoBehaviour
         _playerInputAction.Enable();
         _playerInputAction.Player.Interact.performed += InteractPerformed;
         _playerInputAction.Player.ShootWeapon.performed += ShootWeaponPerformed;
+        _playerInputAction.Player.ShootWeapon.canceled += ShootWeaponPerformed;
+        _playerInputAction.Player.ReloadWeapon.performed += ReloadWeaponPerformed;
+        _isHoldShootAction = false;
+    }
+
+    private void ReloadWeaponPerformed(InputAction.CallbackContext context)
+    {
+        OnReloadAction?.Invoke(this, EventArgs.Empty);
     }
 
     private void ShootWeaponPerformed(InputAction.CallbackContext context)
     {
-        OnShootWeaponAction?.Invoke(this, EventArgs.Empty);
+        if (!_isHoldShootAction)
+        {
+            _isHoldShootAction = true;
+        }
+        else
+        {
+            _isHoldShootAction = false;
+        }
+        OnShootWeaponAction?.Invoke(this, new OnShootWeaponActionArgs
+        {
+            IsHoldShootAction = this._isHoldShootAction
+        });
     }
 
     private void InteractPerformed(UnityEngine.InputSystem.InputAction.CallbackContext context)
@@ -37,5 +62,6 @@ public class GameInput : MonoBehaviour
 
         return inputVector;
     }
+
 
 }

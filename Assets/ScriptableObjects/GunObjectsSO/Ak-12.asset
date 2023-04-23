@@ -14,5 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShootConfigOS: {fileID: 11400000, guid: 00c115436a240ea449be47b8f9cc03b6, type: 2}
   Prefab: {fileID: 1073768833744428826, guid: 6f335b0692a461449b3e902b1fc58950, type: 3}
-  GunName: Ak-12
+  BulletPrefab: {fileID: 6106073183109559371, guid: b8ec93d7e84529b4cb02221f4fa2a2fb,
+    type: 3}
+  MaxMagazine: 30
+  MaxAmmmo: 30
   Price: 50
+  GunName: Ak-12
