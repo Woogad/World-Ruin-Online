@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class GunShopCounter : BaseCounter
 {
-    [SerializeField] private GunObjectOS _gunObjectSO;
+    [SerializeField] private GunObjectSO _gunObjectSO;
 
     public override void Interact(Player player)
     {
@@ -45,7 +45,7 @@ public class GunShopCounter : BaseCounter
         }
     }
 
-    public GunObjectOS GetGunObjectOSShop()
+    public GunObjectSO GetGunObjectOSShop()
     {
         return this._gunObjectSO;
     }

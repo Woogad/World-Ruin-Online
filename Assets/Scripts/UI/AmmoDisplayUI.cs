@@ -27,7 +27,7 @@ public class AmmoDisplayUI : MonoBehaviour
         {
             _ammoAmountText.text = Player.Instance.GetGunObject().getCurrentAmmo().ToString();
             _magazineAmountText.text = Player.Instance.GetGunObject().getCurrentMagazine().ToString();
-            _maxMagazineAmountText.text = Player.Instance.GetGunObject().GetGunObjectOS().MaxMagazine.ToString();
+            _maxMagazineAmountText.text = Player.Instance.GetGunObject().GetGunObjectSO().MaxMagazine.ToString();
         }
     }
 
@@ -40,6 +40,6 @@ public class AmmoDisplayUI : MonoBehaviour
     {
         _ammoAmountText.text = Player.Instance.GetGunObject().getCurrentAmmo().ToString();
         _magazineAmountText.text = Player.Instance.GetGunObject().getCurrentMagazine().ToString();
-        _maxMagazineAmountText.text = Player.Instance.GetGunObject().GetGunObjectOS().MaxMagazine.ToString();
+        _maxMagazineAmountText.text = Player.Instance.GetGunObject().GetGunObjectSO().MaxMagazine.ToString();
     }
 }

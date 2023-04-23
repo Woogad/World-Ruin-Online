@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0c07f08734f30943b8dd6cc9f55cad7, type: 3}
   m_Name: Aug
   m_EditorClassIdentifier: 
-  ShootConfigOS: {fileID: 11400000, guid: 9aa9ea3b0b48e5e44b9435eacec2e9ae, type: 2}
+  ShootConfigSO: {fileID: 11400000, guid: 9aa9ea3b0b48e5e44b9435eacec2e9ae, type: 2}
   Prefab: {fileID: 1073768833744428826, guid: 3201f71bb3e44284192b3b8069c3103f, type: 3}
   BulletPrefab: {fileID: 6106073183109559371, guid: b8ec93d7e84529b4cb02221f4fa2a2fb,
     type: 3}

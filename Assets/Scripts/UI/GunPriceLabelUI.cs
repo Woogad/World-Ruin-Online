@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class PriceLabelUI : MonoBehaviour
+public class GunPriceLabelUI : MonoBehaviour
 {
     [SerializeField] private GunShopCounter _gunShopCounter;
     [SerializeField] private TextMeshProUGUI _PriceLabelText;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GunObject : MonoBehaviour
 {
-    [SerializeField] private GunObjectOS _gunObjectOS;
+    [SerializeField] private GunObjectSO _gunObjectSO;
     [SerializeField] private Transform _fireEndPoint;
 
     private IGunObjectParent _gunObjectParent;
@@ -12,14 +12,14 @@ public class GunObject : MonoBehaviour
     private int _currentMagazine;
     private int _currentAmmo;
 
-    public GunObjectOS GetGunObjectOS()
+    public GunObjectSO GetGunObjectSO()
     {
-        return this._gunObjectOS;
+        return this._gunObjectSO;
     }
 
-    public ShootConfigOS GetShootConfigOS()
+    public ShootConfigSO GetShootConfigOS()
     {
-        return this.GetGunObjectOS().ShootConfigOS;
+        return this.GetGunObjectSO().ShootConfigSO;
     }
 
     public bool TryShoot()
@@ -37,14 +37,14 @@ public class GunObject : MonoBehaviour
 
     public void Shoot()
     {
-        Transform bulletTransform = Instantiate(_gunObjectOS.BulletPrefab, _fireEndPoint.position, Quaternion.identity);
+        Transform bulletTransform = Instantiate(_gunObjectSO.BulletPrefab, _fireEndPoint.position, Quaternion.identity);
         bulletTransform.GetComponent<BulletObject>().Setup(_fireEndPoint, GetShootConfigOS());
         _currentAmmo--;
     }
 
     public void Reload()
     {
-        int reloadAmount = _gunObjectOS.MaxAmmmo - _currentAmmo;
+        int reloadAmount = _gunObjectSO.MaxAmmmo - _currentAmmo;
         reloadAmount = (_currentMagazine - reloadAmount) >= 0 ? reloadAmount : _currentMagazine;
         _currentAmmo += reloadAmount;
         _currentMagazine -= reloadAmount;
@@ -53,9 +53,9 @@ public class GunObject : MonoBehaviour
     public void AddMagazine(int magazine)
     {
         _currentMagazine += magazine;
-        if (_currentMagazine > _gunObjectOS.MaxMagazine)
+        if (_currentMagazine > _gunObjectSO.MaxMagazine)
         {
-            _currentMagazine = _gunObjectOS.MaxMagazine;
+            _currentMagazine = _gunObjectSO.MaxMagazine;
         }
 
     }
@@ -95,8 +95,8 @@ public class GunObject : MonoBehaviour
 
     private void SetAmmoAndMagazineMax()
     {
-        _currentAmmo = _gunObjectOS.MaxAmmmo;
-        _currentMagazine = _gunObjectOS.MaxMagazine;
+        _currentAmmo = _gunObjectSO.MaxAmmmo;
+        _currentMagazine = _gunObjectSO.MaxMagazine;
     }
 
     public int getCurrentAmmo()

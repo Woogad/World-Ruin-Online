@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab8907e2cda609e4eb57a361ed1e3c51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gunObjectOS: {fileID: 11400000, guid: daa4b959ff9de65488a008c022f6a28c, type: 2}
+  _gunObjectSO: {fileID: 11400000, guid: daa4b959ff9de65488a008c022f6a28c, type: 2}
   _fireEndPoint: {fileID: 8950856460967392256}
 --- !u!1 &6236734502547590426
 GameObject:

@@ -6,7 +6,7 @@ public class BulletObject : MonoBehaviour
 {
     private float _damage;
 
-    public void Setup(Transform shootDir, ShootConfigOS shootConfigOS)
+    public void Setup(Transform shootDir, ShootConfigSO shootConfigOS)
     {
         this._damage = shootConfigOS.Damage;
         Rigidbody rigidbody = GetComponent<Rigidbody>();

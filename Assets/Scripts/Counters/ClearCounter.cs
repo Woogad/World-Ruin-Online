@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ClearCounter : BaseCounter
 {
-    [SerializeField] private GunObjectOS _gunObjectSO;
+    [SerializeField] private GunObjectSO _gunObjectSO;
 
     private void OnEnable()
     {
@@ -25,11 +25,12 @@ public class ClearCounter : BaseCounter
             //* Player not carrying anything
             {
                 GetGunObject().SetGunObjectParent(player);
-                ClearGunObject();
             }
             else
             //* Player is carrying something
             {
+                player.GetGunObject().DestroySelf();
+                GetGunObject().SetGunObjectParent(player);
             }
         }
 

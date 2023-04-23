@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1677249134649738448}
   - component: {fileID: 7119937515908635660}
   m_Layer: 5
-  m_Name: PriceLabel
+  m_Name: GunPriceLabel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: 7821595601355504241}
   - component: {fileID: 194186090898671584}
   m_Layer: 5
-  m_Name: PriceLabel_text
+  m_Name: GunPriceLabel_text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

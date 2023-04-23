@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu()]
-public class GunObjectOS : ScriptableObject
+public class GunObjectSO : ScriptableObject
 {
-    public ShootConfigOS ShootConfigOS;
+    public ShootConfigSO ShootConfigSO;
     public Transform Prefab;
     public Transform BulletPrefab;
     public int MaxMagazine;
