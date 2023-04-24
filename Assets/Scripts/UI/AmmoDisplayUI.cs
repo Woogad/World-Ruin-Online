@@ -25,9 +25,7 @@ public class AmmoDisplayUI : MonoBehaviour
     {
         if (Player.Instance.HasGunObject())
         {
-            _ammoAmountText.text = Player.Instance.GetGunObject().getCurrentAmmo().ToString();
-            _magazineAmountText.text = Player.Instance.GetGunObject().getCurrentMagazine().ToString();
-            _maxMagazineAmountText.text = Player.Instance.GetGunObject().GetGunObjectSO().MaxMagazine.ToString();
+            UpdateVisual();
         }
     }
 

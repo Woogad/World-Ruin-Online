@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gunShopCounter: {fileID: 5124977885317998679}
-  _PriceLabelText: {fileID: 194186090898671584}
+  _priceLabelText: {fileID: 194186090898671584}
 --- !u!114 &7119937515908635660
 MonoBehaviour:
   m_ObjectHideFlags: 0

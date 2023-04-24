@@ -10,20 +10,25 @@ public class Player : MonoBehaviour, IGunObjectParent
     public event EventHandler OnInteract;
     public event EventHandler OnUpdateAmmo;
     public event EventHandler OnUpdateMoney;
+    public event EventHandler OnAddArmor;
+    public event EventHandler OnAddHealth;
     public event EventHandler<OnSelectedCoutnerChangedEventArgs> OnSelectedCounterChanged;
     public class OnSelectedCoutnerChangedEventArgs : EventArgs
     {
         public BaseCounter SelectedCounter;
     }
 
+    [SerializeField] private PlayerSO _playerSO;
     [SerializeField] private float _moveSpeed = 7f;
     [SerializeField] private float _rotaionSpeed = 10f;
     [SerializeField] private GameInput _gameInput;
     [SerializeField] private LayerMask _counterLayerMask;
     [SerializeField] private Transform _gunObjectHoldPoint;
     [SerializeField] private Mouse3D _mouse3D;
-    [SerializeField] private int _playerMoney;
 
+    private float _playerHealth;
+    private float _playerArmor;
+    private int _playerMoney;
 
     private bool _isWalking;
     private BaseCounter _selectedCounter;
@@ -40,6 +45,11 @@ public class Player : MonoBehaviour, IGunObjectParent
             Debug.LogError("There is more than one player instance!");
         }
         Instance = this;
+
+        float defaultHealth = 50f;
+        float defaultAromr = 5f;
+        int defaulMoney = 500;
+        PlayerSetup(defaultHealth, defaultAromr, defaulMoney);
     }
 
     private void Start()
@@ -69,11 +79,17 @@ public class Player : MonoBehaviour, IGunObjectParent
         HandleInteraction();
     }
 
-
-    public bool IsWalking()
+    private void PlayerSetup(float health, float armor, int money)
     {
-        return _isWalking;
+        if (health > _playerSO.MaxHealth || armor > _playerSO.MaxArmor || money > _playerSO.MaxMoney)
+        {
+            Debug.LogError("PlayerSetup is out of limit!");
+        }
+        this._playerHealth = health;
+        this._playerArmor = armor;
+        this._playerMoney = money;
     }
+
 
     private void GameInputOnReloadAction(object sender, EventArgs e)
     {
@@ -97,6 +113,7 @@ public class Player : MonoBehaviour, IGunObjectParent
             OnInteract?.Invoke(this, EventArgs.Empty);
         }
     }
+
 
     private void HandleInteraction()
     {
@@ -190,10 +207,75 @@ public class Player : MonoBehaviour, IGunObjectParent
     {
         return this._playerMoney;
     }
-    public void SetPlayerMoney(int money)
+    public void AddPlayerMoney(int money)
     {
-        _playerMoney = money;
+        _playerMoney += money;
         OnUpdateMoney?.Invoke(this, EventArgs.Empty);
+    }
+
+    public float GetPlayerHealth()
+    {
+        return this._playerHealth;
+    }
+
+    public void AddPlayerHealth(float health)
+    {
+        _playerHealth += health;
+        if (_playerHealth > _playerSO.MaxHealth)
+        {
+            _playerHealth = _playerSO.MaxHealth;
+        }
+        OnAddHealth?.Invoke(this, EventArgs.Empty);
+    }
+
+    public float GetPlayerArmor()
+    {
+        return this._playerArmor;
+    }
+
+    public void AddPlayerArmor(float armor)
+    {
+        _playerArmor += armor;
+        if (_playerArmor > _playerSO.MaxArmor)
+        {
+            _playerArmor = _playerSO.MaxArmor;
+        }
+        OnAddArmor?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void TakeDamage(float damage)
+    {
+        float damageReduce = 0.4f; //* 40%
+
+        float armorReduce = damageReduce * damage;
+        if (_playerArmor == 0)
+        {
+            _playerHealth -= damage;
+            return;
+        }
+        if (_playerArmor > armorReduce)
+        {
+            float hpReduce = damage - armorReduce;
+            _playerHealth -= hpReduce;
+            _playerArmor -= armorReduce;
+        }
+        else
+        {
+            float hpReduce = damage - _playerArmor;
+            _playerHealth -= hpReduce;
+            _playerArmor -= _playerArmor;
+        }
+
+    }
+
+    public bool IsWalking()
+    {
+        return _isWalking;
+    }
+
+    public PlayerSO GetPlayerSO()
+    {
+        return this._playerSO;
     }
 
     public Transform GetGunObjectFollowTransform()

@@ -6,7 +6,7 @@ using TMPro;
 public class GunPriceLabelUI : MonoBehaviour
 {
     [SerializeField] private GunShopCounter _gunShopCounter;
-    [SerializeField] private TextMeshProUGUI _PriceLabelText;
+    [SerializeField] private TextMeshProUGUI _priceLabelText;
 
     private void Start()
     {
@@ -15,6 +15,6 @@ public class GunPriceLabelUI : MonoBehaviour
 
     private void UpdateVisual()
     {
-        _PriceLabelText.text = _gunShopCounter.GetGunObjectOSShop().Price.ToString() + "$";
+        _priceLabelText.text = _gunShopCounter.GetGunObjectOSShop().Price.ToString() + "$";
     }
 }
