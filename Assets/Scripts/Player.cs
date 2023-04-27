@@ -36,7 +36,6 @@ public class Player : MonoBehaviour, IGunObjectParent
     private bool _isHoldShootAction;
 
 
-    //*For Toggle ammo Display
 
     private void Awake()
     {
@@ -55,16 +54,34 @@ public class Player : MonoBehaviour, IGunObjectParent
     private void Start()
     {
         _gameInput.OnInteractAction += GameInputOnInteractAction;
+        _gameInput.OnShootWeaponHoldAction += GameInputOnShootHoldAction;
         _gameInput.OnShootWeaponAction += GameInputOnShootAction;
         _gameInput.OnReloadAction += GameInputOnReloadAction;
+        _gameInput.OnToggleWeaponModeAction += GameInputOnToggleWeaponModeAction;
     }
 
+    private void GameInputOnShootAction(object sender, EventArgs e)
+    {
+        if (HasGunObject())
+        {
+            if (GetGunObject().GetGunMode() != GunObject.GunMode.Semi) return;
+
+            GetGunObject().Shoot();
+            OnUpdateAmmo?.Invoke(this, EventArgs.Empty);
+
+        }
+    }
+
+    private void GameInputOnToggleWeaponModeAction(object sender, EventArgs e)
+    {
+        GetGunObject().CycleGunMode();
+    }
 
     private void Update()
     {
         if (HasGunObject())
         {
-            if (_isHoldShootAction && GetGunObject().TryShoot())
+            if (CanShootAuto())
             {
                 GetGunObject().Shoot();
                 OnUpdateAmmo?.Invoke(this, EventArgs.Empty);
@@ -100,7 +117,7 @@ public class Player : MonoBehaviour, IGunObjectParent
         }
     }
 
-    private void GameInputOnShootAction(object sender, GameInput.OnShootWeaponActionArgs e)
+    private void GameInputOnShootHoldAction(object sender, GameInput.OnShootWeaponActionArgs e)
     {
         _isHoldShootAction = e.IsHoldShootAction;
     }
@@ -112,6 +129,13 @@ public class Player : MonoBehaviour, IGunObjectParent
             _selectedCounter.Interact(this);
             OnInteract?.Invoke(this, EventArgs.Empty);
         }
+    }
+
+    private bool CanShootAuto()
+    {
+        if (GetGunObject().GetGunMode() != GunObject.GunMode.Auto) return false;
+        if (_isHoldShootAction && GetGunObject().TryShoot()) return true;
+        return false;
     }
 
 

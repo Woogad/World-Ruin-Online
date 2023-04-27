@@ -10,7 +10,9 @@ public class GameInput : MonoBehaviour
 
     public event EventHandler OnInteractAction;
     public event EventHandler OnReloadAction;
-    public event EventHandler<OnShootWeaponActionArgs> OnShootWeaponAction;
+    public event EventHandler OnToggleWeaponModeAction;
+    public event EventHandler OnShootWeaponAction;
+    public event EventHandler<OnShootWeaponActionArgs> OnShootWeaponHoldAction;
     public class OnShootWeaponActionArgs : EventArgs
     {
         public bool IsHoldShootAction;
@@ -24,11 +26,26 @@ public class GameInput : MonoBehaviour
         Instance = this;
         _playerInputAction = new PlayerInputAction();
         _playerInputAction.Enable();
+
+        //*left mouse event
+        _playerInputAction.Player.ShootWeapon.started += ShootWeaponOnce;
+        _playerInputAction.Player.ShootWeapon.performed += ShootWeaponHold;
+        _playerInputAction.Player.ShootWeapon.canceled += ShootWeaponHold;
+
         _playerInputAction.Player.Interact.performed += InteractPerformed;
-        _playerInputAction.Player.ShootWeapon.performed += ShootWeaponPerformed;
-        _playerInputAction.Player.ShootWeapon.canceled += ShootWeaponPerformed;
         _playerInputAction.Player.ReloadWeapon.performed += ReloadWeaponPerformed;
+        _playerInputAction.Player.ToggleWeaponMode.performed += ToggleWeaponModePerformed;
         _isHoldShootAction = false;
+    }
+
+    private void ShootWeaponOnce(InputAction.CallbackContext obj)
+    {
+        OnShootWeaponAction(this, EventArgs.Empty);
+    }
+
+    private void ToggleWeaponModePerformed(InputAction.CallbackContext obj)
+    {
+        OnToggleWeaponModeAction?.Invoke(this, EventArgs.Empty);
     }
 
     private void ReloadWeaponPerformed(InputAction.CallbackContext context)
@@ -36,7 +53,7 @@ public class GameInput : MonoBehaviour
         OnReloadAction?.Invoke(this, EventArgs.Empty);
     }
 
-    private void ShootWeaponPerformed(InputAction.CallbackContext context)
+    private void ShootWeaponHold(InputAction.CallbackContext context)
     {
         if (!_isHoldShootAction)
         {
@@ -46,7 +63,7 @@ public class GameInput : MonoBehaviour
         {
             _isHoldShootAction = false;
         }
-        OnShootWeaponAction?.Invoke(this, new OnShootWeaponActionArgs
+        OnShootWeaponHoldAction?.Invoke(this, new OnShootWeaponActionArgs
         {
             IsHoldShootAction = this._isHoldShootAction
         });

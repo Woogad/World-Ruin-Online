@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class GunObject : MonoBehaviour
 {
+    public enum GunMode
+    {
+        Auto,
+        Semi
+    }
+
     [SerializeField] private GunObjectSO _gunObjectSO;
     [SerializeField] private Transform _fireEndPoint;
 
@@ -11,6 +17,7 @@ public class GunObject : MonoBehaviour
     private float _cooldownTimestamp = 0;
     private int _currentMagazine;
     private int _currentAmmo;
+    private GunMode _gunMode = GunMode.Semi;
 
     public GunObjectSO GetGunObjectSO()
     {
@@ -33,6 +40,17 @@ public class GunObject : MonoBehaviour
         {
             return false;
         }
+    }
+
+    public GunMode GetGunMode()
+    {
+        return this._gunMode;
+    }
+
+    public void CycleGunMode()
+    {
+        _gunMode = ((int)_gunMode < 1) ? _gunMode + 1 : 0;
+        Debug.Log(_gunMode);
     }
 
     public void Shoot()
@@ -59,7 +77,6 @@ public class GunObject : MonoBehaviour
         }
 
     }
-
 
     public void SetGunObjectParent(IGunObjectParent gunObjectParent)
     {
