@@ -17,7 +17,6 @@ public class GameInput : MonoBehaviour
     {
         public bool IsHoldShootAction;
     }
-    bool _isHoldShootAction = false;
 
     private PlayerInputAction _playerInputAction;
 
@@ -28,19 +27,37 @@ public class GameInput : MonoBehaviour
         _playerInputAction.Enable();
 
         //*left mouse event
-        _playerInputAction.Player.ShootWeapon.started += ShootWeaponOnce;
-        _playerInputAction.Player.ShootWeapon.performed += ShootWeaponHold;
-        _playerInputAction.Player.ShootWeapon.canceled += ShootWeaponHold;
+        _playerInputAction.Player.ShootWeapon.started += ShootWeaponStart;
+        _playerInputAction.Player.ShootWeapon.performed += ShootWeaponPerformed;
+        _playerInputAction.Player.ShootWeapon.canceled += ShootWeaponCanceled;
 
         _playerInputAction.Player.Interact.performed += InteractPerformed;
         _playerInputAction.Player.ReloadWeapon.performed += ReloadWeaponPerformed;
         _playerInputAction.Player.ToggleWeaponMode.performed += ToggleWeaponModePerformed;
-        _isHoldShootAction = false;
     }
 
-    private void ShootWeaponOnce(InputAction.CallbackContext obj)
+
+    private void ShootWeaponStart(InputAction.CallbackContext obj)
     {
         OnShootWeaponAction(this, EventArgs.Empty);
+    }
+
+    private void ShootWeaponPerformed(InputAction.CallbackContext obj)
+    {
+        bool isHoldShootAction = true;
+        OnShootWeaponHoldAction?.Invoke(this, new OnShootWeaponActionArgs
+        {
+            IsHoldShootAction = isHoldShootAction
+        });
+    }
+
+    private void ShootWeaponCanceled(InputAction.CallbackContext obj)
+    {
+        bool isHoldShootAction = false;
+        OnShootWeaponHoldAction?.Invoke(this, new OnShootWeaponActionArgs
+        {
+            IsHoldShootAction = isHoldShootAction
+        });
     }
 
     private void ToggleWeaponModePerformed(InputAction.CallbackContext obj)
@@ -48,28 +65,13 @@ public class GameInput : MonoBehaviour
         OnToggleWeaponModeAction?.Invoke(this, EventArgs.Empty);
     }
 
-    private void ReloadWeaponPerformed(InputAction.CallbackContext context)
+    private void ReloadWeaponPerformed(InputAction.CallbackContext obj)
     {
         OnReloadAction?.Invoke(this, EventArgs.Empty);
     }
 
-    private void ShootWeaponHold(InputAction.CallbackContext context)
-    {
-        if (!_isHoldShootAction)
-        {
-            _isHoldShootAction = true;
-        }
-        else
-        {
-            _isHoldShootAction = false;
-        }
-        OnShootWeaponHoldAction?.Invoke(this, new OnShootWeaponActionArgs
-        {
-            IsHoldShootAction = this._isHoldShootAction
-        });
-    }
 
-    private void InteractPerformed(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    private void InteractPerformed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
         OnInteractAction?.Invoke(this, EventArgs.Empty);
     }

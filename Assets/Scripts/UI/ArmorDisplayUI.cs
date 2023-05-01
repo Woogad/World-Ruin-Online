@@ -10,7 +10,7 @@ public class ArmorDisplayUI : MonoBehaviour
 
     private void Start()
     {
-        Player.Instance.OnAddArmor += PlayerOnAddArmor;
+        Player.Instance.OnArmorChanged += PlayerOnAddArmor;
         UpdateVisual();
     }
 

@@ -18,6 +18,8 @@ public class GunObject : MonoBehaviour
     private int _currentMagazine;
     private int _currentAmmo;
     private GunMode _gunMode = GunMode.Semi;
+    private bool _isReload = false;
+    private float _reloadTime = 2.1f;
 
     public GunObjectSO GetGunObjectSO()
     {
@@ -31,6 +33,7 @@ public class GunObject : MonoBehaviour
 
     public bool TryShoot()
     {
+        if (_isReload) return false;
         if (Time.time > _cooldownTimestamp && _currentAmmo != 0)
         {
             _cooldownTimestamp = Time.time + GetShootConfigOS().FireRate;
@@ -47,10 +50,10 @@ public class GunObject : MonoBehaviour
         return this._gunMode;
     }
 
-    public void CycleGunMode()
+    public GunMode CycleGunMode()
     {
         _gunMode = ((int)_gunMode < 1) ? _gunMode + 1 : 0;
-        Debug.Log(_gunMode);
+        return this._gunMode;
     }
 
     public void Shoot()
@@ -60,12 +63,32 @@ public class GunObject : MonoBehaviour
         _currentAmmo--;
     }
 
+    public IEnumerator ReloadTimeCoroutine()
+    {
+        if (!_isReload && _currentMagazine != 0)
+        {
+            _isReload = true;
+            yield return new WaitForSeconds(_reloadTime);
+            Reload();
+            _isReload = false;
+        }
+    }
+
+    public bool GetIsReload()
+    {
+        return this._isReload;
+    }
+
     public void Reload()
     {
-        int reloadAmount = _gunObjectSO.MaxAmmmo - _currentAmmo;
-        reloadAmount = (_currentMagazine - reloadAmount) >= 0 ? reloadAmount : _currentMagazine;
-        _currentAmmo += reloadAmount;
-        _currentMagazine -= reloadAmount;
+        if (_currentMagazine != 0)
+        {
+            Debug.Log("reload");
+            int reloadAmount = _gunObjectSO.MaxAmmmo - _currentAmmo;
+            reloadAmount = (_currentMagazine - reloadAmount) >= 0 ? reloadAmount : _currentMagazine;
+            _currentAmmo += reloadAmount;
+            _currentMagazine -= reloadAmount;
+        }
     }
 
     public void AddMagazine(int magazine)
@@ -95,13 +118,17 @@ public class GunObject : MonoBehaviour
         transform.localPosition = Vector3.zero;
         transform.localScale = new Vector3(1, 1, 1);
         transform.localRotation = gunObjectParent.GetGunQuaternion();
-
-        SetAmmoAndMagazineMax();
+        SetupAmmoAndMagazine();
     }
 
     public IGunObjectParent GetGunObjectParent()
     {
         return this._gunObjectParent;
+    }
+
+    public float GetReloadTime()
+    {
+        return this._reloadTime;
     }
 
     public void DestroySelf()
@@ -110,10 +137,10 @@ public class GunObject : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private void SetAmmoAndMagazineMax()
+    private void SetupAmmoAndMagazine()
     {
         _currentAmmo = _gunObjectSO.MaxAmmmo;
-        _currentMagazine = _gunObjectSO.MaxMagazine;
+        _currentMagazine = _gunObjectSO.MaxMagazine / 2;
     }
 
     public int getCurrentAmmo()

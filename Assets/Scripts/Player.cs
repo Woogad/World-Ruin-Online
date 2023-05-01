@@ -8,10 +8,21 @@ public class Player : MonoBehaviour, IGunObjectParent
     public static Player Instance { get; private set; }
 
     public event EventHandler OnInteract;
-    public event EventHandler OnUpdateAmmo;
-    public event EventHandler OnUpdateMoney;
-    public event EventHandler OnAddArmor;
-    public event EventHandler OnAddHealth;
+    public event EventHandler OnAmmoChanged;
+    public event EventHandler OnMoneyChanged;
+    public event EventHandler OnRelaod;
+    public event EventHandler<OnReloadProgressChangedArgs> OnReloadProgressChanged;
+    public class OnReloadProgressChangedArgs : EventArgs
+    {
+        public float ReloadProgressNormalized;
+    }
+    public event EventHandler<OnGunModeChangedArgs> OnGunModeChanged;
+    public class OnGunModeChangedArgs : EventArgs
+    {
+        public GunObject.GunMode GunMode;
+    }
+    public event EventHandler OnArmorChanged;
+    public event EventHandler OnHealthChanged;
     public event EventHandler<OnSelectedCoutnerChangedEventArgs> OnSelectedCounterChanged;
     public class OnSelectedCoutnerChangedEventArgs : EventArgs
     {
@@ -31,6 +42,8 @@ public class Player : MonoBehaviour, IGunObjectParent
     private int _playerMoney;
 
     private bool _isWalking;
+    private bool _isShootAuto;
+    private float _reloadCountdown;
     private BaseCounter _selectedCounter;
     private GunObject _gunObject;
     private bool _isHoldShootAction;
@@ -54,40 +67,40 @@ public class Player : MonoBehaviour, IGunObjectParent
     private void Start()
     {
         _gameInput.OnInteractAction += GameInputOnInteractAction;
-        _gameInput.OnShootWeaponHoldAction += GameInputOnShootHoldAction;
+        _gameInput.OnShootWeaponHoldAction += GameInputOnShootAutoAction;
         _gameInput.OnShootWeaponAction += GameInputOnShootAction;
         _gameInput.OnReloadAction += GameInputOnReloadAction;
         _gameInput.OnToggleWeaponModeAction += GameInputOnToggleWeaponModeAction;
-    }
-
-    private void GameInputOnShootAction(object sender, EventArgs e)
-    {
-        if (HasGunObject())
-        {
-            if (GetGunObject().GetGunMode() != GunObject.GunMode.Semi) return;
-
-            GetGunObject().Shoot();
-            OnUpdateAmmo?.Invoke(this, EventArgs.Empty);
-
-        }
-    }
-
-    private void GameInputOnToggleWeaponModeAction(object sender, EventArgs e)
-    {
-        GetGunObject().CycleGunMode();
     }
 
     private void Update()
     {
         if (HasGunObject())
         {
+            if (GetGunObject().GetIsReload())
+            {
+                _reloadCountdown += Time.deltaTime;
+                OnReloadProgressChanged?.Invoke(this, new OnReloadProgressChangedArgs
+                {
+                    ReloadProgressNormalized = _reloadCountdown / GetGunObject().GetReloadTime()
+                });
+            }
+            else
+            {
+                if (_reloadCountdown != 0)
+                {
+                    _reloadCountdown = 0;
+                    OnAmmoChanged?.Invoke(this, EventArgs.Empty);
+                }
+
+            }
+
             if (CanShootAuto())
             {
                 GetGunObject().Shoot();
-                OnUpdateAmmo?.Invoke(this, EventArgs.Empty);
+                OnAmmoChanged?.Invoke(this, EventArgs.Empty);
             }
         }
-
         HandleMovement();
 
         //* Make Player lookAt mouse
@@ -96,28 +109,44 @@ public class Player : MonoBehaviour, IGunObjectParent
         HandleInteraction();
     }
 
-    private void PlayerSetup(float health, float armor, int money)
+
+    private void GameInputOnShootAction(object sender, EventArgs e)
     {
-        if (health > _playerSO.MaxHealth || armor > _playerSO.MaxArmor || money > _playerSO.MaxMoney)
+        if (HasGunObject())
         {
-            Debug.LogError("PlayerSetup is out of limit!");
+            if (GetGunObject().GetGunMode() != GunObject.GunMode.Semi) return;
+            if (GetGunObject().TryShoot())
+            {
+                GetGunObject().Shoot();
+                OnAmmoChanged?.Invoke(this, EventArgs.Empty);
+            }
+
         }
-        this._playerHealth = health;
-        this._playerArmor = armor;
-        this._playerMoney = money;
     }
 
+    private void GameInputOnToggleWeaponModeAction(object sender, EventArgs e)
+    {
+        GunObject.GunMode gunModeCycle = GetGunObject().CycleGunMode();
+        OnGunModeChanged(this, new OnGunModeChangedArgs
+        {
+            GunMode = gunModeCycle
+        });
+    }
 
     private void GameInputOnReloadAction(object sender, EventArgs e)
     {
         if (HasGunObject())
         {
-            GetGunObject().Reload();
-            OnUpdateAmmo?.Invoke(this, EventArgs.Empty);
+            if (CanReload())
+            {
+                StartCoroutine(GetGunObject().ReloadTimeCoroutine());
+                OnRelaod?.Invoke(this, EventArgs.Empty);
+                float reloadProgress = GetGunObject().GetReloadTime() + 0.01f;
+            }
         }
     }
 
-    private void GameInputOnShootHoldAction(object sender, GameInput.OnShootWeaponActionArgs e)
+    private void GameInputOnShootAutoAction(object sender, GameInput.OnShootWeaponActionArgs e)
     {
         _isHoldShootAction = e.IsHoldShootAction;
     }
@@ -134,16 +163,32 @@ public class Player : MonoBehaviour, IGunObjectParent
     private bool CanShootAuto()
     {
         if (GetGunObject().GetGunMode() != GunObject.GunMode.Auto) return false;
-        if (_isHoldShootAction && GetGunObject().TryShoot()) return true;
-        return false;
+        if (!GetGunObject().TryShoot()) return false;
+        if (!_isHoldShootAction) return false;
+        return true;
     }
 
+    private bool CanReload()
+    {
+        if (GetGunObject().getCurrentAmmo() == GetGunObject().GetGunObjectSO().MaxAmmmo) return false;
+        if (GetGunObject().GetIsReload()) return false;
+        if (GetGunObject().getCurrentMagazine() == 0) return false;
+        return true;
+    }
+
+    private void PlayerSetup(float health, float armor, int money)
+    {
+        if (health > _playerSO.MaxHealth || armor > _playerSO.MaxArmor || money > _playerSO.MaxMoney)
+        {
+            Debug.LogError("PlayerSetup is out of limit!");
+        }
+        this._playerHealth = health;
+        this._playerArmor = armor;
+        this._playerMoney = money;
+    }
 
     private void HandleInteraction()
     {
-        Vector2 inputVector = _gameInput.GetMovementVectorNormalized();
-
-        Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
 
         float interactDistance = 2f;
         if (Physics.Raycast(transform.position, transform.forward, out RaycastHit raycastHit, interactDistance, _counterLayerMask))
@@ -234,7 +279,7 @@ public class Player : MonoBehaviour, IGunObjectParent
     public void AddPlayerMoney(int money)
     {
         _playerMoney += money;
-        OnUpdateMoney?.Invoke(this, EventArgs.Empty);
+        OnMoneyChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public float GetPlayerHealth()
@@ -249,7 +294,7 @@ public class Player : MonoBehaviour, IGunObjectParent
         {
             _playerHealth = _playerSO.MaxHealth;
         }
-        OnAddHealth?.Invoke(this, EventArgs.Empty);
+        OnHealthChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public float GetPlayerArmor()
@@ -264,7 +309,7 @@ public class Player : MonoBehaviour, IGunObjectParent
         {
             _playerArmor = _playerSO.MaxArmor;
         }
-        OnAddArmor?.Invoke(this, EventArgs.Empty);
+        OnArmorChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public void TakeDamage(float damage)
@@ -292,9 +337,14 @@ public class Player : MonoBehaviour, IGunObjectParent
 
     }
 
+    public bool IsHoldShootAction()
+    {
+        return this._isHoldShootAction;
+    }
+
     public bool IsWalking()
     {
-        return _isWalking;
+        return this._isWalking;
     }
 
     public PlayerSO GetPlayerSO()
@@ -304,7 +354,7 @@ public class Player : MonoBehaviour, IGunObjectParent
 
     public Transform GetGunObjectFollowTransform()
     {
-        return _gunObjectHoldPoint;
+        return this._gunObjectHoldPoint;
     }
 
     public void SetGunObject(GunObject gunObject)
@@ -324,7 +374,7 @@ public class Player : MonoBehaviour, IGunObjectParent
 
     public bool HasGunObject()
     {
-        return _gunObject != null;
+        return this._gunObject != null;
     }
 
     public Quaternion GetGunQuaternion()

@@ -22,7 +22,6 @@ public class GunShopCounter : BaseCounter
         else
         //* if player carrying object
         {
-
             if (CanBuyGun(player.GetPlayerMoney()) && player.GetGunObject().GetGunObjectSO() != this._gunObjectSO)
             {
                 Buy(player);

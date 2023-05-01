@@ -29,8 +29,18 @@ public class ClearCounter : BaseCounter
             else
             //* Player is carrying something
             {
-                player.GetGunObject().DestroySelf();
-                GetGunObject().SetGunObjectParent(player);
+                if (player.GetGunObject().GetGunObjectSO() == this._gunObjectSO)
+                //* Player has same gun
+                {
+                    player.GetGunObject().AddMagazine(_gunObjectSO.MaxMagazine / 2);
+                    GetGunObject().DestroySelf();
+                }
+                else
+                //* Player has different gun
+                {
+                    player.GetGunObject().DestroySelf();
+                    GetGunObject().SetGunObjectParent(player);
+                }
             }
         }
 

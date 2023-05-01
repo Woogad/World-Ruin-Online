@@ -10,7 +10,7 @@ public class HealthDiplayUI : MonoBehaviour
 
     private void Start()
     {
-        Player.Instance.OnAddHealth += PlayerOnAddHealth;
+        Player.Instance.OnHealthChanged += PlayerOnAddHealth;
         UpdateVisual();
     }
 

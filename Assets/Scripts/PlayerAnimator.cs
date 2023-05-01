@@ -9,8 +9,11 @@ public class PlayerAnimator : MonoBehaviour
 
     private const string IS_WALKING = "IsWalking";
     private const string DRAW_GUN = "DrawGun";
+    private const string RELOAD = "Reload";
+    private const string IS_SHOOT = "IsShoot";
 
     private Animator _animator;
+    private bool _isHoldShootAction;
 
     private void Awake()
     {
@@ -20,6 +23,19 @@ public class PlayerAnimator : MonoBehaviour
     private void Start()
     {
         _player.OnInteract += GunShopOnPlayerBuyGun;
+        _player.OnRelaod += PlayerOnReload;
+        GameInput.Instance.OnShootWeaponHoldAction += GameInputOnShootWeaponHoldAction;
+    }
+
+    private void PlayerOnReload(object sender, EventArgs e)
+    {
+        _isHoldShootAction = false;
+        _animator.SetTrigger(RELOAD);
+    }
+
+    private void GameInputOnShootWeaponHoldAction(object sender, GameInput.OnShootWeaponActionArgs e)
+    {
+        _isHoldShootAction = e.IsHoldShootAction;
     }
 
     private void GunShopOnPlayerBuyGun(object sender, EventArgs e)
@@ -27,8 +43,13 @@ public class PlayerAnimator : MonoBehaviour
         _animator.SetTrigger(DRAW_GUN);
     }
 
+
     private void Update()
     {
+        if (_player.HasGunObject())
+        {
+            _animator.SetBool(IS_SHOOT, _isHoldShootAction && _player.GetGunObject().getCurrentAmmo() != 0);
+        }
         _animator.SetBool(IS_WALKING, _player.IsWalking());
     }
 }

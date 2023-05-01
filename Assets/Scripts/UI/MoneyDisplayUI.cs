@@ -9,7 +9,7 @@ public class MoneyDisplayUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _moneyAmount;
     private void Start()
     {
-        Player.Instance.OnUpdateMoney += PlayerOnUpdateMoney;
+        Player.Instance.OnMoneyChanged += PlayerOnUpdateMoney;
         UpdateVisual();
     }
 
