@@ -6,6 +6,7 @@ using UnityEngine;
 public class GunShopCounter : BaseCounter
 {
     [SerializeField] private GunObjectSO _gunObjectSO;
+    public static event EventHandler OnAnyBuyGun;
 
     public override void Interact(Player player)
     {
@@ -47,6 +48,7 @@ public class GunShopCounter : BaseCounter
 
     private void Buy(Player player)
     {
+        OnAnyBuyGun?.Invoke(this, EventArgs.Empty);
         int playerMoney = player.GetPlayerMoney();
         player.AddPlayerMoney(-_gunObjectSO.Price);
     }

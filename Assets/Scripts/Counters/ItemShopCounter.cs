@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,7 @@ using UnityEngine;
 public class ItemShopCounter : BaseCounter
 {
     [SerializeField] private ItemObjectSO _itemObjectSO;
+    public static event EventHandler OnAnyBuyItem;
     private float _healthAmount = 100f;
     private float _armorAmount = 20f;
     private int _megazineAmount = 60;
@@ -81,6 +83,7 @@ public class ItemShopCounter : BaseCounter
 
     private void Buy(Player player)
     {
+        OnAnyBuyItem?.Invoke(this, EventArgs.Empty);
         int playerMoney = player.GetPlayerMoney();
         player.AddPlayerMoney(-_itemObjectSO.Price);
     }

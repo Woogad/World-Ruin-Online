@@ -8056,6 +8056,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5066222053340851399}
   - component: {fileID: 960538289653343553}
+  - component: {fileID: 5840110251817898565}
   - component: {fileID: 4926879507804158635}
   - component: {fileID: 55199998736970445}
   m_Layer: 0
@@ -8104,6 +8105,18 @@ MonoBehaviour:
     m_Bits: 64
   _gunObjectHoldPoint: {fileID: 4530553173894285778}
   _mouse3D: {fileID: 0}
+--- !u!114 &5840110251817898565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8292332107256854797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf7fd72f4f79fbf43b69ece845b03d1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!136 &4926879507804158635
 CapsuleCollider:
   m_ObjectHideFlags: 0

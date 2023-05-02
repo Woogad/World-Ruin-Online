@@ -10,7 +10,8 @@ public class PlayerAnimator : MonoBehaviour
     private const string IS_WALKING = "IsWalking";
     private const string DRAW_GUN = "DrawGun";
     private const string RELOAD = "Reload";
-    private const string IS_SHOOT = "IsShoot";
+    private const string IS_SHOOT_AUTO = "IsShootAuto";
+    private const string SHOOT_SEMI = "ShootSemi";
 
     private Animator _animator;
     private bool _isHoldShootAction;
@@ -24,7 +25,15 @@ public class PlayerAnimator : MonoBehaviour
     {
         _player.OnInteract += GunShopOnPlayerBuyGun;
         _player.OnRelaod += PlayerOnReload;
+        _player.OnShoot += PlayerOnShoot;
         GameInput.Instance.OnShootWeaponHoldAction += GameInputOnShootWeaponHoldAction;
+    }
+
+    private void PlayerOnShoot(object sender, EventArgs e)
+    {
+        if (_player.GetGunObject().GetGunMode() != GunObject.GunMode.Semi) return;
+        _animator.SetTrigger(SHOOT_SEMI);
+
     }
 
     private void PlayerOnReload(object sender, EventArgs e)
@@ -48,7 +57,10 @@ public class PlayerAnimator : MonoBehaviour
     {
         if (_player.HasGunObject())
         {
-            _animator.SetBool(IS_SHOOT, _isHoldShootAction && _player.GetGunObject().getCurrentAmmo() != 0);
+            if (_player.GetGunObject().GetGunMode() == GunObject.GunMode.Auto)
+            {
+                _animator.SetBool(IS_SHOOT_AUTO, _isHoldShootAction && _player.GetGunObject().getCurrentAmmo() != 0);
+            }
         }
         _animator.SetBool(IS_WALKING, _player.IsWalking());
     }

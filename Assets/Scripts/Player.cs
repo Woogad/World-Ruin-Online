@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour, IGunObjectParent
+public class Player : MonoBehaviour, IGunObjectParent, IDamageable
 {
     public static Player Instance { get; private set; }
 
@@ -11,6 +11,11 @@ public class Player : MonoBehaviour, IGunObjectParent
     public event EventHandler OnAmmoChanged;
     public event EventHandler OnMoneyChanged;
     public event EventHandler OnRelaod;
+    public event EventHandler OnShoot;
+    public event EventHandler OnArmorChanged;
+    public event EventHandler OnHealthChanged;
+    public event EventHandler OnPickGun;
+
     public event EventHandler<OnReloadProgressChangedArgs> OnReloadProgressChanged;
     public class OnReloadProgressChangedArgs : EventArgs
     {
@@ -21,8 +26,6 @@ public class Player : MonoBehaviour, IGunObjectParent
     {
         public GunObject.GunMode GunMode;
     }
-    public event EventHandler OnArmorChanged;
-    public event EventHandler OnHealthChanged;
     public event EventHandler<OnSelectedCoutnerChangedEventArgs> OnSelectedCounterChanged;
     public class OnSelectedCoutnerChangedEventArgs : EventArgs
     {
@@ -42,13 +45,10 @@ public class Player : MonoBehaviour, IGunObjectParent
     private int _playerMoney;
 
     private bool _isWalking;
-    private bool _isShootAuto;
     private float _reloadCountdown;
     private BaseCounter _selectedCounter;
     private GunObject _gunObject;
     private bool _isHoldShootAction;
-
-
 
     private void Awake()
     {
@@ -98,9 +98,17 @@ public class Player : MonoBehaviour, IGunObjectParent
             if (CanShootAuto())
             {
                 GetGunObject().Shoot();
+                OnShoot?.Invoke(this, EventArgs.Empty);
                 OnAmmoChanged?.Invoke(this, EventArgs.Empty);
             }
         }
+
+        //! test Player Dead
+        if (_playerHealth <= 0)
+        {
+            Debug.Log("Dead");
+        }
+
         HandleMovement();
 
         //* Make Player lookAt mouse
@@ -118,6 +126,7 @@ public class Player : MonoBehaviour, IGunObjectParent
             if (GetGunObject().TryShoot())
             {
                 GetGunObject().Shoot();
+                OnShoot?.Invoke(this, EventArgs.Empty);
                 OnAmmoChanged?.Invoke(this, EventArgs.Empty);
             }
 
@@ -126,11 +135,14 @@ public class Player : MonoBehaviour, IGunObjectParent
 
     private void GameInputOnToggleWeaponModeAction(object sender, EventArgs e)
     {
-        GunObject.GunMode gunModeCycle = GetGunObject().CycleGunMode();
-        OnGunModeChanged(this, new OnGunModeChangedArgs
+        if (HasGunObject())
         {
-            GunMode = gunModeCycle
-        });
+            GunObject.GunMode gunModeCycle = GetGunObject().CycleGunMode();
+            OnGunModeChanged(this, new OnGunModeChangedArgs
+            {
+                GunMode = gunModeCycle
+            });
+        }
     }
 
     private void GameInputOnReloadAction(object sender, EventArgs e)
@@ -272,6 +284,7 @@ public class Player : MonoBehaviour, IGunObjectParent
         });
     }
 
+    //* Money
     public int GetPlayerMoney()
     {
         return this._playerMoney;
@@ -282,6 +295,7 @@ public class Player : MonoBehaviour, IGunObjectParent
         OnMoneyChanged?.Invoke(this, EventArgs.Empty);
     }
 
+    //* Health
     public float GetPlayerHealth()
     {
         return this._playerHealth;
@@ -297,6 +311,7 @@ public class Player : MonoBehaviour, IGunObjectParent
         OnHealthChanged?.Invoke(this, EventArgs.Empty);
     }
 
+    //* Armor
     public float GetPlayerArmor()
     {
         return this._playerArmor;
@@ -314,26 +329,32 @@ public class Player : MonoBehaviour, IGunObjectParent
 
     public void TakeDamage(float damage)
     {
-        float damageReduce = 0.4f; //* 40%
+        float damageResistance = 0.4f; //* 40%
 
-        float armorReduce = damageReduce * damage;
+        float damageReduce = damageResistance * damage;
+
         if (_playerArmor == 0)
         {
             _playerHealth -= damage;
-            return;
-        }
-        if (_playerArmor > armorReduce)
-        {
-            float hpReduce = damage - armorReduce;
-            _playerHealth -= hpReduce;
-            _playerArmor -= armorReduce;
         }
         else
         {
-            float hpReduce = damage - _playerArmor;
-            _playerHealth -= hpReduce;
-            _playerArmor -= _playerArmor;
+            if (_playerArmor > damageReduce)
+            {
+                float armorReduce = damage - damageReduce;
+                _playerHealth -= damageReduce;
+                _playerArmor -= armorReduce;
+            }
+            else
+            {
+                damageReduce = damage - _playerArmor;
+                _playerHealth -= damageReduce;
+                _playerArmor -= _playerArmor;
+            }
         }
+
+        OnHealthChanged?.Invoke(this, EventArgs.Empty);
+        OnArmorChanged?.Invoke(this, EventArgs.Empty);
 
     }
 
@@ -360,6 +381,10 @@ public class Player : MonoBehaviour, IGunObjectParent
     public void SetGunObject(GunObject gunObject)
     {
         this._gunObject = gunObject;
+        if (HasGunObject())
+        {
+            OnPickGun?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     public GunObject GetGunObject()

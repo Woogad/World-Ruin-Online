@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,6 @@ using UnityEngine;
 public class BaseCounter : MonoBehaviour, IGunObjectParent
 {
     [SerializeField] private Transform _counterTopPoint;
-
 
     private GunObject _gunObject;
 

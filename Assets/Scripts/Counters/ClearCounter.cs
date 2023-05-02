@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ClearCounter : BaseCounter
 {
+    public static event EventHandler OnAnyClearCounterPickObject;
+
     [SerializeField] private GunObjectSO _gunObjectSO;
 
     private void OnEnable()
@@ -33,6 +36,7 @@ public class ClearCounter : BaseCounter
                 //* Player has same gun
                 {
                     player.GetGunObject().AddMagazine(_gunObjectSO.MaxMagazine / 2);
+                    OnAnyClearCounterPickObject?.Invoke(this, EventArgs.Empty);
                     GetGunObject().DestroySelf();
                 }
                 else
