@@ -70,4 +70,8 @@ public class SoundManager : MonoBehaviour
     {
         PlaySound(_audioClipRefsSO.FootStep, position, volume);
     }
+    public void PlayPlayerDead(Vector3 position, float volume)
+    {
+        PlaySound(_audioClipRefsSO.PlayerDead, position, volume);
+    }
 }

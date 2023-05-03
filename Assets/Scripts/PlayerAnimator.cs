@@ -12,6 +12,7 @@ public class PlayerAnimator : MonoBehaviour
     private const string RELOAD = "Reload";
     private const string IS_SHOOT_AUTO = "IsShootAuto";
     private const string SHOOT_SEMI = "ShootSemi";
+    private const string IS_DEAD = "IsDead";
 
     private Animator _animator;
     private bool _isHoldShootAction;
@@ -26,7 +27,14 @@ public class PlayerAnimator : MonoBehaviour
         _player.OnInteract += GunShopOnPlayerBuyGun;
         _player.OnRelaod += PlayerOnReload;
         _player.OnShoot += PlayerOnShoot;
+        _player.OnDead += PlayerOnDead;
         GameInput.Instance.OnShootWeaponHoldAction += GameInputOnShootWeaponHoldAction;
+    }
+
+    private void PlayerOnDead(object sender, EventArgs e)
+    {
+        _animator.SetBool(IS_DEAD, true);
+        _animator.SetBool(IS_SHOOT_AUTO, false);
     }
 
     private void PlayerOnShoot(object sender, EventArgs e)
@@ -63,5 +71,6 @@ public class PlayerAnimator : MonoBehaviour
             }
         }
         _animator.SetBool(IS_WALKING, _player.IsWalking());
+
     }
 }

@@ -18,6 +18,13 @@ public class PlayerSound : MonoBehaviour
     {
         _player.OnRelaod += PlayerOnReload;
         _player.OnShoot += PlayerOnShoot;
+        _player.OnDead += PlayerOnDead;
+    }
+
+    private void PlayerOnDead(object sender, EventArgs e)
+    {
+        float volume = 1f;
+        SoundManager.Instance.PlayPlayerDead(_player.transform.position, volume);
     }
 
     private void PlayerOnShoot(object sender, EventArgs e)

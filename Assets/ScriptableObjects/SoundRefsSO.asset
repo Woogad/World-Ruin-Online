@@ -28,3 +28,4 @@ MonoBehaviour:
   - {fileID: 8300000, guid: eab952cabb0f25342af01f7f46cf1c34, type: 3}
   EmptyShoot: {fileID: 8300000, guid: 70d3ca6def0bf5f45bf14841fc79bba5, type: 3}
   PickGun: {fileID: 8300000, guid: 006107f7b321e3d4a960ee0d33f81e9d, type: 3}
+  PlayerDead: {fileID: 8300000, guid: bb9821fd19a1df34cad3abba7894c559, type: 3}

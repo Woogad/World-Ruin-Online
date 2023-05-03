@@ -15,8 +15,7 @@ public class AmmoDisplayUI : MonoBehaviour
         Player.Instance.OnAmmoChanged += PlayerOnUpdateAmmo;
         Player.Instance.OnInteract += PlayerOnInteract;
 
-        _ammoAmountText.text = "0";
-        _magazineAmountText.text = "0";
+        UpdateVisual();
     }
 
     private void PlayerOnInteract(object sender, EventArgs e)
@@ -34,6 +33,13 @@ public class AmmoDisplayUI : MonoBehaviour
 
     private void UpdateVisual()
     {
+        if (!Player.Instance.HasGunObject())
+        {
+
+            _ammoAmountText.text = "0";
+            _magazineAmountText.text = "0";
+            return;
+        }
         _ammoAmountText.text = Player.Instance.GetGunObject().getCurrentAmmo().ToString();
         _magazineAmountText.text = Player.Instance.GetGunObject().getCurrentMagazine().ToString();
     }

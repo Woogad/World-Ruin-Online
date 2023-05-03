@@ -14,6 +14,7 @@ public class Player : MonoBehaviour, IGunObjectParent, IDamageable
     public event EventHandler OnShoot;
     public event EventHandler OnArmorChanged;
     public event EventHandler OnHealthChanged;
+    public event EventHandler OnDead;
     public event EventHandler OnPickGun;
 
     public event EventHandler<OnReloadProgressChangedArgs> OnReloadProgressChanged;
@@ -43,12 +44,16 @@ public class Player : MonoBehaviour, IGunObjectParent, IDamageable
     private float _playerHealth;
     private float _playerArmor;
     private int _playerMoney;
+    private float defaultHealth = 20f;
+    private float defaultAromr = 0f;
+    private int defaulMoney = 500;
 
+    private bool _isHoldShootAction;
+    private bool _isAlive;
     private bool _isWalking;
     private float _reloadCountdown;
     private BaseCounter _selectedCounter;
     private GunObject _gunObject;
-    private bool _isHoldShootAction;
 
     private void Awake()
     {
@@ -58,10 +63,8 @@ public class Player : MonoBehaviour, IGunObjectParent, IDamageable
         }
         Instance = this;
 
-        float defaultHealth = 50f;
-        float defaultAromr = 5f;
-        int defaulMoney = 500;
         PlayerSetup(defaultHealth, defaultAromr, defaulMoney);
+        _isAlive = true;
     }
 
     private void Start()
@@ -75,6 +78,8 @@ public class Player : MonoBehaviour, IGunObjectParent, IDamageable
 
     private void Update()
     {
+        if (!_isAlive) return;
+
         if (HasGunObject())
         {
             if (GetGunObject().GetIsReload())
@@ -103,12 +108,6 @@ public class Player : MonoBehaviour, IGunObjectParent, IDamageable
             }
         }
 
-        //! test Player Dead
-        if (_playerHealth <= 0)
-        {
-            Debug.Log("Dead");
-        }
-
         HandleMovement();
 
         //* Make Player lookAt mouse
@@ -120,7 +119,7 @@ public class Player : MonoBehaviour, IGunObjectParent, IDamageable
 
     private void GameInputOnShootAction(object sender, EventArgs e)
     {
-        if (HasGunObject())
+        if (HasGunObject() && _isAlive)
         {
             if (GetGunObject().GetGunMode() != GunObject.GunMode.Semi) return;
             if (GetGunObject().TryShoot())
@@ -135,7 +134,7 @@ public class Player : MonoBehaviour, IGunObjectParent, IDamageable
 
     private void GameInputOnToggleWeaponModeAction(object sender, EventArgs e)
     {
-        if (HasGunObject())
+        if (HasGunObject() && _isAlive)
         {
             GunObject.GunMode gunModeCycle = GetGunObject().CycleGunMode();
             OnGunModeChanged(this, new OnGunModeChangedArgs
@@ -147,7 +146,7 @@ public class Player : MonoBehaviour, IGunObjectParent, IDamageable
 
     private void GameInputOnReloadAction(object sender, EventArgs e)
     {
-        if (HasGunObject())
+        if (HasGunObject() && _isAlive)
         {
             if (CanReload())
             {
@@ -197,6 +196,19 @@ public class Player : MonoBehaviour, IGunObjectParent, IDamageable
         this._playerHealth = health;
         this._playerArmor = armor;
         this._playerMoney = money;
+    }
+
+    private void Dead()
+    {
+        _isAlive = false;
+        OnReloadProgressChanged?.Invoke(this, new OnReloadProgressChangedArgs
+        {
+            ReloadProgressNormalized = 0
+        });
+        _isWalking = false;
+        ClearGunObject();
+        Collider playerCollider = GetComponent<Collider>();
+        playerCollider.enabled = false;
     }
 
     private void HandleInteraction()
@@ -329,8 +341,9 @@ public class Player : MonoBehaviour, IGunObjectParent, IDamageable
 
     public void TakeDamage(float damage)
     {
-        float damageResistance = 0.4f; //* 40%
+        if (!_isAlive) return;
 
+        float damageResistance = 0.4f; //* 40%
         float damageReduce = damageResistance * damage;
 
         if (_playerArmor == 0)
@@ -353,9 +366,20 @@ public class Player : MonoBehaviour, IGunObjectParent, IDamageable
             }
         }
 
+        if (_playerHealth <= 0)
+        {
+            _playerHealth = 0;
+            Dead();
+            OnDead?.Invoke(this, EventArgs.Empty);
+        }
         OnHealthChanged?.Invoke(this, EventArgs.Empty);
         OnArmorChanged?.Invoke(this, EventArgs.Empty);
 
+    }
+
+    public bool IsAlive()
+    {
+        return this._isAlive;
     }
 
     public bool IsHoldShootAction()
@@ -384,6 +408,10 @@ public class Player : MonoBehaviour, IGunObjectParent, IDamageable
         if (HasGunObject())
         {
             OnPickGun?.Invoke(this, EventArgs.Empty);
+            OnGunModeChanged?.Invoke(this, new OnGunModeChangedArgs
+            {
+                GunMode = GunObject.GunMode.Semi
+            });
         }
     }
 

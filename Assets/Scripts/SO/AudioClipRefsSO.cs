@@ -11,4 +11,5 @@ public class AudioClipRefsSO : ScriptableObject
     public AudioClip[] GunShoot;
     public AudioClip EmptyShoot;
     public AudioClip PickGun;
+    public AudioClip PlayerDead;
 }
