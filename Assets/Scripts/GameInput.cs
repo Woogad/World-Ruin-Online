@@ -39,11 +39,13 @@ public class GameInput : MonoBehaviour
 
     private void ShootWeaponStart(InputAction.CallbackContext obj)
     {
+        if (!GameManager.Instance.IsGamePlaying()) return;
         OnShootWeaponAction(this, EventArgs.Empty);
     }
 
     private void ShootWeaponPerformed(InputAction.CallbackContext obj)
     {
+        if (!GameManager.Instance.IsGamePlaying()) return;
         bool isHoldShootAction = true;
         OnShootWeaponHoldAction?.Invoke(this, new OnShootWeaponActionArgs
         {
@@ -62,22 +64,26 @@ public class GameInput : MonoBehaviour
 
     private void ToggleWeaponModePerformed(InputAction.CallbackContext obj)
     {
+        if (!GameManager.Instance.IsGamePlaying()) return;
         OnToggleWeaponModeAction?.Invoke(this, EventArgs.Empty);
     }
 
     private void ReloadWeaponPerformed(InputAction.CallbackContext obj)
     {
+        if (!GameManager.Instance.IsGamePlaying()) return;
         OnReloadAction?.Invoke(this, EventArgs.Empty);
     }
 
 
     private void InteractPerformed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
+        if (!GameManager.Instance.IsGamePlaying()) return;
         OnInteractAction?.Invoke(this, EventArgs.Empty);
     }
 
     public Vector2 GetMovementVectorNormalized()
     {
+        if (!GameManager.Instance.IsGamePlaying()) return new Vector2(0, 0);
         Vector2 inputVector = _playerInputAction.Player.Move.ReadValue<Vector2>();
 
         inputVector = inputVector.normalized;
