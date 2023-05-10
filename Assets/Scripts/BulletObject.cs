@@ -14,7 +14,7 @@ public class BulletObject : MonoBehaviour
         float _moveSpeed = 60f;
         rigidbody.AddForce(shootDir.forward * _moveSpeed, ForceMode.Impulse);
 
-        float timeDestroySelf = 1.5f;
+        float timeDestroySelf = 1f;
         Destroy(gameObject, timeDestroySelf);
     }
 

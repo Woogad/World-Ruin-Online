@@ -18,9 +18,9 @@ public class GameManager : MonoBehaviour
 
     private State _state;
     private float _waitingToStartTimer = 1f;
-    private float _countdownToStartTimer = 3f;
+    private float _countdownToStartTimer = 1f;
     private float _gamePlayingTimer;
-    private float _gamePlayingTimerMax = 10f;
+    private float _gamePlayingTimerMax = 200f;
     private void Awake()
     {
         Instance = this;
