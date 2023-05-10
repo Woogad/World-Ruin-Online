@@ -35,7 +35,6 @@ public class Player : MonoBehaviour, IGunObjectParent, IDamageable
 
     [SerializeField] private PlayerSO _playerSO;
     [SerializeField] private float _moveSpeed = 7f;
-    [SerializeField] private float _rotaionSpeed = 10f;
     [SerializeField] private GameInput _gameInput;
     [SerializeField] private LayerMask _counterLayerMask;
     [SerializeField] private Transform _gunObjectHoldPoint;
@@ -82,7 +81,7 @@ public class Player : MonoBehaviour, IGunObjectParent, IDamageable
 
         if (HasGunObject())
         {
-            if (GetGunObject().GetIsReload())
+            if (GetGunObject().IsReload())
             {
                 _reloadCountdown += Time.deltaTime;
                 OnReloadProgressChanged?.Invoke(this, new OnReloadProgressChangedArgs
@@ -182,7 +181,7 @@ public class Player : MonoBehaviour, IGunObjectParent, IDamageable
     private bool CanReload()
     {
         if (GetGunObject().getCurrentAmmo() == GetGunObject().GetGunObjectSO().MaxAmmmo) return false;
-        if (GetGunObject().GetIsReload()) return false;
+        if (GetGunObject().IsReload()) return false;
         if (GetGunObject().getCurrentMagazine() == 0) return false;
         return true;
     }
@@ -241,8 +240,7 @@ public class Player : MonoBehaviour, IGunObjectParent, IDamageable
         Vector2 inputVector = _gameInput.GetMovementVectorNormalized();
 
         Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
-
-        float moveDistance = _moveSpeed * Time.deltaTime;
+        float moveDistance = GetMovementSpeed() * Time.deltaTime;
         float playerRadius = 0.7f;
         float playerHeight = 2.6f;
         bool canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDir, moveDistance);
@@ -283,8 +281,19 @@ public class Player : MonoBehaviour, IGunObjectParent, IDamageable
             transform.position += moveDir * moveDistance;
         }
         _isWalking = moveDir != Vector3.zero;
-        transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * _rotaionSpeed);
+    }
 
+    private float GetMovementSpeed()
+    {
+        if (HasGunObject())
+        {
+            if (GetGunObject().IsReload())
+            {
+                float moveReduct = 0.4f;
+                return _moveSpeed - (_moveSpeed * moveReduct);
+            }
+        }
+        return _moveSpeed;
     }
 
     private void SetSelectedCounter(BaseCounter baseCounter)

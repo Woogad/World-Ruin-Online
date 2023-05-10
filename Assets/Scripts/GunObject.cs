@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GunObject : MonoBehaviour
 {
+    public event EventHandler OnShoot;
     public enum GunMode
     {
         Auto,
@@ -60,6 +62,7 @@ public class GunObject : MonoBehaviour
     {
         Transform bulletTransform = Instantiate(_gunObjectSO.BulletPrefab, _fireEndPoint.position, Quaternion.identity);
         bulletTransform.GetComponent<BulletObject>().Setup(_fireEndPoint, GetShootConfigOS());
+        OnShoot?.Invoke(this, EventArgs.Empty);
         _currentAmmo--;
     }
 
@@ -74,7 +77,7 @@ public class GunObject : MonoBehaviour
         }
     }
 
-    public bool GetIsReload()
+    public bool IsReload()
     {
         return this._isReload;
     }
