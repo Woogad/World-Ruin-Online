@@ -286,12 +286,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -2902,6 +2902,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6106073183109559371, guid: b8ec93d7e84529b4cb02221f4fa2a2fb,
         type: 3}
+    - target: {fileID: 1215836720808594863, guid: 58a0066831ef5dd41a3d3d95b8c9cb1b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3943407402451746608, guid: 58a0066831ef5dd41a3d3d95b8c9cb1b,
         type: 3}
       propertyPath: _gunShopCounter

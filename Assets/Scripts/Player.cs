@@ -16,6 +16,7 @@ public class Player : MonoBehaviour, IGunObjectParent, IDamageable
     public event EventHandler OnHealthChanged;
     public event EventHandler OnDead;
     public event EventHandler OnPickGun;
+    public event EventHandler OnTakeDamage;
 
     public event EventHandler<OnReloadProgressChangedArgs> OnReloadProgressChanged;
     public class OnReloadProgressChangedArgs : EventArgs
@@ -43,7 +44,7 @@ public class Player : MonoBehaviour, IGunObjectParent, IDamageable
     private float _playerHealth;
     private float _playerArmor;
     private int _playerMoney;
-    private float defaultHealth = 20f;
+    private float defaultHealth = 60f;
     private float defaultAromr = 0f;
     private int defaulMoney = 500;
 
@@ -381,6 +382,7 @@ public class Player : MonoBehaviour, IGunObjectParent, IDamageable
             Dead();
             OnDead?.Invoke(this, EventArgs.Empty);
         }
+        OnTakeDamage?.Invoke(this, EventArgs.Empty);
         OnHealthChanged?.Invoke(this, EventArgs.Empty);
         OnArmorChanged?.Invoke(this, EventArgs.Empty);
 
