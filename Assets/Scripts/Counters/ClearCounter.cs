@@ -6,6 +6,10 @@ using UnityEngine;
 public class ClearCounter : BaseCounter
 {
     public static event EventHandler OnAnyClearCounterPickObject;
+    public static void ResetStaticEvent()
+    {
+        OnAnyClearCounterPickObject = null;
+    }
 
     [SerializeField] private GunObjectSO _gunObjectSO;
 

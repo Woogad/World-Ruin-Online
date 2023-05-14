@@ -10,7 +10,7 @@ public class LoaderCallback : MonoBehaviour
         if (_isLoad)
         {
             _isLoad = false;
+            Loader.LoaderCallback();
         }
-        Loader.LoaderCallback();
     }
 }

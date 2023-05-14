@@ -5,8 +5,14 @@ using UnityEngine;
 
 public class ItemShopCounter : BaseCounter
 {
-    [SerializeField] private ItemObjectSO _itemObjectSO;
     public static event EventHandler OnAnyBuyItem;
+
+    public static void ResetStaticEvent()
+    {
+        OnAnyBuyItem = null;
+    }
+
+    [SerializeField] private ItemObjectSO _itemObjectSO;
     private float _healthAmount = 100f;
     private float _armorAmount = 20f;
     private int _megazineAmount = 60;

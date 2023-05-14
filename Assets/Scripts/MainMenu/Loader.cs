@@ -17,12 +17,12 @@ public static class Loader
     public static void Load(Scene targetScene)
     {
         Loader.TargetScene = targetScene;
-        SceneManager.LoadScene(Scene.LoadingScene.ToString());
+        SceneManager.LoadSceneAsync(Scene.LoadingScene.ToString());
     }
 
     public static void LoaderCallback()
     {
 
-        SceneManager.LoadScene(Loader.TargetScene.ToString());
+        SceneManager.LoadSceneAsync(Loader.TargetScene.ToString());
     }
 }

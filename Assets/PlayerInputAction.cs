@@ -71,6 +71,15 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Esc"",
+                    ""type"": ""Button"",
+                    ""id"": ""a979478a-e442-425e-bf20-9a14197a25bd"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -172,6 +181,17 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""action"": ""Toggle Weapon Mode"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e925d30a-b52f-40f8-b28e-35ee55ab877e"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Esc"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -185,6 +205,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         m_Player_ShootWeapon = m_Player.FindAction("Shoot Weapon", throwIfNotFound: true);
         m_Player_ReloadWeapon = m_Player.FindAction("Reload Weapon", throwIfNotFound: true);
         m_Player_ToggleWeaponMode = m_Player.FindAction("Toggle Weapon Mode", throwIfNotFound: true);
+        m_Player_Esc = m_Player.FindAction("Esc", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -251,6 +272,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_ShootWeapon;
     private readonly InputAction m_Player_ReloadWeapon;
     private readonly InputAction m_Player_ToggleWeaponMode;
+    private readonly InputAction m_Player_Esc;
     public struct PlayerActions
     {
         private @PlayerInputAction m_Wrapper;
@@ -260,6 +282,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         public InputAction @ShootWeapon => m_Wrapper.m_Player_ShootWeapon;
         public InputAction @ReloadWeapon => m_Wrapper.m_Player_ReloadWeapon;
         public InputAction @ToggleWeaponMode => m_Wrapper.m_Player_ToggleWeaponMode;
+        public InputAction @Esc => m_Wrapper.m_Player_Esc;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -284,6 +307,9 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
             @ToggleWeaponMode.started += instance.OnToggleWeaponMode;
             @ToggleWeaponMode.performed += instance.OnToggleWeaponMode;
             @ToggleWeaponMode.canceled += instance.OnToggleWeaponMode;
+            @Esc.started += instance.OnEsc;
+            @Esc.performed += instance.OnEsc;
+            @Esc.canceled += instance.OnEsc;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -303,6 +329,9 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
             @ToggleWeaponMode.started -= instance.OnToggleWeaponMode;
             @ToggleWeaponMode.performed -= instance.OnToggleWeaponMode;
             @ToggleWeaponMode.canceled -= instance.OnToggleWeaponMode;
+            @Esc.started -= instance.OnEsc;
+            @Esc.performed -= instance.OnEsc;
+            @Esc.canceled -= instance.OnEsc;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -327,5 +356,6 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         void OnShootWeapon(InputAction.CallbackContext context);
         void OnReloadWeapon(InputAction.CallbackContext context);
         void OnToggleWeaponMode(InputAction.CallbackContext context);
+        void OnEsc(InputAction.CallbackContext context);
     }
 }

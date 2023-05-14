@@ -5,8 +5,14 @@ using UnityEngine;
 
 public class GunShopCounter : BaseCounter
 {
-    [SerializeField] private GunObjectSO _gunObjectSO;
     public static event EventHandler OnAnyBuyGun;
+
+    public static void ResetStaticEvent()
+    {
+        OnAnyBuyGun = null;
+    }
+
+    [SerializeField] private GunObjectSO _gunObjectSO;
 
     public override void Interact(Player player)
     {

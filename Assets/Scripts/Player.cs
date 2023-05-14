@@ -76,6 +76,7 @@ public class Player : MonoBehaviour, IGunObjectParent, IDamageable
         _gameInput.OnToggleWeaponModeAction += GameInputOnToggleWeaponModeAction;
     }
 
+
     private void Update()
     {
         if (!_isAlive) return;
@@ -115,7 +116,6 @@ public class Player : MonoBehaviour, IGunObjectParent, IDamageable
 
         HandleInteraction();
     }
-
 
     private void GameInputOnShootAction(object sender, EventArgs e)
     {
