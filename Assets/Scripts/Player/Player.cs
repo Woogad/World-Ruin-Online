@@ -76,7 +76,6 @@ public class Player : MonoBehaviour, IGunObjectParent, IDamageable
         _gameInput.OnToggleWeaponModeAction += GameInputOnToggleWeaponModeAction;
     }
 
-
     private void Update()
     {
         if (!_isAlive) return;
@@ -111,8 +110,7 @@ public class Player : MonoBehaviour, IGunObjectParent, IDamageable
 
         HandleMovement();
 
-        //* Make Player lookAt mouse
-        transform.LookAt(_mouse3D.GetAngleAimRotate());
+        PlayerLookAtMouse();
 
         HandleInteraction();
     }
@@ -293,6 +291,12 @@ public class Player : MonoBehaviour, IGunObjectParent, IDamageable
             transform.position += moveDir * moveDistance;
         }
         _isWalking = moveDir != Vector3.zero;
+    }
+
+    private void PlayerLookAtMouse()
+    {
+        //* Make Player lookAt mouse
+        transform.LookAt(_mouse3D.GetAngleAimRotateTransform());
     }
 
     private float GetMovementSpeed()

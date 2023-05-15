@@ -8,7 +8,6 @@ using UnityEngine.UI;
 public class EscMenuDisplayUI : MonoBehaviour
 {
     [SerializeField] private Button _mainMenuBn;
-    private bool _isEscMenuOpen = false;
 
     private void Awake()
     {
@@ -23,10 +22,9 @@ public class EscMenuDisplayUI : MonoBehaviour
         Hide();
     }
 
-    private void GmaeInputOnEscAction(object sender, EventArgs e)
+    private void GmaeInputOnEscAction(object sender, GameInput.OnEscActionArgs e)
     {
-        _isEscMenuOpen = !_isEscMenuOpen;
-        if (_isEscMenuOpen)
+        if (e.IsEscMenuOpen)
         {
             Show();
         }

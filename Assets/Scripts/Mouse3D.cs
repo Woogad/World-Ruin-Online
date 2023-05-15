@@ -13,6 +13,19 @@ public class Mouse3D : MonoBehaviour
     private void Start()
     {
         _cam = GameObject.FindGameObjectWithTag(CamNameTag).GetComponent<Camera>();
+        GameInput.Instance.OnEscAction += GameInputOnEscAcion;
+    }
+
+    private void GameInputOnEscAcion(object sender, GameInput.OnEscActionArgs e)
+    {
+        if (e.IsEscMenuOpen)
+        {
+            Hide();
+        }
+        else
+        {
+            Show();
+        }
     }
 
     private void Update()
@@ -24,10 +37,19 @@ public class Mouse3D : MonoBehaviour
         }
     }
 
-    public Transform GetAngleAimRotate()
+    public Transform GetAngleAimRotateTransform()
     {
         Transform MousePosition = transform;
 
         return MousePosition;
+    }
+
+    private void Show()
+    {
+        gameObject.SetActive(true);
+    }
+    private void Hide()
+    {
+        gameObject.SetActive(false);
     }
 }

@@ -9,10 +9,14 @@ public class GameInput : MonoBehaviour
     public static GameInput Instance { get; private set; }
 
     public event EventHandler OnInteractAction;
-    public event EventHandler OnReloadAction;
     public event EventHandler OnToggleWeaponModeAction;
     public event EventHandler OnShootWeaponAction;
-    public event EventHandler OnEscAction;
+    public event EventHandler OnReloadAction;
+    public event EventHandler<OnEscActionArgs> OnEscAction;
+    public class OnEscActionArgs : EventArgs
+    {
+        public bool IsEscMenuOpen;
+    }
     public event EventHandler<OnShootWeaponActionArgs> OnShootWeaponHoldAction;
     public class OnShootWeaponActionArgs : EventArgs
     {
@@ -42,7 +46,10 @@ public class GameInput : MonoBehaviour
     private void EscPerformed(InputAction.CallbackContext context)
     {
         _isEscMenuOpen = !_isEscMenuOpen;
-        OnEscAction?.Invoke(this, EventArgs.Empty);
+        OnEscAction?.Invoke(this, new OnEscActionArgs
+        {
+            IsEscMenuOpen = _isEscMenuOpen
+        });
     }
 
     private void OnDestroy()

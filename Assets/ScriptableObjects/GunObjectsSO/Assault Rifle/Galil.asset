@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e0c07f08734f30943b8dd6cc9f55cad7, type: 3}
-  m_Name: Koch MP5
+  m_Name: Galil
   m_EditorClassIdentifier: 
-  Damage: {x: 4, y: 10}
-  FireRate: 0.08
-  Spread: {x: 0, y: 0, z: 0}
+  Damage: {x: 7, y: 11}
+  FireRate: 0.12
+  Spread: {x: 0.04, y: 0.04, z: 0.04}
   ReloadTime: 2.8
-  Prefab: {fileID: 1073768833744428826, guid: 99150b400dc067948965af0570fe1f62, type: 3}
+  Prefab: {fileID: 1073768833744428826, guid: c1b28d095a84c9b42813fe0c64a0b685, type: 3}
   BulletPrefab: {fileID: 9211493504238893169, guid: b8ec93d7e84529b4cb02221f4fa2a2fb,
     type: 3}
-  MaxAmmmo: 40
-  MaxMagazine: 280
-  Price: 150
-  GunName: Koch MP5
+  MaxAmmmo: 35
+  MaxMagazine: 270
+  Price: 180
+  GunName: Galil

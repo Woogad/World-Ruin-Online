@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0c07f08734f30943b8dd6cc9f55cad7, type: 3}
   m_Name: Aug
   m_EditorClassIdentifier: 
-  Damage: {x: 7, y: 14}
+  Damage: {x: 7, y: 15}
   FireRate: 0.11
   Spread: {x: 0.03, y: 0.03, z: 0.03}
   ReloadTime: 3
