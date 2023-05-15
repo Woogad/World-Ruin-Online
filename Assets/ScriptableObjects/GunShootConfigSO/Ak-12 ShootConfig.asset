@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Damage: 20
   FireRate: 0.1
+  Spread: {x: 0.06, y: 0.06, z: 0.06}
