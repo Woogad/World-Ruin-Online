@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5922e339f33f9c645985ac508c7f5071, type: 3}
-  m_Name: Ak-12 ShootConfig
+  m_Script: {fileID: 11500000, guid: c33565ce2d4e97e4da108daaff8fe83b, type: 3}
+  m_Name: PlayerSetting
   m_EditorClassIdentifier: 
-  Damage: 20
-  FireRate: 0.1
-  Spread: {x: 0.06, y: 0.06, z: 0.06}
+  MaxHealth: 100
+  MaxArmor: 100
+  MaxMoney: 10000

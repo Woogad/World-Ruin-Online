@@ -28,17 +28,13 @@ public class GunObject : MonoBehaviour
         return this._gunObjectSO;
     }
 
-    public ShootConfigSO GetShootConfigOS()
-    {
-        return this.GetGunObjectSO().ShootConfigSO;
-    }
 
     public bool TryShoot()
     {
         if (_isReload) return false;
         if (Time.time > _cooldownTimestamp && _currentAmmo != 0)
         {
-            _cooldownTimestamp = Time.time + GetShootConfigOS().FireRate;
+            _cooldownTimestamp = Time.time + _gunObjectSO.FireRate;
             return true;
         }
         else
@@ -61,7 +57,7 @@ public class GunObject : MonoBehaviour
     public void Shoot()
     {
         Transform bulletTransform = Instantiate(_gunObjectSO.BulletPrefab, _fireEndPoint.position, Quaternion.identity);
-        bulletTransform.GetComponent<BulletObject>().Setup(_fireEndPoint, GetShootConfigOS());
+        bulletTransform.GetComponent<BulletObject>().Setup(_fireEndPoint, _gunObjectSO);
         OnShoot?.Invoke(this, EventArgs.Empty);
         _currentAmmo--;
     }

@@ -9,7 +9,7 @@ public class Enemy : MonoBehaviour, IDamageable
     [SerializeField] private Transform GunEndPoint;
     private float _shootTimer = 2;
     private float _shootTimerMax = 3;
-    private float _health = 50f;
+    private float _health = 1000f;
 
     private void Update()
     {

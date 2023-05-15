@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0c07f08734f30943b8dd6cc9f55cad7, type: 3}
   m_Name: Aug
   m_EditorClassIdentifier: 
-  ShootConfigSO: {fileID: 11400000, guid: 9aa9ea3b0b48e5e44b9435eacec2e9ae, type: 2}
-  Prefab: {fileID: 1073768833744428826, guid: 3201f71bb3e44284192b3b8069c3103f, type: 3}
+  Damage: {x: 9, y: 15}
+  FireRate: 0.1
+  Spread: {x: 0.06, y: 0.06, z: 0.06}
+  Prefab: {fileID: 1073768833744428826, guid: 56c00b7bddf091f49b4789bad7a35bc3, type: 3}
   BulletPrefab: {fileID: 9211493504238893169, guid: b8ec93d7e84529b4cb02221f4fa2a2fb,
     type: 3}
   MaxMagazine: 240

@@ -4,24 +4,24 @@ public class BulletObject : MonoBehaviour
 {
     private float _damage;
 
-    public void Setup(Transform FireEndPoint, ShootConfigSO shootConfigOS)
+    public void Setup(Transform FireEndPoint, GunObjectSO gunObjectSO)
     {
-        this._damage = shootConfigOS.Damage;
+        this._damage = Mathf.Ceil(Random.Range(gunObjectSO.Damage.x, gunObjectSO.Damage.y));
         Rigidbody rigidbody = GetComponent<Rigidbody>();
 
         //* Random Shoot Spread
         Vector3 shootDir = FireEndPoint.forward + new Vector3(
         Random.Range(
-            -shootConfigOS.Spread.x,
-            shootConfigOS.Spread.x
+            -gunObjectSO.Spread.x,
+            gunObjectSO.Spread.x
         ),
         Random.Range(
-            -shootConfigOS.Spread.y,
-            shootConfigOS.Spread.y
+            -gunObjectSO.Spread.y,
+            gunObjectSO.Spread.y
         ),
         Random.Range(
-            -shootConfigOS.Spread.z,
-             shootConfigOS.Spread.z
+            -gunObjectSO.Spread.z,
+             gunObjectSO.Spread.z
         ));
         shootDir.Normalize();
 
