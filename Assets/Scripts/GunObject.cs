@@ -21,7 +21,7 @@ public class GunObject : MonoBehaviour
     private int _currentAmmo;
     private GunMode _gunMode = GunMode.Semi;
     private bool _isReload = false;
-    private float _reloadTime = 2.1f;
+    // private float _reloadTime = 2.1f;
 
     public GunObjectSO GetGunObjectSO()
     {
@@ -67,7 +67,7 @@ public class GunObject : MonoBehaviour
         if (!_isReload && _currentMagazine != 0)
         {
             _isReload = true;
-            yield return new WaitForSeconds(_reloadTime);
+            yield return new WaitForSeconds(_gunObjectSO.ReloadTime);
             Reload();
             _isReload = false;
         }
@@ -123,11 +123,6 @@ public class GunObject : MonoBehaviour
     public IGunObjectParent GetGunObjectParent()
     {
         return this._gunObjectParent;
-    }
-
-    public float GetReloadTime()
-    {
-        return this._reloadTime;
     }
 
     public void DestroySelf()

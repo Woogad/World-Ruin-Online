@@ -13,6 +13,7 @@ public class PlayerAnimator : MonoBehaviour
     private const string IS_SHOOT_AUTO = "IsShootAuto";
     private const string SHOOT_SEMI = "ShootSemi";
     private const string IS_DEAD = "IsDead";
+    private const string SPEED_RELAOD_MULTIPLIER_ANIMATOR = "SpeedReloadMultiplierAnimator";
 
     private Animator _animator;
     private bool _isHoldShootAction;
@@ -47,6 +48,7 @@ public class PlayerAnimator : MonoBehaviour
     private void PlayerOnReload(object sender, EventArgs e)
     {
         _isHoldShootAction = false;
+        _animator.SetFloat(SPEED_RELAOD_MULTIPLIER_ANIMATOR, 1 / _player.GetGunObject().GetGunObjectSO().ReloadTime * 2);
         _animator.SetTrigger(RELOAD);
     }
 

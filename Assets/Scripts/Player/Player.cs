@@ -46,7 +46,7 @@ public class Player : MonoBehaviour, IGunObjectParent, IDamageable
     private int _playerMoney;
     private float defaultHealth = 60f;
     private float defaultAromr = 0f;
-    private int defaulMoney = 500;
+    [SerializeField] private int defaulMoney = 5000; //! SerializeField for testing
 
     private bool _isHoldShootAction;
     private bool _isAlive;
@@ -88,7 +88,7 @@ public class Player : MonoBehaviour, IGunObjectParent, IDamageable
                 _reloadCountdown += Time.deltaTime;
                 OnReloadProgressChanged?.Invoke(this, new OnReloadProgressChangedArgs
                 {
-                    ReloadProgressNormalized = _reloadCountdown / GetGunObject().GetReloadTime()
+                    ReloadProgressNormalized = _reloadCountdown / GetGunObject().GetGunObjectSO().ReloadTime
                 });
             }
             else
@@ -152,7 +152,7 @@ public class Player : MonoBehaviour, IGunObjectParent, IDamageable
             {
                 StartCoroutine(GetGunObject().ReloadTimeCoroutine());
                 OnRelaod?.Invoke(this, EventArgs.Empty);
-                float reloadProgress = GetGunObject().GetReloadTime() + 0.01f;
+                float reloadProgress = GetGunObject().GetGunObjectSO().ReloadTime + 0.01f;
             }
         }
     }
@@ -166,8 +166,19 @@ public class Player : MonoBehaviour, IGunObjectParent, IDamageable
     {
         if (_selectedCounter != null)
         {
-            _selectedCounter.Interact(this);
-            OnInteract?.Invoke(this, EventArgs.Empty);
+            if (HasGunObject())
+            {
+                if (!GetGunObject().IsReload())
+                {
+                    _selectedCounter.Interact(this);
+                    OnInteract?.Invoke(this, EventArgs.Empty);
+                }
+            }
+            else
+            {
+                _selectedCounter.Interact(this);
+                OnInteract?.Invoke(this, EventArgs.Empty);
+            }
         }
     }
 

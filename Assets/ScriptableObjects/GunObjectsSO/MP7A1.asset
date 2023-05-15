@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e0c07f08734f30943b8dd6cc9f55cad7, type: 3}
-  m_Name: Aug
+  m_Name: MP7A1
   m_EditorClassIdentifier: 
-  Damage: {x: 7, y: 14}
-  FireRate: 0.11
-  Spread: {x: 0.03, y: 0.03, z: 0.03}
+  Damage: {x: 3, y: 9}
+  FireRate: 0.08
+  Spread: {x: 0, y: 0, z: 0}
   ReloadTime: 3
-  Prefab: {fileID: 1073768833744428826, guid: 56c00b7bddf091f49b4789bad7a35bc3, type: 3}
+  Prefab: {fileID: 1073768833744428826, guid: 8ba9fa00172ef93448cfb39631a7a4ae, type: 3}
   BulletPrefab: {fileID: 9211493504238893169, guid: b8ec93d7e84529b4cb02221f4fa2a2fb,
     type: 3}
-  MaxAmmmo: 30
+  MaxAmmmo: 20
   MaxMagazine: 240
-  Price: 250
-  GunName: Aug
+  Price: 120
+  GunName: MP7A1
