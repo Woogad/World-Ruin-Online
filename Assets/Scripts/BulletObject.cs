@@ -6,7 +6,7 @@ public class BulletObject : MonoBehaviour
 
     public void Setup(Transform FireEndPoint, GunObjectSO gunObjectSO)
     {
-        this._damage = Mathf.Ceil(Random.Range(gunObjectSO.Damage.x, gunObjectSO.Damage.y));
+        this._damage = Mathf.Round(Random.Range(gunObjectSO.Damage.x, gunObjectSO.Damage.y));
         Rigidbody rigidbody = GetComponent<Rigidbody>();
 
         //* Random Shoot Spread

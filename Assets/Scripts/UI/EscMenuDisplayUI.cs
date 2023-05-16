@@ -8,12 +8,17 @@ using UnityEngine.UI;
 public class EscMenuDisplayUI : MonoBehaviour
 {
     [SerializeField] private Button _mainMenuBn;
+    [SerializeField] private Button _optionsBn;
 
     private void Awake()
     {
         _mainMenuBn.onClick.AddListener(() =>
         {
             Loader.Load(Loader.Scene.MainMenuScene);
+        });
+        _optionsBn.onClick.AddListener(() =>
+        {
+            OptionsUI.Instance.Show();
         });
     }
     private void Start()
@@ -30,6 +35,7 @@ public class EscMenuDisplayUI : MonoBehaviour
         }
         else
         {
+            OptionsUI.Instance.Hide();
             Hide();
         }
     }
