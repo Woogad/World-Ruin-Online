@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class DamageOverlay : MonoBehaviour
 {
+    [SerializeField] private Player _player;
     [SerializeField] private Image _damageOverlayImage;
     [SerializeField] private float _duration;
     [SerializeField] private float _fadeSpeed;
@@ -13,7 +14,7 @@ public class DamageOverlay : MonoBehaviour
     private float _durationTimer;
     void Start()
     {
-        Player.Instance.OnTakeDamage += PlayerOnTakeDamage;
+        _player.OnTakeDamage += PlayerOnTakeDamage;
         _damageOverlayImage.color = new Color(_damageOverlayImage.color.r, _damageOverlayImage.color.g, _damageOverlayImage.color.b, 0);
     }
 

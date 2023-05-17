@@ -27,13 +27,20 @@ public class GameManager : MonoBehaviour
         _state = State.WaitingToStart;
     }
 
+    private void Start()
+    {
+        //! for testing
+        _state = State.CountdonwToStart;
+        OnStateChanged?.Invoke(this, EventArgs.Empty);
+        //!
+    }
+
     private void Update()
     {
         switch (_state)
         {
             case State.WaitingToStart:
                 _waitingToStartTimer -= Time.deltaTime;
-                // Debug.Log("Waiting");
                 if (_waitingToStartTimer < 0)
                 {
                     _state = State.CountdonwToStart;
@@ -42,7 +49,6 @@ public class GameManager : MonoBehaviour
                 break;
             case State.CountdonwToStart:
                 _countdownToStartTimer -= Time.deltaTime;
-                // Debug.Log("Countdown");
                 if (_countdownToStartTimer < 0)
                 {
                     _state = State.GamePlaying;
@@ -52,7 +58,6 @@ public class GameManager : MonoBehaviour
                 break;
             case State.GamePlaying:
                 _gamePlayingTimer -= Time.deltaTime;
-                // Debug.Log("Playing");
                 if (_gamePlayingTimer < 0)
                 {
                     _state = State.GameOver;
@@ -60,7 +65,6 @@ public class GameManager : MonoBehaviour
                 }
                 break;
             case State.GameOver:
-                // Debug.Log("Over");
                 break;
         }
     }

@@ -5,10 +5,17 @@ using UnityEngine;
 
 public class Mouse3D : MonoBehaviour
 {
+    public static Mouse3D Instance { get; private set; }
+
     private Camera _cam;
     private const string CamNameTag = "MainCamera";
 
     [SerializeField] private LayerMask _layerMask;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void Start()
     {

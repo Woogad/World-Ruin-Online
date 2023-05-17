@@ -6,11 +6,12 @@ using System;
 
 public class HealthDiplayUI : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI healthAmountText;
+    [SerializeField] private Player _player;
+    [SerializeField] private TextMeshProUGUI healthAmountText;
 
     private void Start()
     {
-        Player.Instance.OnHealthChanged += PlayerOnAddHealth;
+        _player.OnHealthChanged += PlayerOnAddHealth;
         UpdateVisual();
     }
 
@@ -21,6 +22,6 @@ public class HealthDiplayUI : MonoBehaviour
 
     private void UpdateVisual()
     {
-        healthAmountText.text = Mathf.Round(Player.Instance.GetPlayerHealth()).ToString();
+        healthAmountText.text = Mathf.Round(_player.GetPlayerHealth()).ToString();
     }
 }

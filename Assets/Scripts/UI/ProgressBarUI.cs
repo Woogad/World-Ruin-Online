@@ -3,22 +3,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Unity.Netcode;
+using Unity.Netcode.Components;
 
-public class ProgressBarUI : MonoBehaviour
+public class ProgressBarUI : NetworkBehaviour
 {
+    [SerializeField] private Player _player;
     [SerializeField] private Image _barImage;
-    //TODO https://youtu.be/AmGSEH7QcDg?t=18085 
 
     private void Start()
     {
-        Player.Instance.OnReloadProgressChanged += PlayerOnReloadProgress;
+        _player.OnReloadProgressChanged += PlayerOnReloadProgress;
         _barImage.fillAmount = 0f;
         Hide();
     }
 
     private void PlayerOnReloadProgress(object sender, Player.OnReloadProgressChangedArgs e)
     {
-        _barImage.fillAmount = e.ReloadProgressNormalized;
+        if (!IsOwner) return;
+        if (IsHost)
+        {
+            ReloadProgressBarUIClientRpc(e.ReloadProgressNormalized);
+        }
+        ReloadProgressBarUIServerRpc(e.ReloadProgressNormalized);
+    }
+
+    [ClientRpc]
+    private void ReloadProgressBarUIClientRpc(float ReloadProgressNormalized)
+    {
+        // ReloadProgressBarUIServerRpc(ReloadProgressNormalized);
+        _barImage.fillAmount = ReloadProgressNormalized;
         if (_barImage.fillAmount == 0f || _barImage.fillAmount == 1f)
         {
             Hide();
@@ -27,6 +41,11 @@ public class ProgressBarUI : MonoBehaviour
         {
             Show();
         }
+    }
+    [ServerRpc]
+    private void ReloadProgressBarUIServerRpc(float ReloadProgressNormalized)
+    {
+        ReloadProgressBarUIClientRpc(ReloadProgressNormalized);
     }
 
     private void Show()

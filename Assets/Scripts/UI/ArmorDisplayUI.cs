@@ -6,11 +6,12 @@ using System;
 
 public class ArmorDisplayUI : MonoBehaviour
 {
+    [SerializeField] Player _player;
     [SerializeField] TextMeshProUGUI _aromrAmountText;
 
     private void Start()
     {
-        Player.Instance.OnArmorChanged += PlayerOnAddArmor;
+        _player.OnArmorChanged += PlayerOnAddArmor;
         UpdateVisual();
     }
 
@@ -21,7 +22,7 @@ public class ArmorDisplayUI : MonoBehaviour
 
     private void UpdateVisual()
     {
-        float armor = Player.Instance.GetPlayerArmor();
+        float armor = _player.GetPlayerArmor();
         _aromrAmountText.text = armor.ToString();
     }
 

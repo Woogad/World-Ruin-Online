@@ -6,10 +6,12 @@ using System;
 
 public class MoneyDisplayUI : MonoBehaviour
 {
+    [SerializeField] private Player _player;
     [SerializeField] private TextMeshProUGUI _moneyAmount;
+
     private void Start()
     {
-        Player.Instance.OnMoneyChanged += PlayerOnUpdateMoney;
+        _player.OnMoneyChanged += PlayerOnUpdateMoney;
         UpdateVisual();
     }
 
@@ -20,6 +22,6 @@ public class MoneyDisplayUI : MonoBehaviour
 
     private void UpdateVisual()
     {
-        _moneyAmount.text = Player.Instance.GetPlayerMoney().ToString() + "$";
+        _moneyAmount.text = _player.GetPlayerMoney().ToString() + "$";
     }
 }

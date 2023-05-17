@@ -2,8 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
-public class PlayerAnimator : MonoBehaviour
+public class PlayerAnimator : NetworkBehaviour
 {
     [SerializeField] private Player _player;
 
@@ -34,12 +35,14 @@ public class PlayerAnimator : MonoBehaviour
 
     private void PlayerOnDead(object sender, EventArgs e)
     {
+        if (!IsOwner) return;
         _animator.SetBool(IS_DEAD, true);
         _animator.SetBool(IS_SHOOT_AUTO, false);
     }
 
     private void PlayerOnShoot(object sender, EventArgs e)
     {
+        if (!IsOwner) return;
         if (_player.GetGunObject().GetGunMode() != GunObject.GunMode.Semi) return;
         _animator.SetTrigger(SHOOT_SEMI);
 
@@ -47,6 +50,7 @@ public class PlayerAnimator : MonoBehaviour
 
     private void PlayerOnReload(object sender, EventArgs e)
     {
+        if (!IsOwner) return;
         _isHoldShootAction = false;
         _animator.SetFloat(SPEED_RELAOD_MULTIPLIER_ANIMATOR, 1 / _player.GetGunObject().GetGunObjectSO().ReloadTime * 2);
         _animator.SetTrigger(RELOAD);
@@ -54,17 +58,20 @@ public class PlayerAnimator : MonoBehaviour
 
     private void GameInputOnShootWeaponHoldAction(object sender, GameInput.OnShootWeaponActionArgs e)
     {
+        if (!IsOwner) return;
         _isHoldShootAction = e.IsHoldShootAction;
     }
 
     private void GunShopOnPlayerBuyGun(object sender, EventArgs e)
     {
+        if (!IsOwner) return;
         _animator.SetTrigger(DRAW_GUN);
     }
 
 
     private void Update()
     {
+        if (!IsOwner) return;
         if (_player.HasGunObject())
         {
             if (_player.GetGunObject().GetGunMode() == GunObject.GunMode.Auto)

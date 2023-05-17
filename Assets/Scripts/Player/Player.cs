@@ -2,10 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
-public class Player : MonoBehaviour, IGunObjectParent, IDamageable
+public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
 {
-    public static Player Instance { get; private set; }
+    // public static Player Instance { get; private set; }
 
     public event EventHandler OnInteract;
     public event EventHandler OnAmmoChanged;
@@ -36,10 +37,8 @@ public class Player : MonoBehaviour, IGunObjectParent, IDamageable
 
     [SerializeField] private PlayerSO _playerSO;
     [SerializeField] private float _moveSpeed = 7f;
-    [SerializeField] private GameInput _gameInput;
     [SerializeField] private LayerMask _counterLayerMask;
     [SerializeField] private Transform _gunObjectHoldPoint;
-    [SerializeField] private Mouse3D _mouse3D;
 
     private float _playerHealth;
     private float _playerArmor;
@@ -57,11 +56,11 @@ public class Player : MonoBehaviour, IGunObjectParent, IDamageable
 
     private void Awake()
     {
-        if (Instance != null)
-        {
-            Debug.LogError("There is more than one player instance!");
-        }
-        Instance = this;
+        // if (Instance != null)
+        // {
+        //     Debug.LogError("There is more than one player instance!");
+        // }
+        // Instance = this;
 
         PlayerSetup(defaultHealth, defaultAromr, defaulMoney);
         _isAlive = true;
@@ -69,15 +68,16 @@ public class Player : MonoBehaviour, IGunObjectParent, IDamageable
 
     private void Start()
     {
-        _gameInput.OnInteractAction += GameInputOnInteractAction;
-        _gameInput.OnShootWeaponHoldAction += GameInputOnShootAutoAction;
-        _gameInput.OnShootWeaponAction += GameInputOnShootAction;
-        _gameInput.OnReloadAction += GameInputOnReloadAction;
-        _gameInput.OnToggleWeaponModeAction += GameInputOnToggleWeaponModeAction;
+        GameInput.Instance.OnInteractAction += GameInputOnInteractAction;
+        GameInput.Instance.OnShootWeaponHoldAction += GameInputOnShootAutoAction;
+        GameInput.Instance.OnShootWeaponAction += GameInputOnShootAction;
+        GameInput.Instance.OnReloadAction += GameInputOnReloadAction;
+        GameInput.Instance.OnToggleWeaponModeAction += GameInputOnToggleWeaponModeAction;
     }
 
     private void Update()
     {
+        if (!IsOwner) return;
         if (!_isAlive) return;
 
         if (HasGunObject())
@@ -247,7 +247,7 @@ public class Player : MonoBehaviour, IGunObjectParent, IDamageable
 
     private void HandleMovement()
     {
-        Vector2 inputVector = _gameInput.GetMovementVectorNormalized();
+        Vector2 inputVector = GameInput.Instance.GetMovementVectorNormalized();
 
         Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
         float moveDistance = GetMovementSpeed() * Time.deltaTime;
@@ -296,7 +296,7 @@ public class Player : MonoBehaviour, IGunObjectParent, IDamageable
     private void PlayerLookAtMouse()
     {
         //* Make Player lookAt mouse
-        transform.LookAt(_mouse3D.GetAngleAimRotateTransform());
+        transform.LookAt(Mouse3D.Instance.GetAngleAimRotateTransform());
     }
 
     private float GetMovementSpeed()

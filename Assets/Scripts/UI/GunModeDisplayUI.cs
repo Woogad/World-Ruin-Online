@@ -6,11 +6,12 @@ using System;
 
 public class GunModeDisplayUI : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI _gunModeText;
+    [SerializeField] private Player _player;
+    [SerializeField] private TextMeshProUGUI _gunModeText;
 
     private void Start()
     {
-        Player.Instance.OnGunModeChanged += PlayerOnUpdateGunMode;
+        _player.OnGunModeChanged += PlayerOnUpdateGunMode;
         UpdateVisual();
     }
 
@@ -21,7 +22,7 @@ public class GunModeDisplayUI : MonoBehaviour
 
     private void UpdateVisual(string gunMode = "Semi")
     {
-        if (Player.Instance.HasGunObject())
+        if (_player.HasGunObject())
         {
             _gunModeText.text = gunMode;
         }

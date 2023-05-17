@@ -6,21 +6,22 @@ using System;
 
 public class AmmoDisplayUI : MonoBehaviour
 {
+    [SerializeField] private Player _player;
     [SerializeField] private TextMeshProUGUI _ammoAmountText;
     [SerializeField] private TextMeshProUGUI _magazineAmountText;
 
 
     private void Start()
     {
-        Player.Instance.OnAmmoChanged += PlayerOnUpdateAmmo;
-        Player.Instance.OnInteract += PlayerOnInteract;
+        _player.OnAmmoChanged += PlayerOnUpdateAmmo;
+        _player.OnInteract += PlayerOnInteract;
 
         UpdateVisual();
     }
 
     private void PlayerOnInteract(object sender, EventArgs e)
     {
-        if (Player.Instance.HasGunObject())
+        if (_player.HasGunObject())
         {
             UpdateVisual();
         }
@@ -33,14 +34,14 @@ public class AmmoDisplayUI : MonoBehaviour
 
     private void UpdateVisual()
     {
-        if (!Player.Instance.HasGunObject())
+        if (!_player.HasGunObject())
         {
 
             _ammoAmountText.text = "0";
             _magazineAmountText.text = "0";
             return;
         }
-        _ammoAmountText.text = Player.Instance.GetGunObject().getCurrentAmmo().ToString();
-        _magazineAmountText.text = Player.Instance.GetGunObject().getCurrentMagazine().ToString();
+        _ammoAmountText.text = _player.GetGunObject().getCurrentAmmo().ToString();
+        _magazineAmountText.text = _player.GetGunObject().getCurrentMagazine().ToString();
     }
 }
