@@ -2,8 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
-public class BaseCounter : MonoBehaviour, IGunObjectParent
+public class BaseCounter : NetworkBehaviour, IGunObjectParent
 {
     [SerializeField] private Transform _counterTopPoint;
 
@@ -39,8 +40,13 @@ public class BaseCounter : MonoBehaviour, IGunObjectParent
         return _gunObject != null;
     }
 
-    public Quaternion GetGunQuaternion()
+    public Vector3 GetLocalScale()
     {
-        return Quaternion.Euler(90, 0, 0);
+        return new Vector3(1.2f, 1.2f, 1.2f);
+    }
+
+    public NetworkObject GetNetworkObject()
+    {
+        return NetworkObject;
     }
 }

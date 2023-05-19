@@ -9,6 +9,7 @@ public class ResetStaticEvent : MonoBehaviour
         ClearCounter.ResetStaticEvent();
         ItemShopCounter.ResetStaticEvent();
         GunShopCounter.ResetStaticEvent();
+        Player.ResetStaticEvent();
     }
 
 }

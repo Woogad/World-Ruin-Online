@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +9,23 @@ public class SelectedCouterVisual : MonoBehaviour
     [SerializeField] private GameObject[] _visualGameObjectList;
     private void Start()
     {
-        // Player.Instance.OnSelectedCounterChanged += PlayerOnSelectedCounterChanged;
+        if (Player.LocalInstance != null)
+        {
+            Player.LocalInstance.OnSelectedCounterChanged += PlayerOnSelectedCounterChanged;
+        }
+        else
+        {
+            Player.OnAnyPlayerSpawned += PlayerOnAnyPlayerSpawned;
+        }
+    }
+
+    private void PlayerOnAnyPlayerSpawned(object sender, EventArgs e)
+    {
+        if (Player.LocalInstance != null)
+        {
+            Player.LocalInstance.OnSelectedCounterChanged -= PlayerOnSelectedCounterChanged;
+            Player.LocalInstance.OnSelectedCounterChanged += PlayerOnSelectedCounterChanged;
+        }
     }
 
     private void PlayerOnSelectedCounterChanged(object sender, Player.OnSelectedCoutnerChangedEventArgs e)

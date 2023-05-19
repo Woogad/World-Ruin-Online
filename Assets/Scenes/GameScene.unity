@@ -426,6 +426,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7630994622128315756, guid: 5882a65ec61840148835e2c3dbe400bd,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 2590302304
+      objectReference: {fileID: 0}
     - target: {fileID: 9100890601255238001, guid: 5882a65ec61840148835e2c3dbe400bd,
         type: 3}
       propertyPath: _gunObjectSO
@@ -1372,6 +1377,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: GunShopCounter_Aug
       objectReference: {fileID: 0}
+    - target: {fileID: 7533227122306460149, guid: c52f506735f961541989e9f5d41281bf,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3049129670
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1449,6 +1459,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 323204595760569686, guid: c1829691949070248921dd9cf831591c,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 2075458684
+      objectReference: {fileID: 0}
     - target: {fileID: 7951734996990103807, guid: c1829691949070248921dd9cf831591c,
         type: 3}
       propertyPath: m_RootOrder
@@ -1630,6 +1645,68 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 13
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &883351988
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 883351991}
+  - component: {fileID: 883351990}
+  - component: {fileID: 883351989}
+  m_Layer: 0
+  m_Name: GameMultiplayer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &883351989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 883351988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 3299030109
+  AlwaysReplicateAsRoot: 0
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+--- !u!114 &883351990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 883351988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba5ad50e4d6d6d047a07b994bcb4af84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gunObjectListSO: {fileID: 11400000, guid: 07b6377cf6d348e46ba73c47b2fa3855, type: 2}
+--- !u!4 &883351991
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 883351988}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 21
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &954325843
 PrefabInstance:
@@ -2059,6 +2136,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: f7bee32b9b3924a43902533764879ccc,
         type: 2}
+    - target: {fileID: 1534262469915639595, guid: 6f473c960f386034081d3a022d9458a0,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 2961970148
+      objectReference: {fileID: 0}
     - target: {fileID: 7531718884275377336, guid: 6f473c960f386034081d3a022d9458a0,
         type: 3}
       propertyPath: m_Name
@@ -2132,6 +2214,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4420515615486411151, guid: 3162d2d3a0386764ebcb27d2760e588f,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 2756007009
+      objectReference: {fileID: 0}
     - target: {fileID: 4653364612123568668, guid: 3162d2d3a0386764ebcb27d2760e588f,
         type: 3}
       propertyPath: m_Name
@@ -2211,6 +2298,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3661565832221611302, guid: 20b0cbb13d2f3d64683f9098daf69391,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3624237987
+      objectReference: {fileID: 0}
     - target: {fileID: 5700641530304003765, guid: 20b0cbb13d2f3d64683f9098daf69391,
         type: 3}
       propertyPath: m_Name
@@ -2328,6 +2420,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1687759695}
     m_Modifications:
+    - target: {fileID: 4244920968016910159, guid: a5b821926e4774a4788dc72f527879fd,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3215081302
+      objectReference: {fileID: 0}
     - target: {fileID: 5126289195683052764, guid: a5b821926e4774a4788dc72f527879fd,
         type: 3}
       propertyPath: m_Name
@@ -2730,6 +2827,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: GunShopCounter_Galil
       objectReference: {fileID: 0}
+    - target: {fileID: 4642686504378341428, guid: 0f7c29caac6493f41a6e893a8cd87707,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 500034841
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2866,6 +2968,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1687759695}
     m_Modifications:
+    - target: {fileID: 4248319155349423573, guid: 4accb9802d01a724e8238d84325fa59f,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3237220622
+      objectReference: {fileID: 0}
     - target: {fileID: 5132360018763066950, guid: 4accb9802d01a724e8238d84325fa59f,
         type: 3}
       propertyPath: m_Name
@@ -3365,6 +3472,41 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 580417371387332596, guid: 5882a65ec61840148835e2c3dbe400bd,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 580417371387332596, guid: 5882a65ec61840148835e2c3dbe400bd,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 580417371387332596, guid: 5882a65ec61840148835e2c3dbe400bd,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 580417371387332596, guid: 5882a65ec61840148835e2c3dbe400bd,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 580417371387332596, guid: 5882a65ec61840148835e2c3dbe400bd,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 580417371387332596, guid: 5882a65ec61840148835e2c3dbe400bd,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 580417371387332596, guid: 5882a65ec61840148835e2c3dbe400bd,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1453111063984928511, guid: 5882a65ec61840148835e2c3dbe400bd,
         type: 3}
       propertyPath: m_Name
@@ -3375,6 +3517,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7630994622128315756, guid: 5882a65ec61840148835e2c3dbe400bd,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 1206051484
+      objectReference: {fileID: 0}
     - target: {fileID: 9100890601255238001, guid: 5882a65ec61840148835e2c3dbe400bd,
         type: 3}
       propertyPath: m_Enabled
@@ -3384,7 +3531,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _gunObjectSO
       value: 
-      objectReference: {fileID: 11400000, guid: e08966c048d36124ca632969f3ac9a7b,
+      objectReference: {fileID: 11400000, guid: 18ef35ce364d90543a947e35c0cc90d0,
         type: 2}
     - target: {fileID: 9100890601255238001, guid: 5882a65ec61840148835e2c3dbe400bd,
         type: 3}
@@ -3478,7 +3625,43 @@ MonoBehaviour:
     NetworkTransport: {fileID: 1729360542}
     PlayerPrefab: {fileID: 5994820945985665748, guid: 58a0066831ef5dd41a3d3d95b8c9cb1b,
       type: 3}
-    NetworkPrefabs: []
+    NetworkPrefabs:
+    - Override: 0
+      Prefab: {fileID: 4669458092964152997, guid: 6f335b0692a461449b3e902b1fc58950,
+        type: 3}
+      SourcePrefabToOverride: {fileID: 0}
+      SourceHashToOverride: 0
+      OverridingTargetPrefab: {fileID: 0}
+    - Override: 0
+      Prefab: {fileID: 4669458092964152997, guid: 56c00b7bddf091f49b4789bad7a35bc3,
+        type: 3}
+      SourcePrefabToOverride: {fileID: 0}
+      SourceHashToOverride: 0
+      OverridingTargetPrefab: {fileID: 0}
+    - Override: 0
+      Prefab: {fileID: 4669458092964152997, guid: c1b28d095a84c9b42813fe0c64a0b685,
+        type: 3}
+      SourcePrefabToOverride: {fileID: 0}
+      SourceHashToOverride: 0
+      OverridingTargetPrefab: {fileID: 0}
+    - Override: 0
+      Prefab: {fileID: 4669458092964152997, guid: 99150b400dc067948965af0570fe1f62,
+        type: 3}
+      SourcePrefabToOverride: {fileID: 0}
+      SourceHashToOverride: 0
+      OverridingTargetPrefab: {fileID: 0}
+    - Override: 0
+      Prefab: {fileID: 4669458092964152997, guid: 4f21ccb328960864983d100c200b9020,
+        type: 3}
+      SourcePrefabToOverride: {fileID: 0}
+      SourceHashToOverride: 0
+      OverridingTargetPrefab: {fileID: 0}
+    - Override: 0
+      Prefab: {fileID: 4669458092964152997, guid: 8ba9fa00172ef93448cfb39631a7a4ae,
+        type: 3}
+      SourcePrefabToOverride: {fileID: 0}
+      SourceHashToOverride: 0
+      OverridingTargetPrefab: {fileID: 0}
     TickRate: 30
     ClientConnectionBufferTimeout: 10
     ConnectionApproval: 0
@@ -4144,6 +4327,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4642686504378341428, guid: c535be75b37687047a215392c7f9c6c8,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 1482784021
+      objectReference: {fileID: 0}
     - target: {fileID: 5655058989986664641, guid: c535be75b37687047a215392c7f9c6c8,
         type: 3}
       propertyPath: _gunShopCounter
@@ -4258,6 +4446,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7317648229945059108, guid: d8514ca1a2314ea4bb062ffd183b13c8,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 1923251884
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

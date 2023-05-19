@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
 public interface IGunObjectParent
 {
@@ -14,5 +15,7 @@ public interface IGunObjectParent
 
     public bool HasGunObject();
 
-    public Quaternion GetGunQuaternion();
+    public Vector3 GetLocalScale();
+
+    public NetworkObject GetNetworkObject();
 }

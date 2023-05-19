@@ -6,7 +6,15 @@ using Unity.Netcode;
 
 public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
 {
-    // public static Player Instance { get; private set; }
+    public static event EventHandler OnAnyPlayerSpawned;
+    public static event EventHandler OnAnyPlayerPickGun;
+
+    public static Player LocalInstance { get; private set; }
+
+    public static void ResetStaticEvent()
+    {
+        OnAnyPlayerSpawned = null;
+    }
 
     public event EventHandler OnInteract;
     public event EventHandler OnAmmoChanged;
@@ -56,12 +64,6 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
 
     private void Awake()
     {
-        // if (Instance != null)
-        // {
-        //     Debug.LogError("There is more than one player instance!");
-        // }
-        // Instance = this;
-
         PlayerSetup(defaultHealth, defaultAromr, defaulMoney);
         _isAlive = true;
     }
@@ -73,6 +75,16 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
         GameInput.Instance.OnShootWeaponAction += GameInputOnShootAction;
         GameInput.Instance.OnReloadAction += GameInputOnReloadAction;
         GameInput.Instance.OnToggleWeaponModeAction += GameInputOnToggleWeaponModeAction;
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        if (IsOwner)
+        {
+            LocalInstance = this;
+
+        }
+        OnAnyPlayerSpawned?.Invoke(this, EventArgs.Empty);
     }
 
     private void Update()
@@ -144,13 +156,14 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
 
     private void GameInputOnReloadAction(object sender, EventArgs e)
     {
+        if (!IsOwner) return;
         if (HasGunObject() && _isAlive)
         {
             if (CanReload())
             {
                 StartCoroutine(GetGunObject().ReloadTimeCoroutine());
+
                 OnRelaod?.Invoke(this, EventArgs.Empty);
-                float reloadProgress = GetGunObject().GetGunObjectSO().ReloadTime + 0.01f;
             }
         }
     }
@@ -434,6 +447,7 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
         if (HasGunObject())
         {
             OnPickGun?.Invoke(this, EventArgs.Empty);
+            OnAnyPlayerPickGun?.Invoke(this, EventArgs.Empty);
             OnGunModeChanged?.Invoke(this, new OnGunModeChangedArgs
             {
                 GunMode = GunObject.GunMode.Semi
@@ -456,8 +470,13 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
         return this._gunObject != null;
     }
 
-    public Quaternion GetGunQuaternion()
+    public Vector3 GetLocalScale()
     {
-        return Quaternion.identity;
+        return Vector3.one;
+    }
+
+    public NetworkObject GetNetworkObject()
+    {
+        return NetworkObject;
     }
 }

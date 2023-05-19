@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+using Unity.Netcode.Components;
 
 public class PlayerAnimator : NetworkBehaviour
 {
@@ -17,11 +18,13 @@ public class PlayerAnimator : NetworkBehaviour
     private const string SPEED_RELAOD_MULTIPLIER_ANIMATOR = "SpeedReloadMultiplierAnimator";
 
     private Animator _animator;
+    private NetworkAnimator _networkAnimator;
     private bool _isHoldShootAction;
 
     private void Awake()
     {
         _animator = GetComponent<Animator>();
+        _networkAnimator = GetComponent<NetworkAnimator>();
     }
 
     private void Start()
@@ -35,37 +38,32 @@ public class PlayerAnimator : NetworkBehaviour
 
     private void PlayerOnDead(object sender, EventArgs e)
     {
-        if (!IsOwner) return;
         _animator.SetBool(IS_DEAD, true);
         _animator.SetBool(IS_SHOOT_AUTO, false);
     }
 
     private void PlayerOnShoot(object sender, EventArgs e)
     {
-        if (!IsOwner) return;
         if (_player.GetGunObject().GetGunMode() != GunObject.GunMode.Semi) return;
-        _animator.SetTrigger(SHOOT_SEMI);
+        _networkAnimator.SetTrigger(SHOOT_SEMI);
 
     }
 
     private void PlayerOnReload(object sender, EventArgs e)
     {
-        if (!IsOwner) return;
         _isHoldShootAction = false;
         _animator.SetFloat(SPEED_RELAOD_MULTIPLIER_ANIMATOR, 1 / _player.GetGunObject().GetGunObjectSO().ReloadTime * 2);
-        _animator.SetTrigger(RELOAD);
+        _networkAnimator.SetTrigger(RELOAD);
     }
 
     private void GameInputOnShootWeaponHoldAction(object sender, GameInput.OnShootWeaponActionArgs e)
     {
-        if (!IsOwner) return;
         _isHoldShootAction = e.IsHoldShootAction;
     }
 
     private void GunShopOnPlayerBuyGun(object sender, EventArgs e)
     {
-        if (!IsOwner) return;
-        _animator.SetTrigger(DRAW_GUN);
+        _networkAnimator.SetTrigger(DRAW_GUN);
     }
 
 

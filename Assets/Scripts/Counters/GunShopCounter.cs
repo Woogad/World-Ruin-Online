@@ -22,8 +22,7 @@ public class GunShopCounter : BaseCounter
             if (CanBuyGun(player.GetPlayerMoney()))
             {
                 Buy(player);
-                Transform gunObjectSOTransform = Instantiate(_gunObjectSO.Prefab);
-                gunObjectSOTransform.GetComponent<GunObject>().SetGunObjectParent(player);
+                GunObject.SpawnGunObject(_gunObjectSO, player);
             }
         }
         else
@@ -33,8 +32,7 @@ public class GunShopCounter : BaseCounter
             {
                 Buy(player);
                 player.GetGunObject().DestroySelf();
-                Transform gunObjectSOTransform = Instantiate(_gunObjectSO.Prefab);
-                gunObjectSOTransform.GetComponent<GunObject>().SetGunObjectParent(player);
+                GunObject.SpawnGunObject(_gunObjectSO, player);
             }
 
         }

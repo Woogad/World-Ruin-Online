@@ -2,8 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
-public class GunObject : MonoBehaviour
+public class GunObject : NetworkBehaviour
 {
     public event EventHandler OnShoot;
     public enum GunMode
@@ -21,7 +22,12 @@ public class GunObject : MonoBehaviour
     private int _currentAmmo;
     private GunMode _gunMode = GunMode.Semi;
     private bool _isReload = false;
-    // private float _reloadTime = 2.1f;
+    private FollowTransform _followTransform;
+
+    private void Awake()
+    {
+        _followTransform = GetComponent<FollowTransform>();
+    }
 
     public GunObjectSO GetGunObjectSO()
     {
@@ -102,21 +108,41 @@ public class GunObject : MonoBehaviour
 
     public void SetGunObjectParent(IGunObjectParent gunObjectParent)
     {
+        if (IsHost)
+        {
+            SetGunObjectParentClientRpc(gunObjectParent.GetNetworkObject());
+            return;
+        }
+        SetGunObjectParentServerRpc(gunObjectParent.GetNetworkObject());
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SetGunObjectParentServerRpc(NetworkObjectReference gunObjectParentNetworkObjectRef)
+    {
+        SetGunObjectParentClientRpc(gunObjectParentNetworkObjectRef);
+    }
+
+    [ClientRpc]
+    private void SetGunObjectParentClientRpc(NetworkObjectReference gunObjectParentNetworkObjectRef)
+    {
+        gunObjectParentNetworkObjectRef.TryGet(out NetworkObject gunObjectParentNetworkObject);
+        IGunObjectParent gunObjectParent = gunObjectParentNetworkObject.GetComponent<IGunObjectParent>();
+
         if (this._gunObjectParent != null)
         {
             this._gunObjectParent.ClearGunObject();
         }
+
+        this._gunObjectParent = gunObjectParent;
+
         if (gunObjectParent.HasGunObject())
         {
             Debug.LogError("IGunObjectParent already has GunObject!");
         }
-        this._gunObjectParent = gunObjectParent;
+
         gunObjectParent.SetGunObject(this);
 
-        transform.parent = gunObjectParent.GetGunObjectFollowTransform();
-        transform.localPosition = Vector3.zero;
-        transform.localScale = new Vector3(1, 1, 1);
-        transform.localRotation = gunObjectParent.GetGunQuaternion();
+        _followTransform.SetTargetTransform(gunObjectParent.GetGunObjectFollowTransform(), gunObjectParent.GetLocalScale());
         SetupAmmoAndMagazine();
     }
 
@@ -128,6 +154,7 @@ public class GunObject : MonoBehaviour
     public void DestroySelf()
     {
         _gunObjectParent.ClearGunObject();
+        NetworkObject.Despawn();
         Destroy(gameObject);
     }
 
@@ -144,6 +171,11 @@ public class GunObject : MonoBehaviour
     public int getCurrentMagazine()
     {
         return this._currentMagazine;
+    }
+
+    public static void SpawnGunObject(GunObjectSO gunObjectSO, IGunObjectParent gunObjectParent)
+    {
+        GameMultiplayer.Instance.SpawnGunObject(gunObjectSO, gunObjectParent);
     }
 
 }

@@ -22,12 +22,13 @@ public class SoundManager : MonoBehaviour
         GunShopCounter.OnAnyBuyGun += GunShopCounterOnAnyBuyGun;
         ItemShopCounter.OnAnyBuyItem += ItemShopCounterOnAnyBuyItem;
         ClearCounter.OnAnyClearCounterPickObject += ClearCounterOnAnyPickObject;
-        // Player.Instance.OnPickGun += PlayerOnPickGun;
+        Player.OnAnyPlayerPickGun += PlayerOnPickGun;
     }
 
     private void ClearCounterOnAnyPickObject(object sender, System.EventArgs e)
     {
-        // PlaySound(_audioClipRefsSO.PickGun, Player.Instance.transform.position);
+        Player player = sender as Player;
+        PlaySound(_audioClipRefsSO.PickGun, player.transform.position);
     }
 
     private void PlayerOnPickGun(object sender, System.EventArgs e)
