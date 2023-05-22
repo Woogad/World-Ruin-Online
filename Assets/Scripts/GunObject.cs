@@ -23,6 +23,7 @@ public class GunObject : NetworkBehaviour
     private GunMode _gunMode = GunMode.Semi;
     private bool _isReload = false;
     private FollowTransform _followTransform;
+    private Vector3 _shootRandomVector;
 
     private void Awake()
     {
@@ -62,10 +63,55 @@ public class GunObject : NetworkBehaviour
 
     public void Shoot()
     {
-        Transform bulletTransform = Instantiate(_gunObjectSO.BulletPrefab, _fireEndPoint.position, Quaternion.identity);
-        bulletTransform.GetComponent<BulletObject>().Setup(_fireEndPoint, _gunObjectSO);
-        OnShoot?.Invoke(this, EventArgs.Empty);
+        SpawnBulletObjectServerRpc();
+        ShootLogicEventServerRpc();
         _currentAmmo--;
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SpawnBulletObjectServerRpc()
+    {
+        SpawnBulletObjectClientRpc();
+    }
+
+    [ClientRpc]
+    private void SpawnBulletObjectClientRpc()
+    {
+        Transform bulletObjectTransform = Instantiate(_gunObjectSO.BulletPrefab, _fireEndPoint.position, Quaternion.identity);
+        _shootRandomVector = GetRandomShootNormalize(_fireEndPoint);
+        bulletObjectTransform.GetComponent<BulletObject>().Setup(this, _shootRandomVector);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void ShootLogicEventServerRpc()
+    {
+        ShootLogicEventClientRpc();
+    }
+
+    [ClientRpc]
+    private void ShootLogicEventClientRpc()
+    {
+        OnShoot?.Invoke(this, EventArgs.Empty);
+    }
+
+    public Vector3 GetRandomShootNormalize(Transform fireEndPoint)
+    {
+        Vector3 shootDir = _fireEndPoint.forward + new Vector3(
+       UnityEngine.Random.Range(
+           -_gunObjectSO.Spread.x,
+           _gunObjectSO.Spread.x
+       ),
+       UnityEngine.Random.Range(
+           -_gunObjectSO.Spread.y,
+           _gunObjectSO.Spread.y
+       ),
+       UnityEngine.Random.Range(
+           -_gunObjectSO.Spread.z,
+            _gunObjectSO.Spread.z
+       ));
+        shootDir.Normalize();
+
+        return shootDir;
     }
 
     public IEnumerator ReloadTimeCoroutine()
@@ -111,9 +157,12 @@ public class GunObject : NetworkBehaviour
         if (IsHost)
         {
             SetGunObjectParentClientRpc(gunObjectParent.GetNetworkObject());
-            return;
         }
-        SetGunObjectParentServerRpc(gunObjectParent.GetNetworkObject());
+        else
+        {
+
+            SetGunObjectParentServerRpc(gunObjectParent.GetNetworkObject());
+        }
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -153,9 +202,13 @@ public class GunObject : NetworkBehaviour
 
     public void DestroySelf()
     {
-        _gunObjectParent.ClearGunObject();
-        NetworkObject.Despawn();
         Destroy(gameObject);
+    }
+
+    public void ClearGunObjectOnParent()
+    {
+
+        _gunObjectParent.ClearGunObject();
     }
 
     private void SetupAmmoAndMagazine()
@@ -178,4 +231,8 @@ public class GunObject : NetworkBehaviour
         GameMultiplayer.Instance.SpawnGunObject(gunObjectSO, gunObjectParent);
     }
 
+    public static void DestroyGunObject(GunObject gunObject)
+    {
+        GameMultiplayer.Instance.DestroyGunObject(gunObject);
+    }
 }

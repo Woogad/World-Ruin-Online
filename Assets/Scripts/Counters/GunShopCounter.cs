@@ -31,7 +31,7 @@ public class GunShopCounter : BaseCounter
             if (CanBuyGun(player.GetPlayerMoney()) && player.GetGunObject().GetGunObjectSO() != this._gunObjectSO)
             {
                 Buy(player);
-                player.GetGunObject().DestroySelf();
+                GunObject.DestroyGunObject(player.GetGunObject());
                 GunObject.SpawnGunObject(_gunObjectSO, player);
             }
 
@@ -56,6 +56,8 @@ public class GunShopCounter : BaseCounter
         int playerMoney = player.GetPlayerMoney();
         player.AddPlayerMoney(-_gunObjectSO.Price);
     }
+
+    // private void 
 
     public GunObjectSO GetGunObjectOSShop()
     {

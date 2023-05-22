@@ -48,25 +48,20 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
     [SerializeField] private LayerMask _counterLayerMask;
     [SerializeField] private Transform _gunObjectHoldPoint;
 
-    private float _playerHealth;
-    private float _playerArmor;
-    private int _playerMoney;
+    private NetworkVariable<float> _playerHealth = new NetworkVariable<float>();
+    private NetworkVariable<float> _playerArmor = new NetworkVariable<float>();
+    private NetworkVariable<int> _playerMoney = new NetworkVariable<int>();
+    private NetworkVariable<bool> _isAlive = new NetworkVariable<bool>();
     private float defaultHealth = 60f;
     private float defaultAromr = 0f;
+    private bool defaultIsAlive = true;
     [SerializeField] private int defaulMoney = 5000; //! SerializeField for testing
 
     private bool _isHoldShootAction;
-    private bool _isAlive;
     private bool _isWalking;
     private float _reloadCountdown;
     private BaseCounter _selectedCounter;
     private GunObject _gunObject;
-
-    private void Awake()
-    {
-        PlayerSetup(defaultHealth, defaultAromr, defaulMoney);
-        _isAlive = true;
-    }
 
     private void Start()
     {
@@ -79,18 +74,43 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
 
     public override void OnNetworkSpawn()
     {
+        PlayerSetup(defaultHealth, defaultAromr, defaulMoney, defaultIsAlive);
+
+        _playerHealth.OnValueChanged += PlayerHealthValueChanged;
+        _playerArmor.OnValueChanged += PlayerArmorValueChanged;
+        _playerMoney.OnValueChanged += PlayerMoneyValueChanged;
+        _isAlive.OnValueChanged += PlayerIsAliveValueChanged;
         if (IsOwner)
         {
             LocalInstance = this;
-
         }
         OnAnyPlayerSpawned?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void PlayerIsAliveValueChanged(bool previousValue, bool newValue)
+    {
+        OnDead?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void PlayerArmorValueChanged(float previousValue, float newValue)
+    {
+        OnArmorChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void PlayerMoneyValueChanged(int previousValue, int newValue)
+    {
+        OnMoneyChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void PlayerHealthValueChanged(float previousValue, float newValue)
+    {
+        OnHealthChanged?.Invoke(this, EventArgs.Empty);
     }
 
     private void Update()
     {
         if (!IsOwner) return;
-        if (!_isAlive) return;
+        // if (!_isAlive.Value) return;
 
         if (HasGunObject())
         {
@@ -115,6 +135,7 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
             if (CanShootAuto())
             {
                 GetGunObject().Shoot();
+
                 OnShoot?.Invoke(this, EventArgs.Empty);
                 OnAmmoChanged?.Invoke(this, EventArgs.Empty);
             }
@@ -129,7 +150,8 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
 
     private void GameInputOnShootAction(object sender, EventArgs e)
     {
-        if (HasGunObject() && _isAlive)
+        if (!IsOwner) return;
+        if (HasGunObject())
         {
             if (GetGunObject().GetGunMode() != GunObject.GunMode.Semi) return;
             if (GetGunObject().TryShoot())
@@ -144,7 +166,8 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
 
     private void GameInputOnToggleWeaponModeAction(object sender, EventArgs e)
     {
-        if (HasGunObject() && _isAlive)
+        if (!IsOwner) return;
+        if (HasGunObject())
         {
             GunObject.GunMode gunModeCycle = GetGunObject().CycleGunMode();
             OnGunModeChanged(this, new OnGunModeChangedArgs
@@ -157,7 +180,7 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
     private void GameInputOnReloadAction(object sender, EventArgs e)
     {
         if (!IsOwner) return;
-        if (HasGunObject() && _isAlive)
+        if (HasGunObject())
         {
             if (CanReload())
             {
@@ -170,6 +193,7 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
 
     private void GameInputOnShootAutoAction(object sender, GameInput.OnShootWeaponActionArgs e)
     {
+        if (!IsOwner) return;
         _isHoldShootAction = e.IsHoldShootAction;
     }
 
@@ -209,28 +233,43 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
         return true;
     }
 
-    private void PlayerSetup(float health, float armor, int money)
+    private void PlayerSetup(float health, float armor, int money, bool isAlive)
+    {
+        PlayerSetupServerRpc(health, armor, money, isAlive);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void PlayerSetupServerRpc(float health, float armor, int money, bool isAvlive)
     {
         if (health > _playerSO.MaxHealth || armor > _playerSO.MaxArmor || money > _playerSO.MaxMoney)
         {
             Debug.LogError("PlayerSetup is out of limit!");
         }
-        this._playerHealth = health;
-        this._playerArmor = armor;
-        this._playerMoney = money;
+        this._playerHealth.Value = health;
+        this._playerArmor.Value = armor;
+        this._playerMoney.Value = money;
+        this._isAlive.Value = isAvlive;
     }
 
     private void Dead()
     {
-        _isAlive = false;
+        _isAlive.Value = false;
+        Collider playerCollider = GetComponent<Collider>();
+        playerCollider.enabled = false;
+        DeadClientRpc();
+    }
+
+    [ClientRpc]
+    private void DeadClientRpc()
+    {
+        Debug.Log(OwnerClientId.ToString() + " is dead!");
+        if (!IsOwner) return;
+        _isWalking = false;
         OnReloadProgressChanged?.Invoke(this, new OnReloadProgressChangedArgs
         {
             ReloadProgressNormalized = 0
         });
-        _isWalking = false;
-        ClearGunObject();
-        Collider playerCollider = GetComponent<Collider>();
-        playerCollider.enabled = false;
+        // GameMultiplayer.Instance.DestroyGunObject(GetGunObject());
     }
 
     private void HandleInteraction()
@@ -308,6 +347,7 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
 
     private void PlayerLookAtMouse()
     {
+        if (!_isAlive.Value) return;
         //* Make Player lookAt mouse
         transform.LookAt(Mouse3D.Instance.GetAngleAimRotateTransform());
     }
@@ -337,88 +377,105 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
     //* Money
     public int GetPlayerMoney()
     {
-        return this._playerMoney;
+        return this._playerMoney.Value;
     }
     public void AddPlayerMoney(int money)
     {
-        _playerMoney += money;
-        OnMoneyChanged?.Invoke(this, EventArgs.Empty);
+        AddPlayerMoneyServerRpc(money);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void AddPlayerMoneyServerRpc(int money)
+    {
+        _playerMoney.Value += money;
     }
 
     //* Health
     public float GetPlayerHealth()
     {
-        return this._playerHealth;
+        return this._playerHealth.Value;
     }
 
     public void AddPlayerHealth(float health)
     {
-        _playerHealth += health;
-        if (_playerHealth > _playerSO.MaxHealth)
+        AddPlayerHealthServerRpc(health);
+    }
+    [ServerRpc(RequireOwnership = false)]
+    private void AddPlayerHealthServerRpc(float health)
+    {
+        _playerHealth.Value += health;
+        if (_playerHealth.Value > _playerSO.MaxHealth)
         {
-            _playerHealth = _playerSO.MaxHealth;
+            _playerHealth.Value = _playerSO.MaxHealth;
         }
-        OnHealthChanged?.Invoke(this, EventArgs.Empty);
     }
 
     //* Armor
     public float GetPlayerArmor()
     {
-        return this._playerArmor;
+        return this._playerArmor.Value;
     }
 
     public void AddPlayerArmor(float armor)
     {
-        _playerArmor += armor;
-        if (_playerArmor > _playerSO.MaxArmor)
+        AddPlayerArmorServerRpc(armor);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void AddPlayerArmorServerRpc(float armor)
+    {
+
+        _playerArmor.Value += armor;
+        if (_playerArmor.Value > _playerSO.MaxArmor)
         {
-            _playerArmor = _playerSO.MaxArmor;
+            _playerArmor.Value = _playerSO.MaxArmor;
         }
-        OnArmorChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public void TakeDamage(float damage)
     {
-        if (!_isAlive) return;
+        if (!_isAlive.Value) return;
+        TakeDamageServerRpc(damage);
 
+        OnTakeDamage?.Invoke(this, EventArgs.Empty);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void TakeDamageServerRpc(float damage)
+    {
         float damageResistance = 0.4f; //* 40%
         float damageReduce = damageResistance * damage;
 
-        if (_playerArmor == 0)
+        if (_playerArmor.Value == 0)
         {
-            _playerHealth -= damage;
+            _playerHealth.Value -= damage;
         }
         else
         {
-            if (_playerArmor > damageReduce)
+            if (_playerArmor.Value > damageReduce)
             {
                 float armorReduce = damage - damageReduce;
-                _playerHealth -= damageReduce;
-                _playerArmor -= armorReduce;
+                _playerHealth.Value -= damageReduce;
+                _playerArmor.Value -= armorReduce;
             }
             else
             {
-                damageReduce = damage - _playerArmor;
-                _playerHealth -= damageReduce;
-                _playerArmor -= _playerArmor;
+                damageReduce = damage - _playerArmor.Value;
+                _playerHealth.Value -= damageReduce;
+                _playerArmor.Value -= _playerArmor.Value;
             }
         }
 
-        if (_playerHealth <= 0)
+        if (_playerHealth.Value <= 0)
         {
-            _playerHealth = 0;
+            _playerHealth.Value = 0;
             Dead();
-            OnDead?.Invoke(this, EventArgs.Empty);
         }
-        OnTakeDamage?.Invoke(this, EventArgs.Empty);
-        OnHealthChanged?.Invoke(this, EventArgs.Empty);
-        OnArmorChanged?.Invoke(this, EventArgs.Empty);
-
     }
 
     public bool IsAlive()
     {
-        return this._isAlive;
+        return this._isAlive.Value;
     }
 
     public bool IsHoldShootAction()

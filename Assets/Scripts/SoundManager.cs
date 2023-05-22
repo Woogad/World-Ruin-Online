@@ -33,7 +33,8 @@ public class SoundManager : MonoBehaviour
 
     private void PlayerOnPickGun(object sender, System.EventArgs e)
     {
-        // PlaySound(_audioClipRefsSO.PickGun, Player.Instance.transform.position);
+        Player player = sender as Player;
+        PlaySound(_audioClipRefsSO.PickGun, player.transform.position);
     }
 
     private void ItemShopCounterOnAnyBuyItem(object sender, System.EventArgs e)

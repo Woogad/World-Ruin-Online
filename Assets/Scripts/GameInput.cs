@@ -67,12 +67,14 @@ public class GameInput : MonoBehaviour
 
     private void ShootWeaponStart(InputAction.CallbackContext obj)
     {
+        if (!Player.LocalInstance.IsAlive()) return;
         if (!GameManager.Instance.IsGamePlaying() || _isEscMenuOpen) return;
         OnShootWeaponAction(this, EventArgs.Empty);
     }
 
     private void ShootWeaponPerformed(InputAction.CallbackContext obj)
     {
+        if (!Player.LocalInstance.IsAlive()) return;
         if (!GameManager.Instance.IsGamePlaying() || _isEscMenuOpen) return;
         bool isHoldShootAction = true;
         OnShootWeaponHoldAction?.Invoke(this, new OnShootWeaponActionArgs
@@ -92,12 +94,14 @@ public class GameInput : MonoBehaviour
 
     private void ToggleWeaponModePerformed(InputAction.CallbackContext obj)
     {
+        if (!Player.LocalInstance.IsAlive()) return;
         if (!GameManager.Instance.IsGamePlaying() || _isEscMenuOpen) return;
         OnToggleWeaponModeAction?.Invoke(this, EventArgs.Empty);
     }
 
     private void ReloadWeaponPerformed(InputAction.CallbackContext obj)
     {
+        if (!Player.LocalInstance.IsAlive()) return;
         if (!GameManager.Instance.IsGamePlaying() || _isEscMenuOpen) return;
         OnReloadAction?.Invoke(this, EventArgs.Empty);
     }
@@ -105,12 +109,14 @@ public class GameInput : MonoBehaviour
 
     private void InteractPerformed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
+        if (!Player.LocalInstance.IsAlive()) return;
         if (!GameManager.Instance.IsGamePlaying() || _isEscMenuOpen) return;
         OnInteractAction?.Invoke(this, EventArgs.Empty);
     }
 
     public Vector2 GetMovementVectorNormalized()
     {
+        if (!Player.LocalInstance.IsAlive()) return new Vector2(0, 0);
         if (!GameManager.Instance.IsGamePlaying() || _isEscMenuOpen) return new Vector2(0, 0);
         Vector2 inputVector = _playerInputAction.Player.Move.ReadValue<Vector2>();
 

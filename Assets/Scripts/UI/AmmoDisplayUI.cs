@@ -19,8 +19,14 @@ public class AmmoDisplayUI : MonoBehaviour
         UpdateVisual();
     }
 
+    private void PlayerOnInteractClientAmmo(object sender, EventArgs e)
+    {
+        Invoke("UpdateVisualClient", 0.5f);
+    }
+
     private void PlayerOnInteract(object sender, EventArgs e)
     {
+        Debug.Log("Player has gun? " + _player.HasGunObject());
         if (_player.HasGunObject())
         {
             UpdateVisual();
@@ -39,9 +45,15 @@ public class AmmoDisplayUI : MonoBehaviour
 
             _ammoAmountText.text = "0";
             _magazineAmountText.text = "0";
+            UpdateVisualLate();
             return;
         }
         _ammoAmountText.text = _player.GetGunObject().getCurrentAmmo().ToString();
         _magazineAmountText.text = _player.GetGunObject().getCurrentMagazine().ToString();
+    }
+
+    private void UpdateVisualLate()
+    {
+        Invoke("UpdateVisual", 0.5f);
     }
 }

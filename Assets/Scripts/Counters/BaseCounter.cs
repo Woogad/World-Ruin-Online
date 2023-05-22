@@ -49,4 +49,5 @@ public class BaseCounter : NetworkBehaviour, IGunObjectParent
     {
         return NetworkObject;
     }
+
 }

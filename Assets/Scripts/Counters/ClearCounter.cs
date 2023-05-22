@@ -54,10 +54,10 @@ public class ClearCounter : BaseCounter
         }
         else
         {
-            if (player.HasGunObject())
-            {
-                player.GetGunObject().SetGunObjectParent(this);
-            }
+            // if (player.HasGunObject())
+            // {
+            //     player.GetGunObject().SetGunObjectParent(this);
+            // }
         }
     }
 

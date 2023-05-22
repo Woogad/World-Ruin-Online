@@ -8,6 +8,8 @@ public class GameMultiplayer : NetworkBehaviour
     public static GameMultiplayer Instance { get; private set; }
 
     [SerializeField] private GunObjectListSO _gunObjectListSO;
+    [SerializeField] private Transform _bulletGameObject;
+    [SerializeField] private Transform _testPosition;
 
     private void Awake()
     {
@@ -26,8 +28,8 @@ public class GameMultiplayer : NetworkBehaviour
 
         Transform gunObjectTransform = Instantiate(gunObjectSO.Prefab);
 
-        NetworkObject gunObjectNetworkObject = gunObjectTransform.GetComponent<NetworkObject>();
-        gunObjectNetworkObject.Spawn(true);
+        NetworkObject gunNetworkObject = gunObjectTransform.GetComponent<NetworkObject>();
+        gunNetworkObject.Spawn(true);
 
         GunObject gunObject = gunObjectTransform.GetComponent<GunObject>();
 
@@ -36,13 +38,38 @@ public class GameMultiplayer : NetworkBehaviour
         gunObject.SetGunObjectParent(gunObjectParent);
     }
 
-    private int GetGunObjectSOIndex(GunObjectSO gunObjectSO)
+    public int GetGunObjectSOIndex(GunObjectSO gunObjectSO)
     {
         return _gunObjectListSO.GunObjectsSOList.IndexOf(gunObjectSO);
     }
 
-    private GunObjectSO GetGunObjectSOFromIndex(int gunObjectSOList)
+    public GunObjectSO GetGunObjectSOFromIndex(int gunObjectSOList)
     {
         return _gunObjectListSO.GunObjectsSOList[gunObjectSOList];
     }
+
+    public void DestroyGunObject(GunObject gunObject)
+    {
+        DestroyGunObjectServerRpc(gunObject.NetworkObject);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void DestroyGunObjectServerRpc(NetworkObjectReference gunObjectNetworkBehaviourRef)
+    {
+        gunObjectNetworkBehaviourRef.TryGet(out NetworkObject gunNetworkObject);
+        GunObject gunObject = gunNetworkObject.GetComponent<GunObject>();
+
+        ClearGunObjectOnParentClientRpc(gunObjectNetworkBehaviourRef);
+        gunObject.DestroySelf();
+    }
+
+    [ClientRpc]
+    private void ClearGunObjectOnParentClientRpc(NetworkObjectReference gunObjectNetworkBehaviourRef)
+    {
+        gunObjectNetworkBehaviourRef.TryGet(out NetworkObject gunNetworkObject);
+        GunObject gunObject = gunNetworkObject.GetComponent<GunObject>();
+
+        gunObject.ClearGunObjectOnParent();
+    }
+
 }
