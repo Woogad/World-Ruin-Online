@@ -13,12 +13,12 @@ public class TestingConnectionUI : MonoBehaviour
     {
         _hostBn.onClick.AddListener(() =>
         {
-            NetworkManager.Singleton.StartHost();
+            GameMultiplayer.Instance.StartHost();
             Hide();
         });
         _clientBn.onClick.AddListener(() =>
         {
-            NetworkManager.Singleton.StartClient();
+            GameMultiplayer.Instance.StartClient();
             Hide();
         });
     }

@@ -72,7 +72,7 @@ public class GameManager : NetworkBehaviour
                 break;
             }
         }
-        Debug.Log("All Player Ready" + allClientReady);
+        Debug.Log("All Player Ready: " + allClientReady);
         if (allClientReady)
         {
             _state.Value = State.CountdonwToStart;

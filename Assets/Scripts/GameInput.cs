@@ -67,15 +67,15 @@ public class GameInput : MonoBehaviour
 
     private void ShootWeaponStart(InputAction.CallbackContext obj)
     {
-        if (!Player.LocalInstance.IsAlive()) return;
         if (!GameManager.Instance.IsGamePlaying() || _isEscMenuOpen) return;
+        if (!Player.LocalInstance.IsAlive()) return;
         OnShootWeaponAction(this, EventArgs.Empty);
     }
 
     private void ShootWeaponPerformed(InputAction.CallbackContext obj)
     {
-        if (!Player.LocalInstance.IsAlive()) return;
         if (!GameManager.Instance.IsGamePlaying() || _isEscMenuOpen) return;
+        if (!Player.LocalInstance.IsAlive()) return;
         bool isHoldShootAction = true;
         OnShootWeaponHoldAction?.Invoke(this, new OnShootWeaponActionArgs
         {
@@ -94,30 +94,37 @@ public class GameInput : MonoBehaviour
 
     private void ToggleWeaponModePerformed(InputAction.CallbackContext obj)
     {
-        if (!Player.LocalInstance.IsAlive()) return;
         if (!GameManager.Instance.IsGamePlaying() || _isEscMenuOpen) return;
+        if (!Player.LocalInstance.IsAlive()) return;
         OnToggleWeaponModeAction?.Invoke(this, EventArgs.Empty);
     }
 
     private void ReloadWeaponPerformed(InputAction.CallbackContext obj)
     {
-        if (!Player.LocalInstance.IsAlive()) return;
         if (!GameManager.Instance.IsGamePlaying() || _isEscMenuOpen) return;
+        if (!Player.LocalInstance.IsAlive()) return;
         OnReloadAction?.Invoke(this, EventArgs.Empty);
     }
 
 
     private void InteractPerformed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        if (!Player.LocalInstance.IsAlive()) return;
-        if (_isEscMenuOpen) return;
-        OnInteractAction?.Invoke(this, EventArgs.Empty);
+        if (GameManager.Instance.IsGameWaitingPlayer())
+        {
+            OnInteractAction?.Invoke(this, EventArgs.Empty);
+        }
+        else
+        {
+            if (!Player.LocalInstance.IsAlive()) return;
+            if (_isEscMenuOpen) return;
+            OnInteractAction?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     public Vector2 GetMovementVectorNormalized()
     {
-        if (!Player.LocalInstance.IsAlive()) return new Vector2(0, 0);
         if (!GameManager.Instance.IsGamePlaying() || _isEscMenuOpen) return new Vector2(0, 0);
+        if (!Player.LocalInstance.IsAlive()) return new Vector2(0, 0);
         Vector2 inputVector = _playerInputAction.Player.Move.ReadValue<Vector2>();
 
         inputVector = inputVector.normalized;

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+using System;
 
 public class GameMultiplayer : NetworkBehaviour
 {
@@ -14,6 +15,31 @@ public class GameMultiplayer : NetworkBehaviour
     private void Awake()
     {
         Instance = this;
+    }
+
+    public void StartHost()
+    {
+        NetworkManager.Singleton.ConnectionApprovalCallback += NetworkManagerConnectionApprovalCallback;
+        NetworkManager.Singleton.StartHost();
+    }
+
+    public void StartClient()
+    {
+        NetworkManager.Singleton.StartClient();
+    }
+
+    private void NetworkManagerConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest connectionApprovalRequest, NetworkManager.ConnectionApprovalResponse connectionApprovalResponse)
+    {
+        if (GameManager.Instance.IsGameWaitingPlayer())
+        {
+            connectionApprovalResponse.Approved = true;
+            connectionApprovalResponse.CreatePlayerObject = true;
+        }
+        else
+        {
+
+            connectionApprovalResponse.Approved = false;
+        }
     }
 
     public void SpawnGunObject(GunObjectSO gunObjectSO, IGunObjectParent gunObjectParent)
