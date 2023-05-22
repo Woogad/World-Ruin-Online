@@ -80,11 +80,23 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
         _playerArmor.OnValueChanged += PlayerArmorValueChanged;
         _playerMoney.OnValueChanged += PlayerMoneyValueChanged;
         _isAlive.OnValueChanged += PlayerIsAliveValueChanged;
+        if (IsServer)
+        {
+            NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManagerOnClientDisconnectCallback;
+        }
         if (IsOwner)
         {
             LocalInstance = this;
         }
         OnAnyPlayerSpawned?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void NetworkManagerOnClientDisconnectCallback(ulong clientID)
+    {
+        if (clientID == OwnerClientId && HasGunObject())
+        {
+            GunObject.DestroyGunObject(GetGunObject());
+        }
     }
 
     private void PlayerIsAliveValueChanged(bool previousValue, bool newValue)

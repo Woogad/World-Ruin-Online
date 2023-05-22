@@ -1,14 +1,12 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 using UnityEngine.UI;
 using Unity.Netcode;
+using System;
 
-public class GameOverUI : MonoBehaviour
+public class HostDisconnectUI : MonoBehaviour
 {
-    // [SerializeField] private TextMeshProUGUI _winerScore; //TODO For later, Winer text
     [SerializeField] private Button _mainMenuBn;
 
     private void Awake()
@@ -22,24 +20,16 @@ public class GameOverUI : MonoBehaviour
 
     private void Start()
     {
-        GameManager.Instance.OnStateChanged += GameManagerOnStateChanged;
+        NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManagerOnClientDisconnectCallback;
         Hide();
     }
 
-    private void GameManagerOnStateChanged(object sender, EventArgs e)
+    private void NetworkManagerOnClientDisconnectCallback(ulong clientID)
     {
-        if (GameManager.Instance.IsGameOver())
+        if (clientID == NetworkManager.ServerClientId)
         {
             Show();
         }
-        else
-        {
-            Hide();
-        }
-    }
-
-    private void Update()
-    {
     }
 
     private void Show()

@@ -2,15 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 
-public class CountdownStartUI : MonoBehaviour
+public class GameWaitingForPlayerUI : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _countdownStartText;
-
     private void Start()
     {
+        GameManager.Instance.OnLocalPlayerReadyChanged += GameManagerOnLocalPlayerReadyChanged;
         GameManager.Instance.OnStateChanged += GameManagerOnStateChanged;
+
         Hide();
     }
 
@@ -18,26 +17,25 @@ public class CountdownStartUI : MonoBehaviour
     {
         if (GameManager.Instance.IsCountdownToStartActive())
         {
-            Show();
-        }
-        else
-        {
             Hide();
         }
     }
 
-    private void Update()
+    private void GameManagerOnLocalPlayerReadyChanged(object sender, EventArgs e)
     {
-        _countdownStartText.text = MathF.Ceiling(GameManager.Instance.GetCountdownToStartTimer()).ToString();
+        if (GameManager.Instance.IsLocalPlayerReady())
+        {
+            Show();
+        }
     }
 
     private void Show()
     {
         gameObject.SetActive(true);
     }
+
     private void Hide()
     {
         gameObject.SetActive(false);
     }
-
 }

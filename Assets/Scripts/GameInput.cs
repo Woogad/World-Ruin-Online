@@ -43,15 +43,6 @@ public class GameInput : MonoBehaviour
         _playerInputAction.Player.Esc.performed += EscPerformed;
     }
 
-    private void EscPerformed(InputAction.CallbackContext context)
-    {
-        _isEscMenuOpen = !_isEscMenuOpen;
-        OnEscAction?.Invoke(this, new OnEscActionArgs
-        {
-            IsEscMenuOpen = _isEscMenuOpen
-        });
-    }
-
     private void OnDestroy()
     {
         _playerInputAction.Player.ShootWeapon.started -= ShootWeaponStart;
@@ -63,6 +54,15 @@ public class GameInput : MonoBehaviour
         _playerInputAction.Player.ToggleWeaponMode.performed -= ToggleWeaponModePerformed;
         _playerInputAction.Player.Esc.performed -= EscPerformed;
         _playerInputAction.Dispose();
+    }
+
+    private void EscPerformed(InputAction.CallbackContext context)
+    {
+        _isEscMenuOpen = !_isEscMenuOpen;
+        OnEscAction?.Invoke(this, new OnEscActionArgs
+        {
+            IsEscMenuOpen = _isEscMenuOpen
+        });
     }
 
     private void ShootWeaponStart(InputAction.CallbackContext obj)
@@ -110,7 +110,7 @@ public class GameInput : MonoBehaviour
     private void InteractPerformed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
         if (!Player.LocalInstance.IsAlive()) return;
-        if (!GameManager.Instance.IsGamePlaying() || _isEscMenuOpen) return;
+        if (_isEscMenuOpen) return;
         OnInteractAction?.Invoke(this, EventArgs.Empty);
     }
 

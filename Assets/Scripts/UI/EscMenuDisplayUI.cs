@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using Unity.Netcode;
 
 public class EscMenuDisplayUI : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class EscMenuDisplayUI : MonoBehaviour
     {
         _mainMenuBn.onClick.AddListener(() =>
         {
+            NetworkManager.Singleton.Shutdown();
             Loader.Load(Loader.Scene.MainMenuScene);
         });
         _optionsBn.onClick.AddListener(() =>
