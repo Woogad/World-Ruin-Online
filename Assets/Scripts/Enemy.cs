@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour, IDamageable
+public class Enemy : MonoBehaviour
 {
     //! This is prototype for enemy
     [SerializeField] private GunObject _gunObject;
@@ -17,7 +17,7 @@ public class Enemy : MonoBehaviour, IDamageable
         if (_shootTimer < 0f)
         {
             _shootTimer = _shootTimerMax;
-            _gunObject.Shoot();
+            // _gunObject.Shoot();
         }
     }
     public void TakeDamage(float damage)

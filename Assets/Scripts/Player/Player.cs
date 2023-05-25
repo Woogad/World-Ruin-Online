@@ -52,6 +52,8 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
     private NetworkVariable<float> _playerArmor = new NetworkVariable<float>();
     private NetworkVariable<int> _playerMoney = new NetworkVariable<int>();
     private NetworkVariable<bool> _isAlive = new NetworkVariable<bool>();
+    private NetworkVariable<int> _killScore = new NetworkVariable<int>();
+
     private float defaultHealth = 60f;
     private float defaultAromr = 0f;
     private bool defaultIsAlive = true;
@@ -80,6 +82,7 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
         _playerArmor.OnValueChanged += PlayerArmorValueChanged;
         _playerMoney.OnValueChanged += PlayerMoneyValueChanged;
         _isAlive.OnValueChanged += PlayerIsAliveValueChanged;
+        _killScore.OnValueChanged += PlayerKillScoreValueChanged;
         if (IsServer)
         {
             NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManagerOnClientDisconnectCallback;
@@ -89,6 +92,10 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
             LocalInstance = this;
         }
         OnAnyPlayerSpawned?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void PlayerKillScoreValueChanged(int previousValue, int newValue)
+    {
     }
 
     private void NetworkManagerOnClientDisconnectCallback(ulong clientID)
@@ -101,6 +108,7 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
 
     private void PlayerIsAliveValueChanged(bool previousValue, bool newValue)
     {
+        Debug.Log(OwnerClientId.ToString() + " is dead!");
         OnDead?.Invoke(this, EventArgs.Empty);
     }
 
@@ -122,7 +130,6 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
     private void Update()
     {
         if (!IsOwner) return;
-        // if (!_isAlive.Value) return;
 
         if (HasGunObject())
         {
@@ -146,7 +153,7 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
 
             if (CanShootAuto())
             {
-                GetGunObject().Shoot();
+                GetGunObject().Shoot(OwnerClientId);
 
                 OnShoot?.Invoke(this, EventArgs.Empty);
                 OnAmmoChanged?.Invoke(this, EventArgs.Empty);
@@ -168,7 +175,7 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
             if (GetGunObject().GetGunMode() != GunObject.GunMode.Semi) return;
             if (GetGunObject().TryShoot())
             {
-                GetGunObject().Shoot();
+                GetGunObject().Shoot(OwnerClientId);
                 OnShoot?.Invoke(this, EventArgs.Empty);
                 OnAmmoChanged?.Invoke(this, EventArgs.Empty);
             }
@@ -266,16 +273,16 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
     private void Dead()
     {
         _isAlive.Value = false;
-        Collider playerCollider = GetComponent<Collider>();
-        playerCollider.enabled = false;
-        DeadClientRpc();
     }
 
     [ClientRpc]
-    private void DeadClientRpc()
+    private void DeadClientRpc(ulong shootOwnerClientID)
     {
-        Debug.Log(OwnerClientId.ToString() + " is dead!");
+        Collider playerCollider = GetComponent<Collider>();
+        playerCollider.enabled = false;
+
         if (!IsOwner) return;
+        KillScoreManager.Instance.AddKillScoreServerRpc(shootOwnerClientID);
         _isWalking = false;
         OnReloadProgressChanged?.Invoke(this, new OnReloadProgressChangedArgs
         {
@@ -444,16 +451,16 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
         }
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, ulong shootOwnerClientID)
     {
         if (!_isAlive.Value) return;
-        TakeDamageServerRpc(damage);
+        TakeDamageServerRpc(damage, shootOwnerClientID);
 
         OnTakeDamage?.Invoke(this, EventArgs.Empty);
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void TakeDamageServerRpc(float damage)
+    private void TakeDamageServerRpc(float damage, ulong shootOwnerClientID)
     {
         float damageResistance = 0.4f; //* 40%
         float damageReduce = damageResistance * damage;
@@ -480,9 +487,21 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
 
         if (_playerHealth.Value <= 0)
         {
-            _playerHealth.Value = 0;
             Dead();
+            _playerHealth.Value = 0;
+            DeadClientRpc(shootOwnerClientID);
         }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void AddKillScoreNetworkVariableServerRpc(int score)
+    {
+        _killScore.Value += score;
+    }
+
+    public int GetKillScore()
+    {
+        return _killScore.Value;
     }
 
     public bool IsAlive()

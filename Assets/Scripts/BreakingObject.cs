@@ -12,7 +12,7 @@ public class BreakingObject : MonoBehaviour, IDamageable
         _hp = _breakingObjectSO.MaxHp;
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, ulong shootOwnerClientID)
     {
         _hp -= damage;
         if (_hp <= 0)

@@ -61,25 +61,25 @@ public class GunObject : NetworkBehaviour
         return this._gunMode;
     }
 
-    public void Shoot()
+    public void Shoot(ulong shootOwnerClientID)
     {
-        SpawnBulletObjectServerRpc();
+        SpawnBulletObjectServerRpc(shootOwnerClientID);
         ShootLogicEventServerRpc();
         _currentAmmo--;
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void SpawnBulletObjectServerRpc()
+    private void SpawnBulletObjectServerRpc(ulong shootOwnerClientID)
     {
-        SpawnBulletObjectClientRpc();
+        SpawnBulletObjectClientRpc(shootOwnerClientID);
     }
 
     [ClientRpc]
-    private void SpawnBulletObjectClientRpc()
+    private void SpawnBulletObjectClientRpc(ulong shootOwnerClientID)
     {
         Transform bulletObjectTransform = Instantiate(_gunObjectSO.BulletPrefab, _fireEndPoint.position, Quaternion.identity);
         _shootRandomVector = GetRandomShootNormalize(_fireEndPoint);
-        bulletObjectTransform.GetComponent<BulletObject>().Setup(this, _shootRandomVector);
+        bulletObjectTransform.GetComponent<BulletObject>().Setup(this, _shootRandomVector, shootOwnerClientID);
     }
 
     [ServerRpc(RequireOwnership = false)]

@@ -80,6 +80,15 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""View ScoreBoard"",
+                    ""type"": ""Button"",
+                    ""id"": ""833ed53c-d528-41a5-933b-562940c9d4c6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -192,6 +201,17 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""action"": ""Esc"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0eb3c6ff-dfc2-4302-ab53-fec01a6203ec"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""View ScoreBoard"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -206,6 +226,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         m_Player_ReloadWeapon = m_Player.FindAction("Reload Weapon", throwIfNotFound: true);
         m_Player_ToggleWeaponMode = m_Player.FindAction("Toggle Weapon Mode", throwIfNotFound: true);
         m_Player_Esc = m_Player.FindAction("Esc", throwIfNotFound: true);
+        m_Player_ViewScoreBoard = m_Player.FindAction("View ScoreBoard", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -273,6 +294,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_ReloadWeapon;
     private readonly InputAction m_Player_ToggleWeaponMode;
     private readonly InputAction m_Player_Esc;
+    private readonly InputAction m_Player_ViewScoreBoard;
     public struct PlayerActions
     {
         private @PlayerInputAction m_Wrapper;
@@ -283,6 +305,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         public InputAction @ReloadWeapon => m_Wrapper.m_Player_ReloadWeapon;
         public InputAction @ToggleWeaponMode => m_Wrapper.m_Player_ToggleWeaponMode;
         public InputAction @Esc => m_Wrapper.m_Player_Esc;
+        public InputAction @ViewScoreBoard => m_Wrapper.m_Player_ViewScoreBoard;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -310,6 +333,9 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
             @Esc.started += instance.OnEsc;
             @Esc.performed += instance.OnEsc;
             @Esc.canceled += instance.OnEsc;
+            @ViewScoreBoard.started += instance.OnViewScoreBoard;
+            @ViewScoreBoard.performed += instance.OnViewScoreBoard;
+            @ViewScoreBoard.canceled += instance.OnViewScoreBoard;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -332,6 +358,9 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
             @Esc.started -= instance.OnEsc;
             @Esc.performed -= instance.OnEsc;
             @Esc.canceled -= instance.OnEsc;
+            @ViewScoreBoard.started -= instance.OnViewScoreBoard;
+            @ViewScoreBoard.performed -= instance.OnViewScoreBoard;
+            @ViewScoreBoard.canceled -= instance.OnViewScoreBoard;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -357,5 +386,6 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         void OnReloadWeapon(InputAction.CallbackContext context);
         void OnToggleWeaponMode(InputAction.CallbackContext context);
         void OnEsc(InputAction.CallbackContext context);
+        void OnViewScoreBoard(InputAction.CallbackContext context);
     }
 }

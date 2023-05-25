@@ -12,6 +12,11 @@ public class GameInput : MonoBehaviour
     public event EventHandler OnToggleWeaponModeAction;
     public event EventHandler OnShootWeaponAction;
     public event EventHandler OnReloadAction;
+    public event EventHandler<OnViewScoreBoardHoldActionArgs> OnViewScoreBoardHoldAction;
+    public class OnViewScoreBoardHoldActionArgs : EventArgs
+    {
+        public bool IsHoldViewScoreBoardAction;
+    }
     public event EventHandler<OnEscActionArgs> OnEscAction;
     public class OnEscActionArgs : EventArgs
     {
@@ -41,6 +46,8 @@ public class GameInput : MonoBehaviour
         _playerInputAction.Player.ReloadWeapon.performed += ReloadWeaponPerformed;
         _playerInputAction.Player.ToggleWeaponMode.performed += ToggleWeaponModePerformed;
         _playerInputAction.Player.Esc.performed += EscPerformed;
+        _playerInputAction.Player.ViewScoreBoard.performed += ViewScoreBoardPerformed;
+        _playerInputAction.Player.ViewScoreBoard.canceled += ViewScoreBoardCanceled;
     }
 
     private void OnDestroy()
@@ -53,7 +60,26 @@ public class GameInput : MonoBehaviour
         _playerInputAction.Player.ReloadWeapon.performed -= ReloadWeaponPerformed;
         _playerInputAction.Player.ToggleWeaponMode.performed -= ToggleWeaponModePerformed;
         _playerInputAction.Player.Esc.performed -= EscPerformed;
+        _playerInputAction.Player.ViewScoreBoard.performed -= ViewScoreBoardPerformed;
+        _playerInputAction.Player.ViewScoreBoard.canceled -= ViewScoreBoardCanceled;
         _playerInputAction.Dispose();
+    }
+
+    private void ViewScoreBoardPerformed(InputAction.CallbackContext context)
+    {
+        bool isHoldViewScoreBoardAction = true;
+        OnViewScoreBoardHoldAction?.Invoke(this, new OnViewScoreBoardHoldActionArgs
+        {
+            IsHoldViewScoreBoardAction = isHoldViewScoreBoardAction
+        });
+    }
+    private void ViewScoreBoardCanceled(InputAction.CallbackContext context)
+    {
+        bool isHoldViewScoreBoardAction = false;
+        OnViewScoreBoardHoldAction?.Invoke(this, new OnViewScoreBoardHoldActionArgs
+        {
+            IsHoldViewScoreBoardAction = isHoldViewScoreBoardAction
+        });
     }
 
     private void EscPerformed(InputAction.CallbackContext context)

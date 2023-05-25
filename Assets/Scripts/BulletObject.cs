@@ -5,9 +5,11 @@ using Unity.Netcode.Components;
 public class BulletObject : MonoBehaviour
 {
     private float _damage;
+    private ulong _shootOwnerClientID;
 
-    public void Setup(GunObject gunObject, Vector3 shootDir)
+    public void Setup(GunObject gunObject, Vector3 shootDir, ulong shootOwnerClientID)
     {
+        _shootOwnerClientID = shootOwnerClientID;
         this._damage = Mathf.Round(Random.Range(gunObject.GetGunObjectSO().Damage.x, gunObject.GetGunObjectSO().Damage.y));
         Rigidbody rigidbody = GetComponent<Rigidbody>();
 
@@ -25,7 +27,7 @@ public class BulletObject : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        Idamageable.TakeDamage(_damage);
+        Idamageable.TakeDamage(_damage, _shootOwnerClientID);
         Destroy(gameObject);
     }
 }
