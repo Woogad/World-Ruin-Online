@@ -8,13 +8,28 @@ public class ScoreBoadUI : MonoBehaviour
     [SerializeField] private Transform _scoreBoardItemTemplate;
     [SerializeField] private Transform _contrainer;
 
-    private List<ScoreBoardItemUI> _scoreBoardItemTemplateList = new List<ScoreBoardItemUI>();
+    private Dictionary<ulong, ScoreBoardItemUI> _scoreBoardItemDictionary = new Dictionary<ulong, ScoreBoardItemUI>();
 
     private void Start()
     {
-        KillScoreManager.Instance.OnScoreBoardPlayersChanged += KillScoreManagerOnScoreBoardPlayerChanged;
+        ScoreBoardManager.Instance.OnScoreBoardPlayersCreate += ScoreBoardManagerOnScoreBoardPlayerCreate;
+        ScoreBoardManager.Instance.OnDeleteScoreBoardItem += ScoreBoardManagerOnDeleteScoreBoardItem;
+        ScoreBoardManager.Instance.OnScoreBoardKillChanged += ScoreBoardManagerOnScoreBoardKillChanged;
         GameInput.Instance.OnViewScoreBoardHoldAction += GameInputOnViewScoreBoardHoldAction;
         Hide();
+    }
+
+    private void ScoreBoardManagerOnScoreBoardKillChanged(object sender, ScoreBoardManager.OnScoreBoardScoreChangedArgs e)
+    {
+        ScoreBoardItemUI item = _scoreBoardItemDictionary[e.ClientID].GetComponent<ScoreBoardItemUI>();
+        item.KillScoreText.text = e.Value.ToString();
+        _scoreBoardItemDictionary[e.ClientID] = item;
+    }
+
+    private void ScoreBoardManagerOnDeleteScoreBoardItem(object sender, ScoreBoardManager.OnScoreBoardScoreChangedArgs e)
+    {
+        Destroy(_scoreBoardItemDictionary[e.ClientID].gameObject);
+        _scoreBoardItemDictionary.Remove(e.ClientID);
     }
 
     private void GameInputOnViewScoreBoardHoldAction(object sender, GameInput.OnViewScoreBoardHoldActionArgs e)
@@ -29,16 +44,9 @@ public class ScoreBoadUI : MonoBehaviour
         }
     }
 
-    private void KillScoreManagerOnScoreBoardPlayerChanged(object sender, KillScoreManager.OnScoreBoardPlayersChangedArgs e)
+    private void ScoreBoardManagerOnScoreBoardPlayerCreate(object sender, ScoreBoardManager.OnScoreBoardPlayersCreateArgs e)
     {
-        if (e.IsInit)
-        {
-            CreateVisualScoreBoard(e.ScoreBoardDictionary);
-        }
-        else
-        {
-            UpdateVisualKillScore(e.ScoreBoardDictionary);
-        }
+        CreateVisualScoreBoard(e.ScoreBoardDictionary);
     }
 
     private void CreateVisualScoreBoard(Dictionary<ulong, ScoreBoardStruct> scoreBoardDictionary)
@@ -47,18 +55,10 @@ public class ScoreBoadUI : MonoBehaviour
         foreach (var kvp in scoreBoardDictionary)
         {
             ScoreBoardItemUI item = Instantiate(_scoreBoardItemTemplate, _contrainer).GetComponent<ScoreBoardItemUI>();
-            item.UsernameText.text = kvp.Value.Username.ToString();
+            item.UsernameText.text = "Player " + kvp.Value.Username.ToString();
             item.KillScoreText.text = kvp.Value.KillScore.ToString();
 
-            _scoreBoardItemTemplateList.Add(item);
-        }
-    }
-
-    private void UpdateVisualKillScore(Dictionary<ulong, ScoreBoardStruct> scoreBoardDictionary)
-    {
-        foreach (var kvp in scoreBoardDictionary)
-        {
-            _scoreBoardItemTemplateList[(int)kvp.Key].KillScoreText.text = kvp.Value.KillScore.ToString();
+            _scoreBoardItemDictionary[kvp.Key] = item;
         }
     }
 

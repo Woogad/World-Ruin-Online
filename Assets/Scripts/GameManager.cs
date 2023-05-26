@@ -19,7 +19,7 @@ public class GameManager : NetworkBehaviour
     public event EventHandler OnLocalPlayerReadyChanged;
 
     private NetworkVariable<State> _state = new NetworkVariable<State>();
-    private NetworkVariable<float> _countdownToStartTimer = new NetworkVariable<float>(3f);
+    private NetworkVariable<float> _countdownToStartTimer = new NetworkVariable<float>(1f);
     private NetworkVariable<float> _gamePlayingTimer = new NetworkVariable<float>(0f);
     private float _gamePlayingTimerMax = 200;
     private bool _isLocalPlayerReady;

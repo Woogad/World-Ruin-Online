@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+using IngameDebugConsole;
 
 public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
 {
@@ -23,9 +24,13 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
     public event EventHandler OnShoot;
     public event EventHandler OnArmorChanged;
     public event EventHandler OnHealthChanged;
-    public event EventHandler OnDead;
     public event EventHandler OnPickGun;
     public event EventHandler OnTakeDamage;
+    public event EventHandler<OnDeadArgs> OnDead;
+    public class OnDeadArgs : EventArgs
+    {
+        public ulong ClientID;
+    }
 
     public event EventHandler<OnReloadProgressChangedArgs> OnReloadProgressChanged;
     public class OnReloadProgressChangedArgs : EventArgs
@@ -51,7 +56,7 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
     private NetworkVariable<float> _playerHealth = new NetworkVariable<float>();
     private NetworkVariable<float> _playerArmor = new NetworkVariable<float>();
     private NetworkVariable<int> _playerMoney = new NetworkVariable<int>();
-    private NetworkVariable<bool> _isAlive = new NetworkVariable<bool>();
+    private NetworkVariable<bool> _isAlive = new NetworkVariable<bool>(true);
     private NetworkVariable<int> _killScore = new NetworkVariable<int>();
 
     private float defaultHealth = 60f;
@@ -64,6 +69,7 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
     private float _reloadCountdown;
     private BaseCounter _selectedCounter;
     private GunObject _gunObject;
+    private ulong _playerKilled;
 
     private void Start()
     {
@@ -72,6 +78,7 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
         GameInput.Instance.OnShootWeaponAction += GameInputOnShootAction;
         GameInput.Instance.OnReloadAction += GameInputOnReloadAction;
         GameInput.Instance.OnToggleWeaponModeAction += GameInputOnToggleWeaponModeAction;
+        DebugLogConsole.AddCommand<float, ulong>("TakeDamage", "Get Damage", TakeDamage);
     }
 
     public override void OnNetworkSpawn()
@@ -96,6 +103,7 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
 
     private void PlayerKillScoreValueChanged(int previousValue, int newValue)
     {
+        Debug.Log("Player " + OwnerClientId + " Scorekill " + _killScore.Value);
     }
 
     private void NetworkManagerOnClientDisconnectCallback(ulong clientID)
@@ -108,8 +116,10 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
 
     private void PlayerIsAliveValueChanged(bool previousValue, bool newValue)
     {
-        Debug.Log(OwnerClientId.ToString() + " is dead!");
-        OnDead?.Invoke(this, EventArgs.Empty);
+        OnDead?.Invoke(this, new OnDeadArgs
+        {
+            ClientID = _playerKilled
+        });
     }
 
     private void PlayerArmorValueChanged(float previousValue, float newValue)
@@ -268,27 +278,6 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
         this._playerArmor.Value = armor;
         this._playerMoney.Value = money;
         this._isAlive.Value = isAvlive;
-    }
-
-    private void Dead()
-    {
-        _isAlive.Value = false;
-    }
-
-    [ClientRpc]
-    private void DeadClientRpc(ulong shootOwnerClientID)
-    {
-        Collider playerCollider = GetComponent<Collider>();
-        playerCollider.enabled = false;
-
-        if (!IsOwner) return;
-        KillScoreManager.Instance.AddKillScoreServerRpc(shootOwnerClientID);
-        _isWalking = false;
-        OnReloadProgressChanged?.Invoke(this, new OnReloadProgressChangedArgs
-        {
-            ReloadProgressNormalized = 0
-        });
-        // GameMultiplayer.Instance.DestroyGunObject(GetGunObject());
     }
 
     private void HandleInteraction()
@@ -453,15 +442,16 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
 
     public void TakeDamage(float damage, ulong shootOwnerClientID)
     {
-        if (!_isAlive.Value) return;
+        // if (!_isAlive.Value) return;
         TakeDamageServerRpc(damage, shootOwnerClientID);
-
         OnTakeDamage?.Invoke(this, EventArgs.Empty);
+
     }
 
     [ServerRpc(RequireOwnership = false)]
     private void TakeDamageServerRpc(float damage, ulong shootOwnerClientID)
     {
+        if (!_isAlive.Value) return;
         float damageResistance = 0.4f; //* 40%
         float damageReduce = damageResistance * damage;
 
@@ -487,15 +477,34 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
 
         if (_playerHealth.Value <= 0)
         {
-            Dead();
+            Dead(shootOwnerClientID);
+            _isAlive.Value = false;
             _playerHealth.Value = 0;
-            DeadClientRpc(shootOwnerClientID);
         }
     }
 
-    [ServerRpc(RequireOwnership = false)]
-    public void AddKillScoreNetworkVariableServerRpc(int score)
+    private void Dead(ulong clientID)
     {
+        DeadClientRpc();
+        _playerKilled = clientID;
+    }
+
+    [ClientRpc]
+    private void DeadClientRpc()
+    {
+        Collider playerCollider = GetComponent<Collider>();
+        playerCollider.enabled = false;
+        _isWalking = false;
+        OnReloadProgressChanged?.Invoke(this, new OnReloadProgressChangedArgs
+        {
+            ReloadProgressNormalized = 0
+        });
+        // GameMultiplayer.Instance.DestroyGunObject(GetGunObject());
+    }
+
+    public void AddKillScoreNetworkVariable(int score)
+    {
+        Debug.Log("player " + OwnerClientId + " use Add kill score");
         _killScore.Value += score;
     }
 

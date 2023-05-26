@@ -36,11 +36,12 @@ public class PlayerAnimator : NetworkBehaviour
         GameInput.Instance.OnShootWeaponHoldAction += GameInputOnShootWeaponHoldAction;
     }
 
-    private void PlayerOnDead(object sender, EventArgs e)
+    private void PlayerOnDead(object sender, Player.OnDeadArgs e)
     {
         _animator.SetBool(IS_DEAD, true);
         _animator.SetBool(IS_SHOOT_AUTO, false);
     }
+
 
     private void PlayerOnShoot(object sender, EventArgs e)
     {
