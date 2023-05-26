@@ -57,8 +57,6 @@ public class GunShopCounter : BaseCounter
         player.AddPlayerMoney(-_gunObjectSO.Price);
     }
 
-    // private void 
-
     public GunObjectSO GetGunObjectOSShop()
     {
         return this._gunObjectSO;

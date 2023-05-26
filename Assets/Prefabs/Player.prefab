@@ -2386,6 +2386,7 @@ GameObject:
   - component: {fileID: 2484365812919839580}
   - component: {fileID: 8644727683181165901}
   - component: {fileID: 9001022216413370223}
+  - component: {fileID: 6745054574736162947}
   m_Layer: 0
   m_Name: ReloadProgress
   m_TagString: Untagged
@@ -2492,6 +2493,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _player: {fileID: 2771729500705918551}
   _barImage: {fileID: 8225801517256542832}
+--- !u!114 &6745054574736162947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1509666703185736665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3122eb45af3b9254d963af2290115062, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mode: 2
 --- !u!1 &1522880554729728558
 GameObject:
   m_ObjectHideFlags: 0

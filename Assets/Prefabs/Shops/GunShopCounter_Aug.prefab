@@ -8,6 +8,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 427182689212148018, guid: 88b4ed1e88a951448a56e8716884518b,
+        type: 3}
+      propertyPath: m_Name
+      value: GunPriceLabel_text
+      objectReference: {fileID: 0}
     - target: {fileID: 1677249134649738448, guid: 88b4ed1e88a951448a56e8716884518b,
         type: 3}
       propertyPath: _priceLabelText
@@ -16,7 +21,7 @@ PrefabInstance:
     - target: {fileID: 3254041918464245083, guid: 88b4ed1e88a951448a56e8716884518b,
         type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 3254041918464245083, guid: 88b4ed1e88a951448a56e8716884518b,
         type: 3}
@@ -73,6 +78,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: GunShopCounter_Aug
       objectReference: {fileID: 0}
+    - target: {fileID: 4364973312866894239, guid: 88b4ed1e88a951448a56e8716884518b,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5120260611233329394, guid: 88b4ed1e88a951448a56e8716884518b,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 951099334
+      objectReference: {fileID: 0}
     - target: {fileID: 5124977885317998679, guid: 88b4ed1e88a951448a56e8716884518b,
         type: 3}
       propertyPath: _gunObjectSO
@@ -86,8 +101,31 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 4205170446574583496}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4534116671019397406, guid: 88b4ed1e88a951448a56e8716884518b,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7323984202341780371}
   m_SourcePrefab: {fileID: 100100000, guid: 88b4ed1e88a951448a56e8716884518b, type: 3}
+--- !u!1 &1254776776687560729 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4534116671019397406, guid: 88b4ed1e88a951448a56e8716884518b,
+    type: 3}
+  m_PrefabInstance: {fileID: 3424345137224259847}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7323984202341780371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1254776776687560729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3122eb45af3b9254d963af2290115062, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mode: 2
 --- !u!4 &1642365413794473700 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4129639668378370019, guid: 88b4ed1e88a951448a56e8716884518b,

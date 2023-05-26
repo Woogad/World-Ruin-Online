@@ -97,6 +97,7 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
         if (IsOwner)
         {
             LocalInstance = this;
+            // FollowPlayerCamera.Instance.CameraFollow(gameObject.transform);
         }
         OnAnyPlayerSpawned?.Invoke(this, EventArgs.Empty);
     }

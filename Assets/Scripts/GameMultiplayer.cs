@@ -9,8 +9,6 @@ public class GameMultiplayer : NetworkBehaviour
     public static GameMultiplayer Instance { get; private set; }
 
     [SerializeField] private GunObjectListSO _gunObjectListSO;
-    [SerializeField] private Transform _bulletGameObject;
-    [SerializeField] private Transform _testPosition;
 
     private void Awake()
     {

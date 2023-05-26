@@ -147,6 +147,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: GunShopCounter_MP7A1
       objectReference: {fileID: 0}
+    - target: {fileID: 4364973312866894239, guid: 88b4ed1e88a951448a56e8716884518b,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5120260611233329394, guid: 88b4ed1e88a951448a56e8716884518b,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 951099334
+      objectReference: {fileID: 0}
     - target: {fileID: 5124977885317998679, guid: 88b4ed1e88a951448a56e8716884518b,
         type: 3}
       propertyPath: _gunObjectSO
@@ -160,7 +170,11 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 8392313193848345395}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4534116671019397406, guid: 88b4ed1e88a951448a56e8716884518b,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 136836661671049286}
   m_SourcePrefab: {fileID: 100100000, guid: 88b4ed1e88a951448a56e8716884518b, type: 3}
 --- !u!4 &4835017771430694558 stripped
 Transform:
@@ -168,3 +182,22 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 8815235991034802557}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &4952386717963747427 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4534116671019397406, guid: 88b4ed1e88a951448a56e8716884518b,
+    type: 3}
+  m_PrefabInstance: {fileID: 8815235991034802557}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &136836661671049286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4952386717963747427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3122eb45af3b9254d963af2290115062, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mode: 2

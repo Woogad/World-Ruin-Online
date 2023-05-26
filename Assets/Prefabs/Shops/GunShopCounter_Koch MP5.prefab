@@ -145,7 +145,17 @@ PrefabInstance:
     - target: {fileID: 4233964295133698913, guid: 88b4ed1e88a951448a56e8716884518b,
         type: 3}
       propertyPath: m_Name
-      value: GunShopCounter_MP5
+      value: GunShopCounter_Koch MP5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4364973312866894239, guid: 88b4ed1e88a951448a56e8716884518b,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5120260611233329394, guid: 88b4ed1e88a951448a56e8716884518b,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 951099334
       objectReference: {fileID: 0}
     - target: {fileID: 5124977885317998679, guid: 88b4ed1e88a951448a56e8716884518b,
         type: 3}
@@ -160,8 +170,31 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 3300619624834999510}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4534116671019397406, guid: 88b4ed1e88a951448a56e8716884518b,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6111071204455055455}
   m_SourcePrefab: {fileID: 100100000, guid: 88b4ed1e88a951448a56e8716884518b, type: 3}
+--- !u!1 &5418609125346235594 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4534116671019397406, guid: 88b4ed1e88a951448a56e8716884518b,
+    type: 3}
+  m_PrefabInstance: {fileID: 8493418760004855252}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6111071204455055455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5418609125346235594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3122eb45af3b9254d963af2290115062, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mode: 2
 --- !u!4 &5517404576002054711 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4129639668378370019, guid: 88b4ed1e88a951448a56e8716884518b,
