@@ -9,7 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6029c55e19507e747919335a9e363a68, type: 3}
-  m_Name: LowObject
+  m_Script: {fileID: 11500000, guid: 2eb19bc9da736ff4594f6b0f2417c5f3, type: 3}
+  m_Name: GoldCoin
   m_EditorClassIdentifier: 
-  MaxHp: 600
+  Prefab: {fileID: 2854087519748029874, guid: a70b068d865dc574194b7026ad7a6e32, type: 3}
+  MoneyReward: 100

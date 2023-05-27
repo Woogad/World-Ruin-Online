@@ -16,7 +16,7 @@ public class ScoreBoardManager : NetworkBehaviour
         public ulong ClientID;
         public int Value = default;
     }
-    public event EventHandler<OnScoreBoardPlayersCreateArgs> OnScoreBoardPlayersCreate;
+    public event EventHandler<OnScoreBoardPlayersCreateArgs> OnScoreBoardPlayersCreated;
     public class OnScoreBoardPlayersCreateArgs : EventArgs
     {
         public Dictionary<ulong, ScoreBoardStruct> ScoreBoardDictionary;
@@ -61,7 +61,7 @@ public class ScoreBoardManager : NetworkBehaviour
     private void PlayerOnDead(object sender, Player.OnDeadArgs e)
     {
 
-        AddKillScoreServerRpc(e.ClientID);
+        AddKillScoreServerRpc(e.KillerClientID);
 
     }
 
@@ -111,7 +111,7 @@ public class ScoreBoardManager : NetworkBehaviour
     private void OnScoreBoardPlayerCreateEventClientRpc()
     {
         Debug.Log(_scoreBoardDictionary.Count);
-        OnScoreBoardPlayersCreate?.Invoke(this, new OnScoreBoardPlayersCreateArgs
+        OnScoreBoardPlayersCreated?.Invoke(this, new OnScoreBoardPlayersCreateArgs
         {
             ScoreBoardDictionary = _scoreBoardDictionary,
         });

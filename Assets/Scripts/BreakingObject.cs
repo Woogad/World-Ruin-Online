@@ -1,23 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
-public class BreakingObject : MonoBehaviour, IDamageable
+public class BreakingObject : NetworkBehaviour, IDamageable
 {
     [SerializeField] private BreakingObjectSO _breakingObjectSO;
-    private float _hp;
+    private NetworkVariable<float> _hp = new NetworkVariable<float>();
 
-    private void Start()
+    public override void OnNetworkSpawn()
     {
-        _hp = _breakingObjectSO.MaxHp;
+        _hp.Value = _breakingObjectSO.MaxHp;
     }
-
     public void TakeDamage(float damage, ulong shootOwnerClientID)
     {
-        _hp -= damage;
-        if (_hp <= 0)
+        if (IsHost)
         {
-            Destroy(gameObject);
+            _hp.Value -= damage;
+            if (_hp.Value <= 0)
+            {
+                NetworkObject.Despawn(true);
+            }
+            return;
+        }
+        TakeDamageServerRpc(damage);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void TakeDamageServerRpc(float damage)
+    {
+        _hp.Value -= damage;
+        if (_hp.Value <= 0)
+        {
+            NetworkObject.Despawn(true);
         }
     }
 }

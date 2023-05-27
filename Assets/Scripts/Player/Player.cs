@@ -26,10 +26,12 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
     public event EventHandler OnHealthChanged;
     public event EventHandler OnPickGun;
     public event EventHandler OnTakeDamage;
+    public event EventHandler OnReSpawn;
     public event EventHandler<OnDeadArgs> OnDead;
     public class OnDeadArgs : EventArgs
     {
-        public ulong ClientID;
+        public ulong KillerClientID;
+        public ulong OwnerClientID;
     }
 
     public event EventHandler<OnReloadProgressChangedArgs> OnReloadProgressChanged;
@@ -58,6 +60,8 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
     private NetworkVariable<int> _playerMoney = new NetworkVariable<int>();
     private NetworkVariable<bool> _isAlive = new NetworkVariable<bool>(true);
     private NetworkVariable<int> _killScore = new NetworkVariable<int>();
+    private NetworkVariable<int> _goldCoinCount = new NetworkVariable<int>();
+    private NetworkVariable<Vector3> _spawnPosition = new NetworkVariable<Vector3>();
 
     private float defaultHealth = 60f;
     private float defaultAromr = 0f;
@@ -69,7 +73,7 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
     private float _reloadCountdown;
     private BaseCounter _selectedCounter;
     private GunObject _gunObject;
-    private ulong _playerKilled;
+    private ulong _killerClientID;
 
     private void Start()
     {
@@ -90,6 +94,8 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
         _playerMoney.OnValueChanged += PlayerMoneyValueChanged;
         _isAlive.OnValueChanged += PlayerIsAliveValueChanged;
         _killScore.OnValueChanged += PlayerKillScoreValueChanged;
+        _goldCoinCount.OnValueChanged += PlayerGoldCoinCountOnValueChanged;
+        _spawnPosition.OnValueChanged += PlayerSpawnPositionOnValueChanged;
         if (IsServer)
         {
             NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManagerOnClientDisconnectCallback;
@@ -97,9 +103,18 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
         if (IsOwner)
         {
             LocalInstance = this;
-            // FollowPlayerCamera.Instance.CameraFollow(gameObject.transform);
         }
         OnAnyPlayerSpawned?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void PlayerGoldCoinCountOnValueChanged(int previousValue, int newValue)
+    {
+        Debug.Log("Gold Coin of " + OwnerClientId + " is " + _goldCoinCount.Value);
+    }
+
+    private void PlayerSpawnPositionOnValueChanged(Vector3 previousValue, Vector3 newValue)
+    {
+        gameObject.transform.position = _spawnPosition.Value;
     }
 
     private void PlayerKillScoreValueChanged(int previousValue, int newValue)
@@ -117,10 +132,20 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
 
     private void PlayerIsAliveValueChanged(bool previousValue, bool newValue)
     {
-        OnDead?.Invoke(this, new OnDeadArgs
+        if (!_isAlive.Value)
         {
-            ClientID = _playerKilled
-        });
+            OnDead?.Invoke(this, new OnDeadArgs
+            {
+                KillerClientID = _killerClientID,
+                OwnerClientID = OwnerClientId
+            });
+
+        }
+
+        if (newValue)
+        {
+            OnReSpawn?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     private void PlayerArmorValueChanged(float previousValue, float newValue)
@@ -141,7 +166,6 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
     private void Update()
     {
         if (!IsOwner) return;
-
         if (HasGunObject())
         {
             if (GetGunObject().IsReload())
@@ -313,7 +337,7 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
         Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
         float moveDistance = GetMovementSpeed() * Time.deltaTime;
         float playerRadius = 0.7f;
-        float playerHeight = 2.6f;
+        float playerHeight = 2.8f;
         bool canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDir, moveDistance);
 
         if (!canMove)
@@ -443,7 +467,6 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
 
     public void TakeDamage(float damage, ulong shootOwnerClientID)
     {
-        // if (!_isAlive.Value) return;
         TakeDamageServerRpc(damage, shootOwnerClientID);
         OnTakeDamage?.Invoke(this, EventArgs.Empty);
 
@@ -487,7 +510,7 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
     private void Dead(ulong clientID)
     {
         DeadClientRpc();
-        _playerKilled = clientID;
+        _killerClientID = clientID;
     }
 
     [ClientRpc]
@@ -500,13 +523,46 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
         {
             ReloadProgressNormalized = 0
         });
-        // GameMultiplayer.Instance.DestroyGunObject(GetGunObject());
     }
 
     public void AddKillScoreNetworkVariable(int score)
     {
         Debug.Log("player " + OwnerClientId + " use Add kill score");
         _killScore.Value += score;
+    }
+
+    public void SetSpawnPosition(Vector3 vector3)
+    {
+        if (_spawnPosition.Value == vector3)
+        {
+            _spawnPosition.Value += new Vector3(0.1f, 0, 0);
+            return;
+        }
+        _spawnPosition.Value = vector3;
+    }
+
+    public void ReSpawn()
+    {
+        PlayerSetup(defaultHealth, defaultAromr, _playerMoney.Value, defaultIsAlive);
+        ReSpawnClientRpc();
+    }
+
+    [ClientRpc]
+    private void ReSpawnClientRpc()
+    {
+        Collider playerCollider = GetComponent<Collider>();
+        playerCollider.enabled = true;
+    }
+
+    public void AddGoldCoin(int goldCoin)
+    {
+        AddGoldCoinServerRpc(goldCoin);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void AddGoldCoinServerRpc(int goldCoin)
+    {
+        this._goldCoinCount.Value += goldCoin;
     }
 
     public int GetKillScore()

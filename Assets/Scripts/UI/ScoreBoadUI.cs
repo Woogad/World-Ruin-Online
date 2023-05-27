@@ -12,7 +12,7 @@ public class ScoreBoadUI : MonoBehaviour
 
     private void Start()
     {
-        ScoreBoardManager.Instance.OnScoreBoardPlayersCreate += ScoreBoardManagerOnScoreBoardPlayerCreate;
+        ScoreBoardManager.Instance.OnScoreBoardPlayersCreated += ScoreBoardManagerOnScoreBoardPlayerCreated;
         ScoreBoardManager.Instance.OnDeleteScoreBoardItem += ScoreBoardManagerOnDeleteScoreBoardItem;
         ScoreBoardManager.Instance.OnScoreBoardKillChanged += ScoreBoardManagerOnScoreBoardKillChanged;
         GameInput.Instance.OnViewScoreBoardHoldAction += GameInputOnViewScoreBoardHoldAction;
@@ -44,7 +44,7 @@ public class ScoreBoadUI : MonoBehaviour
         }
     }
 
-    private void ScoreBoardManagerOnScoreBoardPlayerCreate(object sender, ScoreBoardManager.OnScoreBoardPlayersCreateArgs e)
+    private void ScoreBoardManagerOnScoreBoardPlayerCreated(object sender, ScoreBoardManager.OnScoreBoardPlayersCreateArgs e)
     {
         CreateVisualScoreBoard(e.ScoreBoardDictionary);
     }

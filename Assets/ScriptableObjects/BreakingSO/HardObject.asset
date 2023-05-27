@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6029c55e19507e747919335a9e363a68, type: 3}
   m_Name: HardObject
   m_EditorClassIdentifier: 
-  MaxHp: 0
+  MaxHp: 1000
