@@ -336,9 +336,8 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
 
         Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
         float moveDistance = GetMovementSpeed() * Time.deltaTime;
-        float playerRadius = 0.7f;
-        float playerHeight = 2.8f;
-        bool canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDir, moveDistance);
+        float playerRadius = 0.6f;
+        bool canMove = !Physics.BoxCast(transform.position, Vector3.one * playerRadius, moveDir, Quaternion.identity, moveDistance);
 
         if (!canMove)
         //* Cannot move towards moveDir
@@ -346,7 +345,7 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
         //* Try only x movement
         {
             Vector3 moveDirX = new Vector3(moveDir.x, 0, 0).normalized;
-            canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirX, moveDistance);
+            canMove = !Physics.BoxCast(transform.position, Vector3.one * playerRadius, moveDirX, Quaternion.identity, moveDistance);
             if (canMove)
             {
                 //* Can move only in x
@@ -358,7 +357,7 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
 
                 //* Try only z movement
                 Vector3 moveDirZ = new Vector3(0, 0, moveDir.z).normalized;
-                canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirZ, moveDistance);
+                canMove = !Physics.BoxCast(transform.position, Vector3.one * playerRadius, moveDirZ, Quaternion.identity, moveDistance);
                 if (canMove)
                 {
                     //* Can move only in z
