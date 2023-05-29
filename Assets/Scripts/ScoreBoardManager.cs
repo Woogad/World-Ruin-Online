@@ -25,7 +25,6 @@ public class ScoreBoardManager : NetworkBehaviour
     private Dictionary<ulong, ScoreBoardStruct> _scoreBoardDictionary;
     [SerializeField] string tt;
     private int _scorePerKill = 1;
-    private int _testNum; //! for test player num
 
     private void Awake()
     {
@@ -166,9 +165,5 @@ public class ScoreBoardManager : NetworkBehaviour
         {
             ClientID = clientID
         });
-        // OnScoreBoardKillChanged?.Invoke(this, new OnScoreBoardScoreChangedArgs
-        // {
-        //     ClientID = clientID
-        // });
     }
 }

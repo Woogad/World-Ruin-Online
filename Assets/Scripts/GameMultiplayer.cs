@@ -9,6 +9,7 @@ public class GameMultiplayer : NetworkBehaviour
     public static GameMultiplayer Instance { get; private set; }
 
     [SerializeField] private GunObjectListSO _gunObjectListSO;
+    [SerializeField] private GoldCoinSO _goldCoinSO;
 
     private void Awake()
     {
@@ -94,6 +95,20 @@ public class GameMultiplayer : NetworkBehaviour
         GunObject gunObject = gunNetworkObject.GetComponent<GunObject>();
 
         gunObject.ClearGunObjectOnParent();
+    }
+
+    public void SpawnGoldCoinObject(Vector3 gameObjectPosition, Vector2 spawnArea = default)
+    {
+        SpawnGoldCoinObjectServerRpc(gameObjectPosition, spawnArea);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SpawnGoldCoinObjectServerRpc(Vector3 gameObjectPosition, Vector2 spawnArea = default)
+    {
+
+        Transform goldCoinTransform = Instantiate(_goldCoinSO.Prefab, gameObjectPosition + new Vector3(UnityEngine.Random.Range(-spawnArea.x, spawnArea.x), 1, UnityEngine.Random.Range(-spawnArea.y, spawnArea.y)), Quaternion.identity);
+        NetworkObject goldCoinNetworkObject = goldCoinTransform.GetComponent<NetworkObject>();
+        goldCoinNetworkObject.Spawn(true);
     }
 
 }

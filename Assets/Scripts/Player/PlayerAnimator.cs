@@ -37,7 +37,7 @@ public class PlayerAnimator : NetworkBehaviour
         GameInput.Instance.OnShootWeaponHoldAction += GameInputOnShootWeaponHoldAction;
     }
 
-    private void PlayerOnReSpawn(object sender, EventArgs e)
+    private void PlayerOnReSpawn(object sender, Player.OnReSpawnArgs e)
     {
         _animator.SetBool(IS_DEAD, false);
     }

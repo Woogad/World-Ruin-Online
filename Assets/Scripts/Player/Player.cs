@@ -20,13 +20,18 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
     public event EventHandler OnInteract;
     public event EventHandler OnAmmoChanged;
     public event EventHandler OnMoneyChanged;
+    public event EventHandler OnGoldCoinChanged;
     public event EventHandler OnRelaod;
     public event EventHandler OnShoot;
     public event EventHandler OnArmorChanged;
     public event EventHandler OnHealthChanged;
     public event EventHandler OnPickGun;
     public event EventHandler OnTakeDamage;
-    public event EventHandler OnReSpawn;
+    public event EventHandler<OnReSpawnArgs> OnReSpawn;
+    public class OnReSpawnArgs : EventArgs
+    {
+        public bool IsProtection;
+    }
     public event EventHandler<OnDeadArgs> OnDead;
     public class OnDeadArgs : EventArgs
     {
@@ -109,7 +114,7 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
 
     private void PlayerGoldCoinCountOnValueChanged(int previousValue, int newValue)
     {
-        Debug.Log("Gold Coin of " + OwnerClientId + " is " + _goldCoinCount.Value);
+        OnGoldCoinChanged?.Invoke(this, EventArgs.Empty);
     }
 
     private void PlayerSpawnPositionOnValueChanged(Vector3 previousValue, Vector3 newValue)
@@ -144,7 +149,10 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
 
         if (newValue)
         {
-            OnReSpawn?.Invoke(this, EventArgs.Empty);
+            OnReSpawn?.Invoke(this, new OnReSpawnArgs
+            {
+                IsProtection = true
+            });
         }
     }
 
@@ -510,6 +518,12 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
     {
         DeadClientRpc();
         _killerClientID = clientID;
+        Vector2 goldCoinSpawnArea = new Vector2(2, 2);
+        for (int i = 0; i < GetGoldCoin(); i++)
+        {
+            GameMultiplayer.Instance.SpawnGoldCoinObject(gameObject.transform.position, goldCoinSpawnArea);
+        }
+        AddGoldCoin(-GetGoldCoin());
     }
 
     [ClientRpc]
@@ -549,8 +563,19 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
     [ClientRpc]
     private void ReSpawnClientRpc()
     {
+        StartCoroutine(ReSpawnProtection());
+    }
+
+    private IEnumerator ReSpawnProtection()
+    {
+        float timerProtection = 4f;
+        yield return new WaitForSeconds(timerProtection);
         Collider playerCollider = GetComponent<Collider>();
         playerCollider.enabled = true;
+        OnReSpawn?.Invoke(this, new OnReSpawnArgs
+        {
+            IsProtection = false
+        });
     }
 
     public void AddGoldCoin(int goldCoin)
@@ -562,6 +587,11 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
     private void AddGoldCoinServerRpc(int goldCoin)
     {
         this._goldCoinCount.Value += goldCoin;
+    }
+
+    public int GetGoldCoin()
+    {
+        return this._goldCoinCount.Value;
     }
 
     public int GetKillScore()
