@@ -8,8 +8,14 @@ using Unity.Netcode;
 
 public class GameOverUI : MonoBehaviour
 {
-    // [SerializeField] private TextMeshProUGUI _winerScore; //TODO For later, Winer text
+    [SerializeField] private TextMeshProUGUI _winerUsernameText;
+    [SerializeField] private TextMeshProUGUI _scoreCountText;
+    [SerializeField] private TextMeshProUGUI _winerHeaderText;
     [SerializeField] private Button _mainMenuBn;
+
+    private string _winerUsername;
+    private int _maxScoreCount;
+    private List<ScoreBoardStruct> gg = new List<ScoreBoardStruct>();
 
     private void Awake()
     {
@@ -30,6 +36,7 @@ public class GameOverUI : MonoBehaviour
     {
         if (GameManager.Instance.IsGameOver())
         {
+            UpdateVisual();
             Show();
         }
         else
@@ -38,9 +45,39 @@ public class GameOverUI : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void UpdateVisual()
     {
+        foreach (var kvp in ScoreBoardManager.Instance.GetScoreBoardDictionary())
+        //* Check most score.
+        {
+            if (kvp.Value.KillScore < _maxScoreCount) continue;
+            if (kvp.Value.KillScore == _maxScoreCount)
+            {
+                gg.Add(kvp.Value);
+                continue;
+            }
+            else
+            {
+                _winerUsername = kvp.Value.Username.ToString();
+                _maxScoreCount = kvp.Value.KillScore;
+            }
+        }
+
+        if (gg.Count != 0)
+        //* If there have same score.
+        {
+            foreach (var item in gg)
+            {
+                if (item.KillScore != _maxScoreCount) continue;
+                _winerHeaderText.text = "Draw";
+                _winerUsername = "---";
+            }
+        }
+        _winerUsernameText.text = _winerUsername;
+        _scoreCountText.text = _maxScoreCount.ToString();
+
     }
+
 
     private void Show()
     {

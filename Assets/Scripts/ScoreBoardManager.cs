@@ -16,12 +16,6 @@ public class ScoreBoardManager : NetworkBehaviour
         public ulong ClientID;
         public int Value = default;
     }
-    public event EventHandler<OnScoreBoardPlayersCreateArgs> OnScoreBoardPlayersCreated;
-    public class OnScoreBoardPlayersCreateArgs : EventArgs
-    {
-        public Dictionary<ulong, ScoreBoardStruct> ScoreBoardDictionary;
-    }
-
     private Dictionary<ulong, ScoreBoardStruct> _scoreBoardDictionary;
     [SerializeField] string tt;
     private int _scorePerKill = 1;
@@ -88,32 +82,10 @@ public class ScoreBoardManager : NetworkBehaviour
                     }
                     */
                     //! "gg" is test player name only change later!
-                    AddScoreBoardDictionaryClientRpc(clientID, new ScoreBoardStruct(clientID.ToString()));
+                    AddScoreBoardDictionaryClientRpc(clientID, new ScoreBoardStruct("Player " + clientID.ToString()));
                 }
             }
         }
-        if (GameManager.Instance.IsGamePlaying())
-        {
-            if (!IsOwner) return;
-            OnScoreBoardPlayerCreateEventServerRpc();
-        }
-
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    private void OnScoreBoardPlayerCreateEventServerRpc()
-    {
-        OnScoreBoardPlayerCreateEventClientRpc();
-    }
-
-    [ClientRpc]
-    private void OnScoreBoardPlayerCreateEventClientRpc()
-    {
-        Debug.Log(_scoreBoardDictionary.Count);
-        OnScoreBoardPlayersCreated?.Invoke(this, new OnScoreBoardPlayersCreateArgs
-        {
-            ScoreBoardDictionary = _scoreBoardDictionary,
-        });
     }
 
     [ClientRpc]
@@ -165,5 +137,10 @@ public class ScoreBoardManager : NetworkBehaviour
         {
             ClientID = clientID
         });
+    }
+
+    public Dictionary<ulong, ScoreBoardStruct> GetScoreBoardDictionary()
+    {
+        return this._scoreBoardDictionary;
     }
 }

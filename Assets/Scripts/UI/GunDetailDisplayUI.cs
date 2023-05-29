@@ -4,10 +4,11 @@ using UnityEngine;
 using TMPro;
 using System;
 
-public class GunModeDisplayUI : MonoBehaviour
+public class GunDetailDisplayUI : MonoBehaviour
 {
     [SerializeField] private Player _player;
     [SerializeField] private TextMeshProUGUI _gunModeText;
+    [SerializeField] private TextMeshProUGUI _gunNameText;
 
     private void Start()
     {
@@ -24,6 +25,13 @@ public class GunModeDisplayUI : MonoBehaviour
     {
         if (_player.HasGunObject())
         {
+            _gunNameText.text = _player.GetGunObject().GetGunObjectSO().GunName;
+            _gunModeText.text = gunMode;
+        }
+        else
+        {
+
+            _gunNameText.text = "---";
             _gunModeText.text = gunMode;
         }
     }

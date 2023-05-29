@@ -12,11 +12,19 @@ public class ScoreBoadUI : MonoBehaviour
 
     private void Start()
     {
-        ScoreBoardManager.Instance.OnScoreBoardPlayersCreated += ScoreBoardManagerOnScoreBoardPlayerCreated;
         ScoreBoardManager.Instance.OnDeleteScoreBoardItem += ScoreBoardManagerOnDeleteScoreBoardItem;
         ScoreBoardManager.Instance.OnScoreBoardKillChanged += ScoreBoardManagerOnScoreBoardKillChanged;
+        GameManager.Instance.OnStateChanged += GameManagerOnStateChanged;
         GameInput.Instance.OnViewScoreBoardHoldAction += GameInputOnViewScoreBoardHoldAction;
         Hide();
+    }
+
+    private void GameManagerOnStateChanged(object sender, EventArgs e)
+    {
+        if (GameManager.Instance.IsGamePlaying())
+        {
+            CreateVisualScoreBoard(ScoreBoardManager.Instance.GetScoreBoardDictionary());
+        }
     }
 
     private void ScoreBoardManagerOnScoreBoardKillChanged(object sender, ScoreBoardManager.OnScoreBoardScoreChangedArgs e)
@@ -44,11 +52,6 @@ public class ScoreBoadUI : MonoBehaviour
         }
     }
 
-    private void ScoreBoardManagerOnScoreBoardPlayerCreated(object sender, ScoreBoardManager.OnScoreBoardPlayersCreateArgs e)
-    {
-        CreateVisualScoreBoard(e.ScoreBoardDictionary);
-    }
-
     private void CreateVisualScoreBoard(Dictionary<ulong, ScoreBoardStruct> scoreBoardDictionary)
     {
 
@@ -70,4 +73,5 @@ public class ScoreBoadUI : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
+
 }
