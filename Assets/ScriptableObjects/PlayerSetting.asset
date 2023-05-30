@@ -15,3 +15,4 @@ MonoBehaviour:
   MaxHealth: 100
   MaxArmor: 100
   MaxMoney: 10000
+  MoveSpeed: 8

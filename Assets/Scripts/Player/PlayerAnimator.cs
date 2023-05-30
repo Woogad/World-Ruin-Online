@@ -73,7 +73,6 @@ public class PlayerAnimator : NetworkBehaviour
         _networkAnimator.SetTrigger(DRAW_GUN);
     }
 
-
     private void Update()
     {
         if (!IsOwner) return;
@@ -83,6 +82,14 @@ public class PlayerAnimator : NetworkBehaviour
             {
                 _animator.SetBool(IS_SHOOT_AUTO, _isHoldShootAction && _player.GetGunObject().getCurrentAmmo() != 0);
             }
+            else
+            {
+                _animator.SetBool(IS_SHOOT_AUTO, false);
+            }
+        }
+        else
+        {
+            _animator.SetBool(IS_SHOOT_AUTO, false);
         }
         _animator.SetBool(IS_WALKING, _player.IsWalking());
 

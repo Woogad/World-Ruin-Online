@@ -27,6 +27,7 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
     public event EventHandler OnHealthChanged;
     public event EventHandler OnPickGun;
     public event EventHandler OnTakeDamage;
+    public event EventHandler OnKillScore;
     public event EventHandler<OnReSpawnArgs> OnReSpawn;
     public class OnReSpawnArgs : EventArgs
     {
@@ -56,9 +57,9 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
     }
 
     [SerializeField] private PlayerSO _playerSO;
-    [SerializeField] private float _moveSpeed = 7f;
     [SerializeField] private LayerMask _counterLayerMask;
     [SerializeField] private Transform _gunObjectHoldPoint;
+    [SerializeField] private GameObject[] _playerVisualList;
 
     private NetworkVariable<float> _playerHealth = new NetworkVariable<float>();
     private NetworkVariable<float> _playerArmor = new NetworkVariable<float>();
@@ -68,10 +69,10 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
     private NetworkVariable<int> _goldCoinCount = new NetworkVariable<int>();
     private NetworkVariable<Vector3> _spawnPosition = new NetworkVariable<Vector3>();
 
-    private float defaultHealth = 60f;
+    private float defaultHealth = 100f;
     private float defaultAromr = 0f;
     private bool defaultIsAlive = true;
-    [SerializeField] private int defaulMoney = 5000; //! SerializeField for testing
+    private int defaulMoney = 5000;
 
     private bool _isHoldShootAction;
     private bool _isWalking;
@@ -108,6 +109,10 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
         if (IsOwner)
         {
             LocalInstance = this;
+            foreach (GameObject visual in _playerVisualList)
+            {
+                SetVisualToRenderOnTop(visual);
+            }
         }
         OnAnyPlayerSpawned?.Invoke(this, EventArgs.Empty);
     }
@@ -119,12 +124,14 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
 
     private void PlayerSpawnPositionOnValueChanged(Vector3 previousValue, Vector3 newValue)
     {
+        if (!IsOwner) return;
         gameObject.transform.position = _spawnPosition.Value;
     }
 
     private void PlayerKillScoreValueChanged(int previousValue, int newValue)
     {
-        Debug.Log("Player " + OwnerClientId + " Scorekill " + _killScore.Value);
+        if (!IsOwner) return;
+        OnKillScore?.Invoke(this, EventArgs.Empty);
     }
 
     private void NetworkManagerOnClientDisconnectCallback(ulong clientID)
@@ -158,16 +165,19 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
 
     private void PlayerArmorValueChanged(float previousValue, float newValue)
     {
+        if (!IsOwner) return;
         OnArmorChanged?.Invoke(this, EventArgs.Empty);
     }
 
     private void PlayerMoneyValueChanged(int previousValue, int newValue)
     {
+        if (!IsOwner) return;
         OnMoneyChanged?.Invoke(this, EventArgs.Empty);
     }
 
     private void PlayerHealthValueChanged(float previousValue, float newValue)
     {
+        if (!IsOwner) return;
         OnHealthChanged?.Invoke(this, EventArgs.Empty);
     }
 
@@ -399,10 +409,10 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
             if (GetGunObject().IsReload())
             {
                 float moveReduct = 0.4f;
-                return _moveSpeed - (_moveSpeed * moveReduct);
+                return _playerSO.MoveSpeed - (_playerSO.MoveSpeed * moveReduct);
             }
         }
-        return _moveSpeed;
+        return _playerSO.MoveSpeed;
     }
 
     private void SetSelectedCounter(BaseCounter baseCounter)
@@ -419,6 +429,7 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
     {
         return this._playerMoney.Value;
     }
+
     public void AddPlayerMoney(int money)
     {
         AddPlayerMoneyServerRpc(money);
@@ -440,6 +451,7 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
     {
         AddPlayerHealthServerRpc(health);
     }
+
     [ServerRpc(RequireOwnership = false)]
     private void AddPlayerHealthServerRpc(float health)
     {
@@ -544,6 +556,12 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
         _killScore.Value += score;
     }
 
+    private void SetVisualToRenderOnTop(GameObject gameObject)
+    {
+        string layer = "RenderOnTop";
+        gameObject.layer = LayerMask.NameToLayer(layer);
+    }
+
     public void SetSpawnPosition(Vector3 vector3)
     {
         if (_spawnPosition.Value == vector3)
@@ -629,6 +647,11 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
         this._gunObject = gunObject;
         if (HasGunObject())
         {
+
+            if (IsOwner)
+            {
+                SetVisualToRenderOnTop(_gunObject.GetGunVisual());
+            }
             OnPickGun?.Invoke(this, EventArgs.Empty);
             OnAnyPlayerPickGun?.Invoke(this, EventArgs.Empty);
             OnGunModeChanged?.Invoke(this, new OnGunModeChangedArgs
@@ -646,6 +669,10 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
     public void ClearGunObject()
     {
         this._gunObject = null;
+        OnGunModeChanged?.Invoke(this, new OnGunModeChangedArgs
+        {
+            GunMode = GunObject.GunMode.None
+        });
     }
 
     public bool HasGunObject()

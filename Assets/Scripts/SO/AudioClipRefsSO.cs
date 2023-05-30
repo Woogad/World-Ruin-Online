@@ -12,4 +12,7 @@ public class AudioClipRefsSO : ScriptableObject
     public AudioClip EmptyShoot;
     public AudioClip PickGun;
     public AudioClip PlayerDead;
+    public AudioClip TradeCoin;
+    public AudioClip KillScore;
+    public AudioClip FailInteract;
 }

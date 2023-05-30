@@ -6,10 +6,12 @@ using UnityEngine;
 public class GunShopCounter : BaseCounter
 {
     public static event EventHandler OnAnyBuyGun;
+    public static event EventHandler OnAnyFailBuyGun;
 
     public static void ResetStaticEvent()
     {
         OnAnyBuyGun = null;
+        OnAnyFailBuyGun = null;
     }
 
     [SerializeField] private GunObjectSO _gunObjectSO;
@@ -42,17 +44,18 @@ public class GunShopCounter : BaseCounter
     {
         if (money >= _gunObjectSO.Price)
         {
+            OnAnyBuyGun?.Invoke(this, EventArgs.Empty);
             return true;
         }
         else
         {
+            OnAnyFailBuyGun?.Invoke(this, EventArgs.Empty);
             return false;
         }
     }
 
     private void Buy(Player player)
     {
-        OnAnyBuyGun?.Invoke(this, EventArgs.Empty);
         int playerMoney = player.GetPlayerMoney();
         player.AddPlayerMoney(-_gunObjectSO.Price);
     }

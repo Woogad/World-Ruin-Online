@@ -15,7 +15,7 @@ public class GameOverUI : MonoBehaviour
 
     private string _winerUsername;
     private int _maxScoreCount;
-    private List<ScoreBoardStruct> gg = new List<ScoreBoardStruct>();
+    private List<ScoreBoardStruct> _scoreSameValue = new List<ScoreBoardStruct>();
 
     private void Awake()
     {
@@ -53,7 +53,7 @@ public class GameOverUI : MonoBehaviour
             if (kvp.Value.KillScore < _maxScoreCount) continue;
             if (kvp.Value.KillScore == _maxScoreCount)
             {
-                gg.Add(kvp.Value);
+                _scoreSameValue.Add(kvp.Value);
                 continue;
             }
             else
@@ -63,10 +63,10 @@ public class GameOverUI : MonoBehaviour
             }
         }
 
-        if (gg.Count != 0)
+        if (_scoreSameValue.Count != 0)
         //* If there have same score.
         {
-            foreach (var item in gg)
+            foreach (var item in _scoreSameValue)
             {
                 if (item.KillScore != _maxScoreCount) continue;
                 _winerHeaderText.text = "Draw";

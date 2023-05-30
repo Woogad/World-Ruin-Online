@@ -6,10 +6,12 @@ using UnityEngine;
 public class ItemShopCounter : BaseCounter
 {
     public static event EventHandler OnAnyBuyItem;
+    public static event EventHandler OnAnyFailBuyItem;
 
     public static void ResetStaticEvent()
     {
         OnAnyBuyItem = null;
+        OnAnyFailBuyItem = null;
     }
 
     [SerializeField] private ItemObjectSO _itemObjectSO;
@@ -56,22 +58,35 @@ public class ItemShopCounter : BaseCounter
             {
                 case ItemType.ItemTypeList.Health:
                     float playerHealth = player.GetPlayerHealth();
-                    if (playerHealth == player.GetPlayerSO().MaxHealth) CanBuy = false;
+                    if (playerHealth == player.GetPlayerSO().MaxHealth)
+                    {
+                        OnAnyFailBuyItem?.Invoke(this, EventArgs.Empty);
+                        CanBuy = false;
+                    }
                     break;
 
                 case ItemType.ItemTypeList.Armor:
                     float playerArmor = player.GetPlayerArmor();
-                    if (playerArmor == player.GetPlayerSO().MaxArmor) CanBuy = false;
+                    if (playerArmor == player.GetPlayerSO().MaxArmor)
+                    {
+                        OnAnyFailBuyItem?.Invoke(this, EventArgs.Empty);
+                        CanBuy = false;
+                    }
                     break;
 
                 case ItemType.ItemTypeList.Megazine:
                     if (!player.HasGunObject())
                     {
+                        OnAnyFailBuyItem?.Invoke(this, EventArgs.Empty);
                         CanBuy = false;
                         break;
                     }
                     int currentMagazine = player.GetGunObject().getCurrentMagazine();
-                    if (currentMagazine == player.GetGunObject().GetGunObjectSO().MaxMagazine) CanBuy = false;
+                    if (currentMagazine == player.GetGunObject().GetGunObjectSO().MaxMagazine)
+                    {
+                        OnAnyFailBuyItem?.Invoke(this, EventArgs.Empty);
+                        CanBuy = false;
+                    }
                     break;
 
                 default:
@@ -83,6 +98,7 @@ public class ItemShopCounter : BaseCounter
         }
         else
         {
+            OnAnyFailBuyItem?.Invoke(this, EventArgs.Empty);
             return false;
         }
     }

@@ -29,3 +29,6 @@ MonoBehaviour:
   EmptyShoot: {fileID: 8300000, guid: 70d3ca6def0bf5f45bf14841fc79bba5, type: 3}
   PickGun: {fileID: 8300000, guid: 006107f7b321e3d4a960ee0d33f81e9d, type: 3}
   PlayerDead: {fileID: 8300000, guid: bb9821fd19a1df34cad3abba7894c559, type: 3}
+  TradeCoin: {fileID: 8300000, guid: fbb09c2c804765d46b472d99c7d76609, type: 3}
+  KillScore: {fileID: 8300000, guid: 18c59b144ea5f4d4f977108137f35611, type: 3}
+  FailInteract: {fileID: 8300000, guid: 42a9af135326e9f448938776d85f5c28, type: 3}

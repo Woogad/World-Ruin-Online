@@ -21,7 +21,7 @@ public class GunDetailDisplayUI : MonoBehaviour
         UpdateVisual(e.GunMode.ToString());
     }
 
-    private void UpdateVisual(string gunMode = "Semi")
+    private void UpdateVisual(string gunMode = "None")
     {
         if (_player.HasGunObject())
         {

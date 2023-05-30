@@ -443,7 +443,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1288365084030577398}
   - component: {fileID: 5233968804806775239}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: AmmoDisplay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1122,7 +1122,7 @@ GameObject:
   - component: {fileID: 3058180153936901818}
   - component: {fileID: 5814024322055107757}
   - component: {fileID: 3745389621820803047}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: ProtectionIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2276,7 +2276,7 @@ GameObject:
   - component: {fileID: 8529831821303981369}
   - component: {fileID: 1435569261645867737}
   - component: {fileID: 5959935855929839928}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: AmmoAmount_text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3679,7 +3679,7 @@ GameObject:
   - component: {fileID: 8728236948437767216}
   - component: {fileID: 9017352170424355133}
   - component: {fileID: 2688110982424915506}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Space_text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5296,11 +5296,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerSO: {fileID: 11400000, guid: 45e9791e2fe374c44b25c9b9ae8cfaab, type: 2}
-  _moveSpeed: 7
   _counterLayerMask:
     serializedVersion: 2
     m_Bits: 64
   _gunObjectHoldPoint: {fileID: 3820878906025977947}
+  _playerVisualList:
+  - {fileID: 3089088692051310261}
+  - {fileID: 7312874415647164238}
+  - {fileID: 6024693753964404006}
+  - {fileID: 1073612948329699466}
+  - {fileID: 6548453667601102379}
   defaulMoney: 5000
 --- !u!114 &6201331469478917117
 MonoBehaviour:
@@ -7900,7 +7905,7 @@ GameObject:
   - component: {fileID: 183726508096002609}
   - component: {fileID: 5786991040281595468}
   - component: {fileID: 8483355201219160981}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: PlayerProtectionUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10177,7 +10182,7 @@ GameObject:
   - component: {fileID: 8270823909346987963}
   - component: {fileID: 6320817663551417977}
   - component: {fileID: 7453411890142716319}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: MegazineAmount_text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12180,7 +12185,7 @@ GameObject:
   - component: {fileID: 3768050414037120326}
   - component: {fileID: 4233123455177951219}
   - component: {fileID: 2629313176378719627}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: ReloadProgress
   m_TagString: Untagged
   m_Icon: {fileID: 0}

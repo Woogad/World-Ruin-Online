@@ -201,6 +201,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gunObjectSO: {fileID: 11400000, guid: 18ef35ce364d90543a947e35c0cc90d0, type: 2}
   _fireEndPoint: {fileID: 8950856460967392256}
+  _gunVisual: {fileID: 6184965356454034544}
 --- !u!114 &-5533041025451764782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -320,6 +321,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: w_galil
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: abf4431af51b3a947bdff78cfd9cd2be, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: abf4431af51b3a947bdff78cfd9cd2be, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -381,6 +386,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: abf4431af51b3a947bdff78cfd9cd2be, type: 3}
+--- !u!1 &6184965356454034544 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100000, guid: abf4431af51b3a947bdff78cfd9cd2be,
+    type: 3}
+  m_PrefabInstance: {fileID: 6184965356454132432}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6184965356454256720 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: abf4431af51b3a947bdff78cfd9cd2be,
@@ -398,6 +409,14 @@ PrefabInstance:
     - target: {fileID: 1743301284569550, guid: ad2ab49d0a2a17148bd51c93d977bdbc, type: 3}
       propertyPath: m_Name
       value: MuzzleFlash01
+      objectReference: {fileID: 0}
+    - target: {fileID: 1743301284569550, guid: ad2ab49d0a2a17148bd51c93d977bdbc, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1992675705445476, guid: ad2ab49d0a2a17148bd51c93d977bdbc, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1992675705445476, guid: ad2ab49d0a2a17148bd51c93d977bdbc, type: 3}
       propertyPath: m_IsActive

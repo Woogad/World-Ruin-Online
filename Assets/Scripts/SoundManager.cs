@@ -20,9 +20,35 @@ public class SoundManager : MonoBehaviour
     private void Start()
     {
         GunShopCounter.OnAnyBuyGun += GunShopCounterOnAnyBuyGun;
-        ItemShopCounter.OnAnyBuyItem += ItemShopCounterOnAnyBuyItem;
+        GunShopCounter.OnAnyFailBuyGun += GunShopCounterOnAnyFailBuyGun;
+        ItemShopCounter.OnAnyBuyItem += ItemShopCounterOnAnyFailBuyItem;
         ClearCounter.OnAnyClearCounterPickObject += ClearCounterOnAnyPickObject;
+        CoinTrader.OnAnyTradeCoin += CoinTraderOnAnyFailTradeCoin;
         Player.OnAnyPlayerPickGun += PlayerOnPickGun;
+    }
+
+    private void CoinTraderOnAnyFailTradeCoin(object sender, System.EventArgs e)
+    {
+        CoinTrader coinTrader = sender as CoinTrader;
+        PlaySound(_audioClipRefsSO.FailInteract, coinTrader.transform.position);
+    }
+
+    private void ItemShopCounterOnAnyFailBuyItem(object sender, System.EventArgs e)
+    {
+        ItemShopCounter itemShopCounter = sender as ItemShopCounter;
+        PlaySound(_audioClipRefsSO.FailInteract, itemShopCounter.transform.position);
+    }
+
+    private void GunShopCounterOnAnyFailBuyGun(object sender, System.EventArgs e)
+    {
+        GunShopCounter gunShopCounter = sender as GunShopCounter;
+        PlaySound(_audioClipRefsSO.FailInteract, gunShopCounter.transform.position);
+    }
+
+    private void CoinTraderOnAnyTradeCoin(object sender, System.EventArgs e)
+    {
+        CoinTrader coinTrader = sender as CoinTrader;
+        PlaySound(_audioClipRefsSO.TradeCoin, coinTrader.transform.position);
     }
 
     private void ClearCounterOnAnyPickObject(object sender, System.EventArgs e)
@@ -39,8 +65,8 @@ public class SoundManager : MonoBehaviour
 
     private void ItemShopCounterOnAnyBuyItem(object sender, System.EventArgs e)
     {
-        ItemShopCounter gunShopCounter = sender as ItemShopCounter;
-        PlaySound(_audioClipRefsSO.BuyObject, gunShopCounter.transform.position);
+        ItemShopCounter itemShopCounter = sender as ItemShopCounter;
+        PlaySound(_audioClipRefsSO.BuyObject, itemShopCounter.transform.position);
     }
 
     private void GunShopCounterOnAnyBuyGun(object sender, System.EventArgs e)
@@ -80,6 +106,11 @@ public class SoundManager : MonoBehaviour
     public void PlayPlayerDead(Vector3 position, float volume)
     {
         PlaySound(_audioClipRefsSO.PlayerDead, position, volume);
+    }
+
+    public void PlayKillScore(Vector3 position, float volume)
+    {
+        PlaySound(_audioClipRefsSO.KillScore, position, volume);
     }
 
     public void UpVolume()

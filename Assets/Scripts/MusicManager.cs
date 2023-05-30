@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +18,7 @@ public class MusicManager : MonoBehaviour
         _volume = PlayerPrefs.GetFloat(PLAYER_PREFS_MUSIC_VOLUME, 0.5f);
         _audioSource = GetComponent<AudioSource>();
     }
+
     private void Start()
     {
         _audioSource.volume = _volume;

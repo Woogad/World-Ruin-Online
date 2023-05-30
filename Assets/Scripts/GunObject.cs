@@ -9,12 +9,14 @@ public class GunObject : NetworkBehaviour
     public event EventHandler OnShoot;
     public enum GunMode
     {
-        Auto,
-        Semi
+        None = 0,
+        Auto = 1,
+        Semi = 2
     }
 
     [SerializeField] private GunObjectSO _gunObjectSO;
     [SerializeField] private Transform _fireEndPoint;
+    [SerializeField] private GameObject _gunVisual;
 
     private IGunObjectParent _gunObjectParent;
     private float _cooldownTimestamp = 0;
@@ -34,7 +36,6 @@ public class GunObject : NetworkBehaviour
     {
         return this._gunObjectSO;
     }
-
 
     public bool TryShoot()
     {
@@ -57,7 +58,8 @@ public class GunObject : NetworkBehaviour
 
     public GunMode CycleGunMode()
     {
-        _gunMode = ((int)_gunMode < 1) ? _gunMode + 1 : 0;
+        _gunMode = ((int)_gunMode < 2) ? _gunMode + 1 : GunMode.Auto;
+        Debug.Log(((int)_gunMode));
         return this._gunMode;
     }
 
@@ -160,7 +162,6 @@ public class GunObject : NetworkBehaviour
         }
         else
         {
-
             SetGunObjectParentServerRpc(gunObjectParent.GetNetworkObject());
         }
     }
@@ -215,6 +216,11 @@ public class GunObject : NetworkBehaviour
     {
         _currentAmmo = _gunObjectSO.MaxAmmmo;
         _currentMagazine = _gunObjectSO.MaxMagazine / 2;
+    }
+
+    public GameObject GetGunVisual()
+    {
+        return this._gunVisual;
     }
 
     public int getCurrentAmmo()
