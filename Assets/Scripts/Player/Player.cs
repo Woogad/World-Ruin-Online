@@ -552,7 +552,6 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
 
     public void AddKillScoreNetworkVariable(int score)
     {
-        Debug.Log("player " + OwnerClientId + " use Add kill score");
         _killScore.Value += score;
     }
 

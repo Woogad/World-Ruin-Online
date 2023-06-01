@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class WallVisual : MonoBehaviour
 {
-    [SerializeField] GameObject _wallVisual;
+    [SerializeField] private GameObject _wallVisual;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent<Player>(out Player player))
@@ -18,7 +19,13 @@ public class WallVisual : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        HideWall();
+        if (other.TryGetComponent<Player>(out Player player))
+        {
+            if (player.OwnerClientId == Player.LocalInstance.OwnerClientId)
+            {
+                HideWall();
+            }
+        }
     }
 
     private void ShowWall()

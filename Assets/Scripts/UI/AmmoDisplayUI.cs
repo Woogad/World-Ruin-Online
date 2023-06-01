@@ -26,7 +26,6 @@ public class AmmoDisplayUI : MonoBehaviour
 
     private void PlayerOnInteract(object sender, EventArgs e)
     {
-        Debug.Log("Player has gun? " + _player.HasGunObject());
         if (_player.HasGunObject())
         {
             UpdateVisual();

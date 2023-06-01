@@ -59,7 +59,6 @@ public class GunObject : NetworkBehaviour
     public GunMode CycleGunMode()
     {
         _gunMode = ((int)_gunMode < 2) ? _gunMode + 1 : GunMode.Auto;
-        Debug.Log(((int)_gunMode));
         return this._gunMode;
     }
 
@@ -136,7 +135,6 @@ public class GunObject : NetworkBehaviour
     {
         if (_currentMagazine != 0)
         {
-            Debug.Log("reload");
             int reloadAmount = _gunObjectSO.MaxAmmmo - _currentAmmo;
             reloadAmount = (_currentMagazine - reloadAmount) >= 0 ? reloadAmount : _currentMagazine;
             _currentAmmo += reloadAmount;
