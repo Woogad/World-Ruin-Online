@@ -19,7 +19,7 @@ public class GunShopCounter : BaseCounter
     public override void Interact(Player player)
     {
         if (!player.HasGunObject())
-        //* if player doesn't carrying object
+        //* if player doesn't carrying anything
         {
             if (CanBuyGun(player.GetPlayerMoney()))
             {
@@ -28,7 +28,7 @@ public class GunShopCounter : BaseCounter
             }
         }
         else
-        //* if player carrying object
+        //* if player carrying something
         {
             if (CanBuyGun(player.GetPlayerMoney()) && player.GetGunObject().GetGunObjectSO() != this._gunObjectSO)
             {
@@ -44,7 +44,6 @@ public class GunShopCounter : BaseCounter
     {
         if (money >= _gunObjectSO.Price)
         {
-            OnAnyBuyGun?.Invoke(this, EventArgs.Empty);
             return true;
         }
         else
@@ -56,6 +55,7 @@ public class GunShopCounter : BaseCounter
 
     private void Buy(Player player)
     {
+        OnAnyBuyGun?.Invoke(this, EventArgs.Empty);
         int playerMoney = player.GetPlayerMoney();
         player.AddPlayerMoney(-_gunObjectSO.Price);
     }

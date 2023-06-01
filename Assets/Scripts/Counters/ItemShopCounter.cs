@@ -44,6 +44,7 @@ public class ItemShopCounter : BaseCounter
         else
         {
             Debug.LogWarning("ItemShopCounter: Can't buy item!");
+            OnAnyFailBuyItem?.Invoke(this, EventArgs.Empty);
         }
     }
 
@@ -60,7 +61,6 @@ public class ItemShopCounter : BaseCounter
                     float playerHealth = player.GetPlayerHealth();
                     if (playerHealth == player.GetPlayerSO().MaxHealth)
                     {
-                        OnAnyFailBuyItem?.Invoke(this, EventArgs.Empty);
                         CanBuy = false;
                     }
                     break;
@@ -69,7 +69,6 @@ public class ItemShopCounter : BaseCounter
                     float playerArmor = player.GetPlayerArmor();
                     if (playerArmor == player.GetPlayerSO().MaxArmor)
                     {
-                        OnAnyFailBuyItem?.Invoke(this, EventArgs.Empty);
                         CanBuy = false;
                     }
                     break;
@@ -77,14 +76,12 @@ public class ItemShopCounter : BaseCounter
                 case ItemType.ItemTypeList.Megazine:
                     if (!player.HasGunObject())
                     {
-                        OnAnyFailBuyItem?.Invoke(this, EventArgs.Empty);
                         CanBuy = false;
                         break;
                     }
                     int currentMagazine = player.GetGunObject().getCurrentMagazine();
                     if (currentMagazine == player.GetGunObject().GetGunObjectSO().MaxMagazine)
                     {
-                        OnAnyFailBuyItem?.Invoke(this, EventArgs.Empty);
                         CanBuy = false;
                     }
                     break;
@@ -98,7 +95,6 @@ public class ItemShopCounter : BaseCounter
         }
         else
         {
-            OnAnyFailBuyItem?.Invoke(this, EventArgs.Empty);
             return false;
         }
     }

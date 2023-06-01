@@ -21,19 +21,25 @@ public class PlayerSound : NetworkBehaviour
         _player.OnShoot += PlayerOnShoot;
         _player.OnDead += PlayerOnDead;
         _player.OnKillScore += PlayerOnKillScore;
+        _player.OnGoldCoinChanged += PlayerOnGoldCoinChanged;
+    }
+
+    private void PlayerOnGoldCoinChanged(object sender, EventArgs e)
+    {
+        float volume = 1f;
+        SoundManager.Instance.PlayPickGoldCoinSound(_player.transform.position, volume);
     }
 
     private void PlayerOnKillScore(object sender, EventArgs e)
     {
-        Debug.Log("hello");
         float volume = 1f;
-        SoundManager.Instance.PlayKillScore(_player.transform.position, volume);
+        SoundManager.Instance.PlayKillScoreSound(_player.transform.position, volume);
     }
 
     private void PlayerOnDead(object sender, EventArgs e)
     {
         float volume = 1f;
-        SoundManager.Instance.PlayPlayerDead(_player.transform.position, volume);
+        SoundManager.Instance.PlayPlayerDeadSound(_player.transform.position, volume);
     }
 
     private void PlayerOnShoot(object sender, EventArgs e)

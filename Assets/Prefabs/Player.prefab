@@ -5306,7 +5306,6 @@ MonoBehaviour:
   - {fileID: 6024693753964404006}
   - {fileID: 1073612948329699466}
   - {fileID: 6548453667601102379}
-  defaulMoney: 5000
 --- !u!114 &6201331469478917117
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5419,8 +5418,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.5, y: 3.2, z: 1.5}
-  m_Center: {x: 0, y: 1.4, z: 0}
+  m_Size: {x: 1.5, y: 2.9, z: 1.5}
+  m_Center: {x: 0, y: 1.6, z: 0}
 --- !u!1 &3972387940850666511
 GameObject:
   m_ObjectHideFlags: 0

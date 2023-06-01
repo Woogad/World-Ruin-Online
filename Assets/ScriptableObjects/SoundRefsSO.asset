@@ -32,3 +32,4 @@ MonoBehaviour:
   TradeCoin: {fileID: 8300000, guid: fbb09c2c804765d46b472d99c7d76609, type: 3}
   KillScore: {fileID: 8300000, guid: 18c59b144ea5f4d4f977108137f35611, type: 3}
   FailInteract: {fileID: 8300000, guid: 42a9af135326e9f448938776d85f5c28, type: 3}
+  PickGoldCoin: {fileID: 8300000, guid: 1f3ca8f3d8512a540886e17e36da5b87, type: 3}

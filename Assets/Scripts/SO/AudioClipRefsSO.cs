@@ -15,4 +15,5 @@ public class AudioClipRefsSO : ScriptableObject
     public AudioClip TradeCoin;
     public AudioClip KillScore;
     public AudioClip FailInteract;
+    public AudioClip PickGoldCoin;
 }

@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Prefab: {fileID: 0}
   Type: 2
-  ItemValue: 40
-  Price: 80
+  ItemValue: 60
+  Price: 20
   ItemName: MegazineUP

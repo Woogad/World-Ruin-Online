@@ -21,22 +21,24 @@ public class SoundManager : MonoBehaviour
     {
         GunShopCounter.OnAnyBuyGun += GunShopCounterOnAnyBuyGun;
         GunShopCounter.OnAnyFailBuyGun += GunShopCounterOnAnyFailBuyGun;
-        ItemShopCounter.OnAnyBuyItem += ItemShopCounterOnAnyFailBuyItem;
+        ItemShopCounter.OnAnyBuyItem += ItemShopCounterOnAnyBuyItem;
+        ItemShopCounter.OnAnyFailBuyItem += ItemShopCounterOnAnyFailBuyItem;
+        CoinTrader.OnAnyTradeCoin += CoinTraderOnAnyTradeCoin;
+        CoinTrader.OnAnyFailTradeCoin += CoinTraderOnAnyFailTradeCoin;
         ClearCounter.OnAnyClearCounterPickObject += ClearCounterOnAnyPickObject;
-        CoinTrader.OnAnyTradeCoin += CoinTraderOnAnyFailTradeCoin;
         Player.OnAnyPlayerPickGun += PlayerOnPickGun;
-    }
-
-    private void CoinTraderOnAnyFailTradeCoin(object sender, System.EventArgs e)
-    {
-        CoinTrader coinTrader = sender as CoinTrader;
-        PlaySound(_audioClipRefsSO.FailInteract, coinTrader.transform.position);
     }
 
     private void ItemShopCounterOnAnyFailBuyItem(object sender, System.EventArgs e)
     {
         ItemShopCounter itemShopCounter = sender as ItemShopCounter;
         PlaySound(_audioClipRefsSO.FailInteract, itemShopCounter.transform.position);
+    }
+
+    private void CoinTraderOnAnyFailTradeCoin(object sender, System.EventArgs e)
+    {
+        CoinTrader coinTrader = sender as CoinTrader;
+        PlaySound(_audioClipRefsSO.FailInteract, coinTrader.transform.position);
     }
 
     private void GunShopCounterOnAnyFailBuyGun(object sender, System.EventArgs e)
@@ -103,14 +105,19 @@ public class SoundManager : MonoBehaviour
     {
         PlaySound(_audioClipRefsSO.FootStep, position, volume);
     }
-    public void PlayPlayerDead(Vector3 position, float volume)
+    public void PlayPlayerDeadSound(Vector3 position, float volume)
     {
         PlaySound(_audioClipRefsSO.PlayerDead, position, volume);
     }
 
-    public void PlayKillScore(Vector3 position, float volume)
+    public void PlayKillScoreSound(Vector3 position, float volume)
     {
         PlaySound(_audioClipRefsSO.KillScore, position, volume);
+    }
+
+    public void PlayPickGoldCoinSound(Vector3 position, float volume)
+    {
+        PlaySound(_audioClipRefsSO.PickGoldCoin, position, volume);
     }
 
     public void UpVolume()
