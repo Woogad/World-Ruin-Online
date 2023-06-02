@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+using UnityEngine.SceneManagement;
 
 public class GameManager : NetworkBehaviour
 {
@@ -17,6 +18,8 @@ public class GameManager : NetworkBehaviour
 
     public event EventHandler OnStateChanged;
     public event EventHandler OnLocalPlayerReadyChanged;
+
+    [SerializeField] private Transform _playerPrefab;
 
     private NetworkVariable<State> _state = new NetworkVariable<State>();
     private NetworkVariable<float> _countdownToStartTimer = new NetworkVariable<float>(1f);
@@ -35,6 +38,19 @@ public class GameManager : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         _state.OnValueChanged += StateOnValueChanged;
+        if (IsServer)
+        {
+            NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += NetworkManagerOnLoadEventCompleted;
+        }
+    }
+
+    private void NetworkManagerOnLoadEventCompleted(string sceneName, LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedOut)
+    {
+        foreach (ulong clientID in NetworkManager.Singleton.ConnectedClientsIds)
+        {
+            Transform playerTransform = Instantiate(_playerPrefab);
+            playerTransform.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientID, true);
+        }
     }
 
     private void StateOnValueChanged(State previousValue, State newValue)

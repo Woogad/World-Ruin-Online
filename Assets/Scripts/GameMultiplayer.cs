@@ -2,18 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+using UnityEngine.SceneManagement;
 using System;
 
 public class GameMultiplayer : NetworkBehaviour
 {
     public static GameMultiplayer Instance { get; private set; }
 
+    public event EventHandler OnTryToJoinGame;
+    public event EventHandler OnFailToJoinGame;
+
     [SerializeField] private GunObjectListSO _gunObjectListSO;
     [SerializeField] private GoldCoinSO _goldCoinSO;
 
+    private const int MAX_PLAYER_LIMIT = 4;
     private void Awake()
     {
         Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     public void StartHost()
@@ -24,21 +30,32 @@ public class GameMultiplayer : NetworkBehaviour
 
     public void StartClient()
     {
+        OnTryToJoinGame?.Invoke(this, EventArgs.Empty);
+
+        NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManagerOnClientDisconnectCallback;
         NetworkManager.Singleton.StartClient();
+    }
+
+    private void NetworkManagerOnClientDisconnectCallback(ulong obj)
+    {
+        OnFailToJoinGame?.Invoke(this, EventArgs.Empty);
     }
 
     private void NetworkManagerConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest connectionApprovalRequest, NetworkManager.ConnectionApprovalResponse connectionApprovalResponse)
     {
-        if (GameManager.Instance.IsGameWaitingPlayer())
+        if (SceneManager.GetActiveScene().name != Loader.Scene.CharacterSelectScene.ToString())
         {
-            connectionApprovalResponse.Approved = true;
-            connectionApprovalResponse.CreatePlayerObject = true;
-        }
-        else
-        {
-
             connectionApprovalResponse.Approved = false;
+            connectionApprovalResponse.Reason = "Game has already started";
+            return;
         }
+        if (NetworkManager.Singleton.ConnectedClientsIds.Count >= MAX_PLAYER_LIMIT)
+        {
+            connectionApprovalResponse.Approved = false;
+            connectionApprovalResponse.Reason = "Lobby is full";
+            return;
+        }
+        connectionApprovalResponse.Approved = true;
     }
 
     public void SpawnGunObject(GunObjectSO gunObjectSO, IGunObjectParent gunObjectParent)

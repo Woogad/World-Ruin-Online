@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 using IngameDebugConsole;
+using UnityEngine.SceneManagement;
 
 public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
 {
@@ -15,6 +16,7 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
     public static void ResetStaticEvent()
     {
         OnAnyPlayerSpawned = null;
+        OnAnyPlayerPickGun = null;
     }
 
     public event EventHandler OnInteract;
@@ -37,7 +39,6 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
     public class OnDeadArgs : EventArgs
     {
         public ulong KillerClientID;
-        public ulong OwnerClientID;
     }
 
     public event EventHandler<OnReloadProgressChangedArgs> OnReloadProgressChanged;
@@ -114,8 +115,11 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
                 SetVisualToRenderOnTop(visual);
             }
         }
+        // SetSpawnPositionServerRpc(new Vector3(0, 0, 0));
+        SpawnPlayerManager.Instance.TeleportPlayerOnNetworkSpawn(OwnerClientId);
         OnAnyPlayerSpawned?.Invoke(this, EventArgs.Empty);
     }
+
 
     private void PlayerGoldCoinCountOnValueChanged(int previousValue, int newValue)
     {
@@ -149,7 +153,6 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
             OnDead?.Invoke(this, new OnDeadArgs
             {
                 KillerClientID = _killerClientID,
-                OwnerClientID = OwnerClientId
             });
 
         }
@@ -562,6 +565,18 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
     }
 
     public void SetSpawnPosition(Vector3 vector3)
+    {
+        SetSpawnPositionServerRpc(vector3);
+        // if (_spawnPosition.Value == vector3)
+        // {
+        //     _spawnPosition.Value += new Vector3(0.1f, 0, 0);
+        //     return;
+        // }
+        // _spawnPosition.Value = vector3;
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void SetSpawnPositionServerRpc(Vector3 vector3)
     {
         if (_spawnPosition.Value == vector3)
         {

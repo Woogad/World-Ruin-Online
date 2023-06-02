@@ -4,17 +4,19 @@ using UnityEngine;
 using Unity.Netcode;
 using System;
 
-public class SpawnManager : NetworkBehaviour
+public class SpawnPlayerManager : NetworkBehaviour
 {
-    public static SpawnManager Instance { get; private set; }
+    public static SpawnPlayerManager Instance { get; private set; }
 
-    [SerializeField] private List<Transform> SpawnTransform = new List<Transform>();
+    [SerializeField] private List<Transform> _spawnTransform = new List<Transform>();
     private Transform _playerTransform;
 
-    private void Start()
+    private void Awake()
     {
         Instance = this;
-        NetworkManager.Singleton.OnClientConnectedCallback += NetworkManagerOnClientConnectedCallback;
+    }
+    private void Start()
+    {
         if (Player.LocalInstance != null)
         {
             Player.LocalInstance.OnDead += RespawnPlayer;
@@ -23,19 +25,17 @@ public class SpawnManager : NetworkBehaviour
         {
             Player.OnAnyPlayerSpawned += PlayerOnAnyPlayerSpawned;
         }
-
     }
 
     private void RespawnPlayer(object sender, Player.OnDeadArgs e)
     {
-        Debug.Log("hello from RespawnPlayer");
-        StartCoroutine(PlayerReSpawnTimer(e.OwnerClientID));
+        StartCoroutine(PlayerReSpawnTimer());
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void RespawnPlayerServerRpc(ulong clientID)
+    private void RespawnPlayerServerRpc(ServerRpcParams serverRpcParams = default)
     {
-        if (!NetworkManager.Singleton.ConnectedClients.TryGetValue(clientID, out NetworkClient networkClient))
+        if (!NetworkManager.Singleton.ConnectedClients.TryGetValue(serverRpcParams.Receive.SenderClientId, out NetworkClient networkClient))
         {
             return;
         }
@@ -45,7 +45,7 @@ public class SpawnManager : NetworkBehaviour
         }
 
         player.ReSpawn();
-        player.SetSpawnPosition(SpawnTransform[(int)clientID].position);
+        player.SetSpawnPosition(_spawnTransform[(int)serverRpcParams.Receive.SenderClientId].position);
     }
 
     private void PlayerOnAnyPlayerSpawned(object sender, EventArgs e)
@@ -57,15 +57,19 @@ public class SpawnManager : NetworkBehaviour
         }
     }
 
-    private void NetworkManagerOnClientConnectedCallback(ulong clientID)
+    public void TeleportPlayerOnNetworkSpawn(ulong clientID)
     {
-        Debug.Log("Player " + clientID + " is connected");
-        TeleportPlayer(clientID);
+        TeleportPlayerServerRpc(_spawnTransform[(int)clientID].position, clientID);
     }
 
-    private void TeleportPlayer(ulong clientID)
+    public void TeleportPlayer(Vector3 position, ulong clientID)
     {
-        if (!IsServer) return;
+        TeleportPlayerServerRpc(position, clientID);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void TeleportPlayerServerRpc(Vector3 position, ulong clientID)
+    {
 
         if (!NetworkManager.Singleton.ConnectedClients.TryGetValue(clientID, out NetworkClient networkClient))
         {
@@ -75,14 +79,14 @@ public class SpawnManager : NetworkBehaviour
         {
             return;
         }
-        player.SetSpawnPosition(SpawnTransform[(int)clientID].position);
+        player.SetSpawnPosition(position);
     }
 
-    private IEnumerator PlayerReSpawnTimer(ulong ClientID)
+    private IEnumerator PlayerReSpawnTimer()
     {
         float SpawnTime = 4f;
         Debug.Log("Spawn in 4s");
         yield return new WaitForSeconds(SpawnTime);
-        RespawnPlayerServerRpc(ClientID);
+        RespawnPlayerServerRpc();
     }
 }
