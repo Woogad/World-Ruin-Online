@@ -51,6 +51,11 @@ public class GameManager : NetworkBehaviour
             Transform playerTransform = Instantiate(_playerPrefab);
             playerTransform.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientID, true);
         }
+        foreach (var playerData in GameMultiplayer.Instance.GetPlayerDataNetworkList())
+        {
+            Debug.Log(playerData.ClientID);
+            Debug.Log(playerData.PlayerPrefabIndex);
+        }
     }
 
     private void StateOnValueChanged(State previousValue, State newValue)

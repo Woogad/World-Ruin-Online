@@ -11,21 +11,50 @@ public class GameMultiplayer : NetworkBehaviour
 
     public event EventHandler OnTryToJoinGame;
     public event EventHandler OnFailToJoinGame;
+    public event EventHandler OnDataNetworkListChanged;
 
     [SerializeField] private GunObjectListSO _gunObjectListSO;
     [SerializeField] private GoldCoinSO _goldCoinSO;
 
+    private NetworkList<PlayerData> _playerDataNetworkList;
     private const int MAX_PLAYER_LIMIT = 4;
     private void Awake()
     {
         Instance = this;
         DontDestroyOnLoad(gameObject);
+        _playerDataNetworkList = new NetworkList<PlayerData>();
+        _playerDataNetworkList.OnListChanged += PlayerDataNetworkListOnListChanged;
+    }
+
+    private void PlayerDataNetworkListOnListChanged(NetworkListEvent<PlayerData> changeEvent)
+    {
+        Debug.Log("list changed");
+        OnDataNetworkListChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public void StartHost()
     {
         NetworkManager.Singleton.ConnectionApprovalCallback += NetworkManagerConnectionApprovalCallback;
+        NetworkManager.Singleton.OnClientConnectedCallback += NetworkOnClientConnectedCallback;
         NetworkManager.Singleton.StartHost();
+    }
+
+    private void NetworkOnClientConnectedCallback(ulong clientID)
+    {
+        if (clientID == NetworkManager.Singleton.LocalClientId)
+        {
+            SetPlayerDataNetworkListServerRpc(PlayerPrefs.GetInt("PlayerPrefabIndex", 0));
+        }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SetPlayerDataNetworkListServerRpc(int index, ServerRpcParams serverRpcParams = default)
+    {
+        _playerDataNetworkList.Add(new PlayerData
+        {
+            ClientID = serverRpcParams.Receive.SenderClientId,
+            PlayerPrefabIndex = index
+        });
     }
 
     public void StartClient()
@@ -33,8 +62,15 @@ public class GameMultiplayer : NetworkBehaviour
         OnTryToJoinGame?.Invoke(this, EventArgs.Empty);
 
         NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManagerOnClientDisconnectCallback;
+        NetworkManager.Singleton.OnClientConnectedCallback += NetworkOnClientConnectedCallback;
         NetworkManager.Singleton.StartClient();
     }
+
+    public NetworkList<PlayerData> GetPlayerDataNetworkList()
+    {
+        return this._playerDataNetworkList;
+    }
+
 
     private void NetworkManagerOnClientDisconnectCallback(ulong obj)
     {
