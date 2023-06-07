@@ -19,8 +19,6 @@ public class GameManager : NetworkBehaviour
     public event EventHandler OnStateChanged;
     public event EventHandler OnLocalPlayerReadyChanged;
 
-    [SerializeField] private Transform _playerPrefab;
-
     private NetworkVariable<State> _state = new NetworkVariable<State>();
     private NetworkVariable<float> _countdownToStartTimer = new NetworkVariable<float>(1f);
     private NetworkVariable<float> _gamePlayingTimer = new NetworkVariable<float>(0f);
@@ -46,15 +44,10 @@ public class GameManager : NetworkBehaviour
 
     private void NetworkManagerOnLoadEventCompleted(string sceneName, LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedOut)
     {
-        foreach (ulong clientID in NetworkManager.Singleton.ConnectedClientsIds)
-        {
-            Transform playerTransform = Instantiate(_playerPrefab);
-            playerTransform.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientID, true);
-        }
         foreach (var playerData in GameMultiplayer.Instance.GetPlayerDataNetworkList())
         {
-            Debug.Log(playerData.ClientID);
-            Debug.Log(playerData.PlayerPrefabIndex);
+            GameObject PlayerGameObject = Instantiate(GameMultiplayer.Instance.GetPlayerPrefabSOFormIndex(playerData.PlayerPrefabIndex));
+            PlayerGameObject.GetComponent<NetworkObject>().SpawnAsPlayerObject(playerData.ClientID, true);
         }
     }
 

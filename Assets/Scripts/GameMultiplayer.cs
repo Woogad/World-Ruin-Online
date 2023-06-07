@@ -15,6 +15,7 @@ public class GameMultiplayer : NetworkBehaviour
 
     [SerializeField] private GunObjectListSO _gunObjectListSO;
     [SerializeField] private GoldCoinSO _goldCoinSO;
+    [SerializeField] private PlayerPrefabListSO _playerPrefabListSO;
 
     private NetworkList<PlayerData> _playerDataNetworkList;
     private const int MAX_PLAYER_LIMIT = 4;
@@ -71,6 +72,10 @@ public class GameMultiplayer : NetworkBehaviour
         return this._playerDataNetworkList;
     }
 
+    public GameObject GetPlayerPrefabSOFormIndex(int playerPrefabListSOIndex)
+    {
+        return this._playerPrefabListSO.PlayerPrefabSOList[playerPrefabListSOIndex];
+    }
 
     private void NetworkManagerOnClientDisconnectCallback(ulong obj)
     {
@@ -121,9 +126,9 @@ public class GameMultiplayer : NetworkBehaviour
         return _gunObjectListSO.GunObjectsSOList.IndexOf(gunObjectSO);
     }
 
-    public GunObjectSO GetGunObjectSOFromIndex(int gunObjectSOList)
+    public GunObjectSO GetGunObjectSOFromIndex(int gunObjectSOListIndex)
     {
-        return _gunObjectListSO.GunObjectsSOList[gunObjectSOList];
+        return _gunObjectListSO.GunObjectsSOList[gunObjectSOListIndex];
     }
 
     public void DestroyGunObject(GunObject gunObject)

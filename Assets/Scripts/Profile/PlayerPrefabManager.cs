@@ -21,11 +21,6 @@ public class PlayerPrefabManager : MonoBehaviour
         _playerPrefabIndex = PlayerPrefs.GetInt(PLAYER_PREFAB_INDEX, 0);
     }
 
-    private void Start()
-    {
-        DebugLogConsole.AddCommand("increaseIndex", "Taa", IncreaseIndex);
-    }
-
     public void IncreaseIndex()
     {
         _playerPrefabIndex += 1;

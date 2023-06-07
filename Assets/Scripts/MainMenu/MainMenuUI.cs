@@ -18,7 +18,7 @@ public class MainMenuUI : MonoBehaviour
         });
         _profileBn.onClick.AddListener(() =>
         {
-            Loader.Load(Loader.Scene.Profile);
+            Loader.Load(Loader.Scene.ProfileScene);
         });
         _quitBn.onClick.AddListener(() =>
         {

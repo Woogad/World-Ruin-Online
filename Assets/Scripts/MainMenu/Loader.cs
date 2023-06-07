@@ -13,7 +13,7 @@ public static class Loader
         LoadingScene,
         LobbyScene,
         CharacterSelectScene,
-        Profile,
+        ProfileScene,
     }
 
     private static Scene TargetScene;

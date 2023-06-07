@@ -1491,6 +1491,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gunObjectListSO: {fileID: 11400000, guid: 07b6377cf6d348e46ba73c47b2fa3855, type: 2}
   _goldCoinSO: {fileID: 11400000, guid: b70c9db5421698e4097fa8ad73722b09, type: 2}
+  _playerPrefabListSO: {fileID: 11400000, guid: 37123bfe164f7eb448ed9d552c0d213b,
+    type: 2}
 --- !u!4 &1618868939
 Transform:
   m_ObjectHideFlags: 0
