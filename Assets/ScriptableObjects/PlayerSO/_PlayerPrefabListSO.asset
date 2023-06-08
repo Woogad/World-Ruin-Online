@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d73c0257fd7d0054bba6ec553e6d9dab, type: 3}
-  m_Name: PlayerPrefabListSO
+  m_Name: _PlayerPrefabListSO
   m_EditorClassIdentifier: 
   PlayerPrefabSOList:
   - {fileID: 953766952138624433, guid: 58a0066831ef5dd41a3d3d95b8c9cb1b, type: 3}

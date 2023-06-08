@@ -14,7 +14,7 @@ public class TestingLobbyUI : MonoBehaviour
         _createGameBn.onClick.AddListener(() =>
         {
             GameMultiplayer.Instance.StartHost();
-            Loader.LoadNetwork(Loader.Scene.CharacterSelectScene);
+            Loader.LoadNetwork(Loader.Scene.LobbyRoomScene);
         });
         _joinGameBn.onClick.AddListener(() =>
         {

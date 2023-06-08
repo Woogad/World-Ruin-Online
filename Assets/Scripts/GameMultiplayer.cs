@@ -36,11 +36,24 @@ public class GameMultiplayer : NetworkBehaviour
     public void StartHost()
     {
         NetworkManager.Singleton.ConnectionApprovalCallback += NetworkManagerConnectionApprovalCallback;
-        NetworkManager.Singleton.OnClientConnectedCallback += NetworkOnClientConnectedCallback;
+        NetworkManager.Singleton.OnClientConnectedCallback += NetworkManagerOnClientConnectedCallback;
+        NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_Server_OnClientDisconnectCallback;
         NetworkManager.Singleton.StartHost();
     }
 
-    private void NetworkOnClientConnectedCallback(ulong clientID)
+    private void NetworkManager_Server_OnClientDisconnectCallback(ulong clientID)
+    {
+        for (int i = 0; i < _playerDataNetworkList.Count; i++)
+        {
+            PlayerData playerData = _playerDataNetworkList[i];
+            if (playerData.ClientID == clientID)
+            {
+                _playerDataNetworkList.RemoveAt(i);
+            }
+        }
+    }
+
+    private void NetworkManagerOnClientConnectedCallback(ulong clientID)
     {
         if (clientID == NetworkManager.Singleton.LocalClientId)
         {
@@ -62,8 +75,8 @@ public class GameMultiplayer : NetworkBehaviour
     {
         OnTryToJoinGame?.Invoke(this, EventArgs.Empty);
 
-        NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManagerOnClientDisconnectCallback;
-        NetworkManager.Singleton.OnClientConnectedCallback += NetworkOnClientConnectedCallback;
+        NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_Client_OnClientDisconnectCallback;
+        NetworkManager.Singleton.OnClientConnectedCallback += NetworkManagerOnClientConnectedCallback;
         NetworkManager.Singleton.StartClient();
     }
 
@@ -72,19 +85,24 @@ public class GameMultiplayer : NetworkBehaviour
         return this._playerDataNetworkList;
     }
 
+    public PlayerData GetPlayerDataFormPlayerIndex(int playerIndex)
+    {
+        return _playerDataNetworkList[playerIndex];
+    }
+
     public GameObject GetPlayerPrefabSOFormIndex(int playerPrefabListSOIndex)
     {
         return this._playerPrefabListSO.PlayerPrefabSOList[playerPrefabListSOIndex];
     }
 
-    private void NetworkManagerOnClientDisconnectCallback(ulong obj)
+    private void NetworkManager_Client_OnClientDisconnectCallback(ulong obj)
     {
         OnFailToJoinGame?.Invoke(this, EventArgs.Empty);
     }
 
     private void NetworkManagerConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest connectionApprovalRequest, NetworkManager.ConnectionApprovalResponse connectionApprovalResponse)
     {
-        if (SceneManager.GetActiveScene().name != Loader.Scene.CharacterSelectScene.ToString())
+        if (SceneManager.GetActiveScene().name != Loader.Scene.LobbyRoomScene.ToString())
         {
             connectionApprovalResponse.Approved = false;
             connectionApprovalResponse.Reason = "Game has already started";
@@ -167,6 +185,34 @@ public class GameMultiplayer : NetworkBehaviour
         Transform goldCoinTransform = Instantiate(_goldCoinSO.Prefab, gameObjectPosition + new Vector3(UnityEngine.Random.Range(-spawnArea.x, spawnArea.x), 1, UnityEngine.Random.Range(-spawnArea.y, spawnArea.y)), Quaternion.identity);
         NetworkObject goldCoinNetworkObject = goldCoinTransform.GetComponent<NetworkObject>();
         goldCoinNetworkObject.Spawn(true);
+    }
+
+    public bool IsPlayerDataIndexConnected(int playerIndex)
+    {
+        return playerIndex < _playerDataNetworkList.Count;
+    }
+
+    public int GetPlayerDataIndexFromClientID(ulong clientID)
+    {
+        for (int i = 0; i < _playerDataNetworkList.Count; i++)
+        {
+            if (_playerDataNetworkList[i].ClientID == clientID)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public void KickPlayer(ulong clientID)
+    {
+        if (clientID == NetworkManager.ServerClientId)
+        {
+            NetworkManager.Singleton.Shutdown();
+            Loader.Load(Loader.Scene.MainMenuScene);
+        }
+        NetworkManager.Singleton.DisconnectClient(clientID);
+        NetworkManager_Server_OnClientDisconnectCallback(clientID);
     }
 
 }

@@ -21,7 +21,7 @@ public class ScoreBoadUI : MonoBehaviour
 
     private void GameManagerOnStateChanged(object sender, EventArgs e)
     {
-        if (GameManager.Instance.IsGamePlaying())
+        if (GameManager.Instance.IsCountdownToStartActive())
         {
             CreateVisualScoreBoard(ScoreBoardManager.Instance.GetScoreBoardDictionary());
         }

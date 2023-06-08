@@ -115,8 +115,7 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
                 SetVisualToRenderOnTop(visual);
             }
         }
-        // SetSpawnPositionServerRpc(new Vector3(0, 0, 0));
-        SpawnPlayerManager.Instance.TeleportPlayerOnNetworkSpawn(OwnerClientId);
+        SpawnPlayerManager.Instance.TeleportPlayerOnNetworkSpawn(GameMultiplayer.Instance.GetPlayerDataIndexFromClientID(OwnerClientId), OwnerClientId);
         OnAnyPlayerSpawned?.Invoke(this, EventArgs.Empty);
     }
 

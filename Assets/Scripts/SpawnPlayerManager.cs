@@ -57,9 +57,9 @@ public class SpawnPlayerManager : NetworkBehaviour
         }
     }
 
-    public void TeleportPlayerOnNetworkSpawn(ulong clientID)
+    public void TeleportPlayerOnNetworkSpawn(int playerIndex, ulong clientID)
     {
-        TeleportPlayerServerRpc(_spawnTransform[(int)clientID].position, clientID);
+        TeleportPlayerServerRpc(_spawnTransform[playerIndex].position, clientID);
     }
 
     public void TeleportPlayer(Vector3 position, ulong clientID)

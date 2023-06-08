@@ -16,19 +16,16 @@ public class ScoreBoardManager : NetworkBehaviour
         public ulong ClientID;
         public int Value = default;
     }
-    private Dictionary<ulong, ScoreBoardStruct> _scoreBoardDictionary;
-    [SerializeField] string tt;
+    private Dictionary<ulong, ScoreBoardStruct> _scoreBoardDictionary = new Dictionary<ulong, ScoreBoardStruct>();
     private int _scorePerKill = 1;
 
     private void Awake()
     {
         Instance = this;
-        _scoreBoardDictionary = new Dictionary<ulong, ScoreBoardStruct>();
     }
 
     private void Start()
     {
-        GameManager.Instance.OnStateChanged += GameManagerOnStateChanged;
         NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManagerOnClientDisConnectCallback;
         DebugLogConsole.AddCommand<ulong>("AddScoreKill", "To add kill with clientID", AddKillScoreServerRpc);
         if (Player.LocalInstance != null)
@@ -38,6 +35,11 @@ public class ScoreBoardManager : NetworkBehaviour
         else
         {
             Player.OnAnyPlayerSpawned += PlayerOnAnyPlayerSpawned;
+        }
+
+        foreach (PlayerData playerData in GameMultiplayer.Instance.GetPlayerDataNetworkList())
+        {
+            _scoreBoardDictionary.Add(playerData.ClientID, new ScoreBoardStruct(playerData.ClientID.ToString()));
         }
     }
 
@@ -53,45 +55,12 @@ public class ScoreBoardManager : NetworkBehaviour
 
     private void PlayerOnDead(object sender, Player.OnDeadArgs e)
     {
-
         AddKillScoreServerRpc(e.KillerClientID);
-
     }
 
     private void NetworkManagerOnClientDisConnectCallback(ulong clientID)
     {
         DeleteScoreBoardItemServerRpc(clientID);
-    }
-
-    private void GameManagerOnStateChanged(object sender, EventArgs e)
-    {
-        if (GameManager.Instance.IsCountdownToStartActive())
-        {
-            if (IsServer)
-            {
-                foreach (ulong clientID in NetworkManager.Singleton.ConnectedClientsIds)
-                {
-                    /* //? for get player name later
-                    if (!NetworkManager.Singleton.ConnectedClients.TryGetValue(clientID, out NetworkClient networkClient))
-                    {
-                        return;
-                    }
-                    if (!networkClient.PlayerObject.TryGetComponent<Player>(out Player player))
-                    {
-                        return;
-                    }
-                    */
-                    //! "gg" is test player name only change later!
-                    AddScoreBoardDictionaryClientRpc(clientID, new ScoreBoardStruct("Player " + clientID.ToString()));
-                }
-            }
-        }
-    }
-
-    [ClientRpc]
-    private void AddScoreBoardDictionaryClientRpc(ulong clientID, ScoreBoardStruct scoreBoardStruct)
-    {
-        _scoreBoardDictionary.Add(clientID, scoreBoardStruct);
     }
 
     [ServerRpc(RequireOwnership = false)]
