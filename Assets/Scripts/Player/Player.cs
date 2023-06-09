@@ -73,7 +73,7 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
     private float defaultHealth = 100f;
     private float defaultAromr = 0f;
     private bool defaultIsAlive = true;
-    private int defaulMoney = 5000;
+    private int defaulMoney = 200;
 
     private bool _isHoldShootAction;
     private bool _isWalking;
