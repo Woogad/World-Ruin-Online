@@ -55,16 +55,16 @@ public class PlayerSound : NetworkBehaviour
         }
     }
 
-    [ServerRpc(RequireOwnership = false)]
+    [ServerRpc(Delivery = RpcDelivery.Unreliable, RequireOwnership = false)]
     private void PlayerOnShootServerRpc()
     {
         PlayerOnShootClientRpc();
     }
 
-    [ClientRpc]
+    [ClientRpc(Delivery = RpcDelivery.Unreliable)]
     private void PlayerOnShootClientRpc()
     {
-        float volume = 0.6f;
+        float volume = 0.5f;
         if (_player.GetGunObject().getCurrentAmmo() != 0)
         {
             SoundManager.Instance.PlayGunShootSound(_player.transform.position, volume);
@@ -77,37 +77,17 @@ public class PlayerSound : NetworkBehaviour
 
     private void PlayerOnReload(object sender, EventArgs e)
     {
-        if (IsHost)
-        {
-            PlayerOnReloadClientRpc();
-        }
-        else
-        {
-
-            PlayerOnReloadServerRpc();
-        }
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    private void PlayerOnReloadServerRpc()
-    {
-        PlayerOnReloadClientRpc();
-    }
-    [ClientRpc]
-    private void PlayerOnReloadClientRpc()
-    {
-        float volume = 0.4f;
+        float volume = 1f;
         SoundManager.Instance.PlayReloadSound(_player.transform.position, volume);
     }
 
-
-    [ServerRpc(RequireOwnership = false)]
+    [ServerRpc(Delivery = RpcDelivery.Unreliable, RequireOwnership = false)]
     private void PlayerOnWalkingServerRpc()
     {
         PlayerOnWalkingClientRpc();
     }
 
-    [ClientRpc]
+    [ClientRpc(Delivery = RpcDelivery.Unreliable)]
     private void PlayerOnWalkingClientRpc()
     {
         float volume = .5f;
