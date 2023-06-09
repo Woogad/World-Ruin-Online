@@ -25,6 +25,7 @@ public class LobbyManager : MonoBehaviour
 
     private Lobby _joinedLobby;
     private float _heartbeatTimer;
+    private float _listLobbiesTimer;
 
     private void Awake()
     {
@@ -52,6 +53,21 @@ public class LobbyManager : MonoBehaviour
     private void Update()
     {
         HandleHeartbeat();
+        HandlePeriodicListlobbies();
+    }
+
+    private void HandlePeriodicListlobbies()
+    {
+        if (_joinedLobby == null && AuthenticationService.Instance.IsSignedIn)
+        {
+            _listLobbiesTimer -= Time.deltaTime;
+            if (_listLobbiesTimer <= 0)
+            {
+                float listLobbiesTimerMax = 3f;
+                _listLobbiesTimer = listLobbiesTimerMax;
+                ListLobbies();
+            }
+        }
     }
 
     private void HandleHeartbeat()
@@ -128,6 +144,21 @@ public class LobbyManager : MonoBehaviour
         {
             Debug.Log(e);
             OnQuickJoinFail?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    public async void JoinByID(string lobbyID)
+    {
+        OnJoinStart?.Invoke(this, EventArgs.Empty);
+        try
+        {
+            _joinedLobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobbyID);
+            GameMultiplayer.Instance.StartClient();
+        }
+        catch (LobbyServiceException e)
+        {
+            Debug.Log(e);
+            OnJoinFail?.Invoke(this, EventArgs.Empty);
         }
     }
 
