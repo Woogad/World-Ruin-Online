@@ -3,15 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using Unity.Netcode;
 
 public class CharacterLobbyRoomVisual : MonoBehaviour
 {
     [SerializeField] private int _playerIndex;
-    [SerializeField] GameObject _readyText;
-    [SerializeField] PlayerPrefabsVisualListSO _playerPrefabsVisualListSO;
-    [SerializeField] List<Transform> _prefabList = new List<Transform>();
-    [SerializeField] Button _kickBn;
+    [SerializeField] private GameObject _readyText;
+    [SerializeField] private PlayerPrefabsVisualListSO _playerPrefabsVisualListSO;
+    [SerializeField] private List<Transform> _prefabList = new List<Transform>();
+    [SerializeField] private Button _kickBn;
+    [SerializeField] private TextMeshPro _playerNameText;
 
     private int _currentPrefabIndex;
     private int _oldPrefabIndex;
@@ -21,6 +23,7 @@ public class CharacterLobbyRoomVisual : MonoBehaviour
         _kickBn.onClick.AddListener(() =>
         {
             PlayerData playerData = GameMultiplayer.Instance.GetPlayerDataFormPlayerIndex(_playerIndex);
+            LobbyManager.Instance.KickPlayer(playerData.PlayerID.ToString());
             GameMultiplayer.Instance.KickPlayer(playerData.ClientID);
         });
     }
@@ -61,7 +64,10 @@ public class CharacterLobbyRoomVisual : MonoBehaviour
         {
             PlayerData playerData = GameMultiplayer.Instance.GetPlayerDataFormPlayerIndex(_playerIndex);
             _readyText.SetActive(ChareacterSelectReady.Instance.IsPlayerReady(playerData.ClientID));
+            _playerNameText.text = playerData.PlayerName.ToString();
+
             _currentPrefabIndex = playerData.PlayerPrefabIndex;
+
             if (_currentPrefabIndex != _oldPrefabIndex)
             {
                 _prefabList[_oldPrefabIndex].gameObject.SetActive(false);

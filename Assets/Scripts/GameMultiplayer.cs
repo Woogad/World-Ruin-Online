@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Services.Authentication;
 using Unity.Netcode;
 using UnityEngine.SceneManagement;
 using System;
@@ -18,11 +19,15 @@ public class GameMultiplayer : NetworkBehaviour
     [SerializeField] private PlayerPrefabListSO _playerPrefabListSO;
 
     private NetworkList<PlayerData> _playerDataNetworkList;
-    private const int MAX_PLAYER_LIMIT = 4;
+    private string _playerName;
+
+    public const int MAX_PLAYER_LIMIT = 4;
+    public const string PLAYER_PREFS_PLAYER_NAME = "PlayerName";
     private void Awake()
     {
         Instance = this;
         DontDestroyOnLoad(gameObject);
+        _playerName = PlayerPrefs.GetString(PLAYER_PREFS_PLAYER_NAME, "Player");
         _playerDataNetworkList = new NetworkList<PlayerData>();
         _playerDataNetworkList.OnListChanged += PlayerDataNetworkListOnListChanged;
     }
@@ -31,6 +36,18 @@ public class GameMultiplayer : NetworkBehaviour
     {
         Debug.Log("list changed");
         OnDataNetworkListChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    public string GetPlayerName()
+    {
+        return this._playerName;
+    }
+
+    public void SetPlayerName(string playerName)
+    {
+        this._playerName = playerName;
+
+        PlayerPrefs.SetString(PLAYER_PREFS_PLAYER_NAME, _playerName);
     }
 
     public void StartHost()
@@ -53,24 +70,6 @@ public class GameMultiplayer : NetworkBehaviour
         }
     }
 
-    private void NetworkManagerOnClientConnectedCallback(ulong clientID)
-    {
-        if (clientID == NetworkManager.Singleton.LocalClientId)
-        {
-            SetPlayerDataNetworkListServerRpc(PlayerPrefs.GetInt("PlayerPrefabIndex", 0));
-        }
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    private void SetPlayerDataNetworkListServerRpc(int index, ServerRpcParams serverRpcParams = default)
-    {
-        _playerDataNetworkList.Add(new PlayerData
-        {
-            ClientID = serverRpcParams.Receive.SenderClientId,
-            PlayerPrefabIndex = index
-        });
-    }
-
     public void StartClient()
     {
         OnTryToJoinGame?.Invoke(this, EventArgs.Empty);
@@ -78,6 +77,30 @@ public class GameMultiplayer : NetworkBehaviour
         NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_Client_OnClientDisconnectCallback;
         NetworkManager.Singleton.OnClientConnectedCallback += NetworkManagerOnClientConnectedCallback;
         NetworkManager.Singleton.StartClient();
+    }
+
+    private void NetworkManagerOnClientConnectedCallback(ulong clientID)
+    {
+        if (clientID == NetworkManager.Singleton.LocalClientId)
+        {
+            SetPlayerDataNetworkListServerRpc(
+                PlayerPrefs.GetInt(PlayerPrefabManager.PLAYER_PREFS_PLAYER_PREFAB_INDEX, 0),
+                PlayerPrefs.GetString(PLAYER_PREFS_PLAYER_NAME, "Player"),
+                AuthenticationService.Instance.PlayerId
+            );
+        }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SetPlayerDataNetworkListServerRpc(int index, string playerName, string playerID, ServerRpcParams serverRpcParams = default)
+    {
+        _playerDataNetworkList.Add(new PlayerData
+        {
+            ClientID = serverRpcParams.Receive.SenderClientId,
+            PlayerPrefabIndex = index,
+            PlayerName = playerName,
+            PlayerID = playerID,
+        });
     }
 
     public NetworkList<PlayerData> GetPlayerDataNetworkList()

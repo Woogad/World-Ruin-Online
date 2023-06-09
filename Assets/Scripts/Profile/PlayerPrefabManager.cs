@@ -12,13 +12,13 @@ public class PlayerPrefabManager : MonoBehaviour
 
     public event EventHandler OnPlayerIndexChanged;
 
-    private const string PLAYER_PREFAB_INDEX = "PlayerPrefabIndex";
+    public const string PLAYER_PREFS_PLAYER_PREFAB_INDEX = "PlayerPrefabIndex";
     private int _playerPrefabIndex;
 
     private void Awake()
     {
         Instance = this;
-        _playerPrefabIndex = PlayerPrefs.GetInt(PLAYER_PREFAB_INDEX, 0);
+        _playerPrefabIndex = PlayerPrefs.GetInt(PLAYER_PREFS_PLAYER_PREFAB_INDEX, 0);
     }
 
     public void IncreaseIndex()
@@ -28,7 +28,7 @@ public class PlayerPrefabManager : MonoBehaviour
         {
             _playerPrefabIndex = 0;
         }
-        PlayerPrefs.SetInt(PLAYER_PREFAB_INDEX, _playerPrefabIndex);
+        PlayerPrefs.SetInt(PLAYER_PREFS_PLAYER_PREFAB_INDEX, _playerPrefabIndex);
         OnPlayerIndexChanged?.Invoke(this, EventArgs.Empty);
     }
 
@@ -39,13 +39,13 @@ public class PlayerPrefabManager : MonoBehaviour
         {
             _playerPrefabIndex = _playerPrefabVisualList.Count - 1;
         }
-        PlayerPrefs.SetInt(PLAYER_PREFAB_INDEX, _playerPrefabIndex);
+        PlayerPrefs.SetInt(PLAYER_PREFS_PLAYER_PREFAB_INDEX, _playerPrefabIndex);
         OnPlayerIndexChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public void SavePlayerPrefab()
     {
-        PlayerPrefs.SetInt(PLAYER_PREFAB_INDEX, _playerPrefabIndex);
+        PlayerPrefs.SetInt(PLAYER_PREFS_PLAYER_PREFAB_INDEX, _playerPrefabIndex);
         PlayerPrefs.Save();
     }
 

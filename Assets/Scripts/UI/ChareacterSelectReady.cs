@@ -41,6 +41,7 @@ public class ChareacterSelectReady : NetworkBehaviour
         }
         if (allClientReady)
         {
+            LobbyManager.Instance.DeleteLobby();
             Loader.LoadNetwork(Loader.Scene.GameScene);
         }
     }

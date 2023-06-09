@@ -15,5 +15,9 @@ public class MainMenuCleanup : NetworkBehaviour
         {
             Destroy(GameMultiplayer.Instance.gameObject);
         }
+        if (LobbyManager.Instance != null)
+        {
+            Destroy(LobbyManager.Instance.gameObject);
+        }
     }
 }
