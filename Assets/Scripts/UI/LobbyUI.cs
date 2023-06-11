@@ -17,6 +17,7 @@ public class LobbyUI : MonoBehaviour
     [SerializeField] private TMP_InputField _playerNameInput;
     [SerializeField] private Transform _lobbyContainer;
     [SerializeField] private Transform _lobbyTemplate;
+    [SerializeField] private TextMeshProUGUI _lobbyCountText;
 
     private void Awake()
     {
@@ -76,5 +77,7 @@ public class LobbyUI : MonoBehaviour
             lobbyTransform.gameObject.SetActive(true);
             lobbyTransform.GetComponent<LobbyItemUI>().SetLobby(lobby);
         }
+
+        _lobbyCountText.text = "Lobby Public: " + lobbyList.Count.ToString();
     }
 }
