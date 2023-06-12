@@ -39,7 +39,7 @@ public class ScoreBoardManager : NetworkBehaviour
 
         foreach (PlayerData playerData in GameMultiplayer.Instance.GetPlayerDataNetworkList())
         {
-            _scoreBoardDictionary.Add(playerData.ClientID, new ScoreBoardStruct(playerData.ClientID.ToString()));
+            _scoreBoardDictionary.Add(playerData.ClientID, new ScoreBoardStruct(playerData.PlayerName));
         }
     }
 

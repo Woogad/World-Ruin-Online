@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: _PlayerPrefabListSO
   m_EditorClassIdentifier: 
   PlayerPrefabSOList:
-  - {fileID: 953766952138624433, guid: 58a0066831ef5dd41a3d3d95b8c9cb1b, type: 3}
-  - {fileID: 953766952138624433, guid: 9ad60d8894ba76e49ae0caff549c3092, type: 3}
-  - {fileID: 953766952138624433, guid: db30eab8277025d4b9fea1bc7a8e4b32, type: 3}
+  - {fileID: 5697681097243953680, guid: 58a0066831ef5dd41a3d3d95b8c9cb1b, type: 3}
+  - {fileID: 3926017855322259144, guid: 9ad60d8894ba76e49ae0caff549c3092, type: 3}
+  - {fileID: 4150532271882806679, guid: db30eab8277025d4b9fea1bc7a8e4b32, type: 3}

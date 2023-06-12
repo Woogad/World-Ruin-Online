@@ -64,7 +64,7 @@ public class PlayerSound : NetworkBehaviour
     [ClientRpc(Delivery = RpcDelivery.Unreliable)]
     private void PlayerOnShootClientRpc()
     {
-        float volume = 0.5f;
+        float volume = 1f;
         if (_player.GetGunObject().getCurrentAmmo() != 0)
         {
             SoundManager.Instance.PlayGunShootSound(_player.transform.position, volume);
@@ -90,7 +90,7 @@ public class PlayerSound : NetworkBehaviour
     [ClientRpc(Delivery = RpcDelivery.Unreliable)]
     private void PlayerOnWalkingClientRpc()
     {
-        float volume = .5f;
+        float volume = 1f;
         SoundManager.Instance.PlayFootstepSound(_player.transform.position, volume);
     }
 

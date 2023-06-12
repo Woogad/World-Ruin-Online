@@ -58,7 +58,7 @@ public class ScoreBoadUI : MonoBehaviour
         foreach (var kvp in scoreBoardDictionary)
         {
             ScoreBoardItemUI item = Instantiate(_scoreBoardItemTemplate, _contrainer).GetComponent<ScoreBoardItemUI>();
-            item.UsernameText.text = "Player " + kvp.Value.Username.ToString();
+            item.UsernameText.text = kvp.Value.Username.ToString();
             item.KillScoreText.text = kvp.Value.KillScore.ToString();
 
             _scoreBoardItemDictionary[kvp.Key] = item;
