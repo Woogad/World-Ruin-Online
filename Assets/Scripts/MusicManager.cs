@@ -7,7 +7,7 @@ public class MusicManager : MonoBehaviour
 {
     public static MusicManager Instance { get; private set; }
 
-    private const string PLAYER_PREFS_MUSIC_VOLUME = "MusicVolume";
+    public const string PLAYER_PREFS_MUSIC_VOLUME = "MusicVolume";
 
     private AudioSource _audioSource;
     private float _volume = 0.3f;

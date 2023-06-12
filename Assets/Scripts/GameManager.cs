@@ -22,7 +22,7 @@ public class GameManager : NetworkBehaviour
     private NetworkVariable<State> _state = new NetworkVariable<State>();
     private NetworkVariable<float> _countdownToStartTimer = new NetworkVariable<float>(3f);
     private NetworkVariable<float> _gamePlayingTimer = new NetworkVariable<float>(0f);
-    private float _gamePlayingTimerMax = 40f;
+    private float _gamePlayingTimerMax = 300f;
     private bool _isLocalPlayerReady;
     private Dictionary<ulong, bool> _playerReadyDictionary;
 
@@ -46,7 +46,8 @@ public class GameManager : NetworkBehaviour
     {
         foreach (var playerData in GameMultiplayer.Instance.GetPlayerDataNetworkList())
         {
-            GameObject PlayerGameObject = Instantiate(GameMultiplayer.Instance.GetPlayerPrefabSOFormIndex(playerData.PlayerPrefabIndex));
+            Vector3 spawnPosiion = Vector3.zero;
+            GameObject PlayerGameObject = Instantiate(GameMultiplayer.Instance.GetPlayerPrefabSOFormIndex(playerData.PlayerPrefabIndex), spawnPosiion, Quaternion.identity);
             PlayerGameObject.GetComponent<NetworkObject>().SpawnAsPlayerObject(playerData.ClientID, true);
         }
     }

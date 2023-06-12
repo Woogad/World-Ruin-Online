@@ -82,6 +82,7 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
     private GunObject _gunObject;
     private ulong _killerClientID;
 
+
     private void Start()
     {
         GameInput.Instance.OnInteractAction += GameInputOnInteractAction;
@@ -115,6 +116,7 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
                 SetVisualToRenderOnTop(visual);
             }
         }
+
         SpawnPlayerManager.Instance.TeleportPlayerOnNetworkSpawn(GameMultiplayer.Instance.GetPlayerDataIndexFromClientID(OwnerClientId), OwnerClientId);
         OnAnyPlayerSpawned?.Invoke(this, EventArgs.Empty);
     }
@@ -186,6 +188,7 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
     private void Update()
     {
         if (!IsOwner) return;
+
         if (HasGunObject())
         {
             if (GetGunObject().IsReload())
@@ -410,7 +413,7 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
         {
             if (GetGunObject().IsReload())
             {
-                float moveReduct = 0.4f;
+                float moveReduct = 0.3f;
                 return _playerSO.MoveSpeed - (_playerSO.MoveSpeed * moveReduct);
             }
         }
@@ -566,12 +569,6 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
     public void SetSpawnPosition(Vector3 vector3)
     {
         SetSpawnPositionServerRpc(vector3);
-        // if (_spawnPosition.Value == vector3)
-        // {
-        //     _spawnPosition.Value += new Vector3(0.1f, 0, 0);
-        //     return;
-        // }
-        // _spawnPosition.Value = vector3;
     }
 
     [ServerRpc(RequireOwnership = false)]

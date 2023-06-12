@@ -5,16 +5,16 @@ using UnityEngine;
 
 public class PlayerPrefabMainMenu : MonoBehaviour
 {
-    [SerializeField] private PlayerPrefabsVisualListSO _playerPrefabsVisualListSO;
-
-    private const string PLAYER_VISUAL = "PlayerVisual";
-
     private enum Pose
     {
         IsCrouch,
         IsGuard,
         IsGuard2,
     }
+
+    private const string PLAYER_VISUAL = "PlayerVisual";
+
+    [SerializeField] private PlayerPrefabsVisualListSO _playerPrefabsVisualListSO;
     private Pose _pose;
 
     private void Start()
