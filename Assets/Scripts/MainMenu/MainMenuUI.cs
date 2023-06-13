@@ -9,6 +9,8 @@ public class MainMenuUI : MonoBehaviour
     [SerializeField] private Button _playBn;
     [SerializeField] private Button _quitBn;
     [SerializeField] private Button _profileBn;
+    [SerializeField] private Button _optionsBn;
+    [SerializeField] private OptionsUI _optionsDisplay;
 
     private void Awake()
     {
@@ -19,6 +21,10 @@ public class MainMenuUI : MonoBehaviour
         _profileBn.onClick.AddListener(() =>
         {
             Loader.Load(Loader.Scene.ProfileScene);
+        });
+        _optionsBn.onClick.AddListener(() =>
+        {
+            OptionsUI.Instance.Show();
         });
         _quitBn.onClick.AddListener(() =>
         {
