@@ -84,9 +84,9 @@ public class SpawnPlayerManager : NetworkBehaviour
 
     private IEnumerator PlayerReSpawnTimer()
     {
-        float SpawnTime = 4f;
-        Debug.Log("Spawn in 4s");
-        yield return new WaitForSeconds(SpawnTime);
+        float spawnTime = 4f;
+        Debug.Log($"Spawn in {spawnTime}");
+        yield return new WaitForSeconds(spawnTime);
         RespawnPlayerServerRpc();
     }
 }

@@ -7,5 +7,5 @@ using TMPro;
 public class ScoreBoardItemUI : MonoBehaviour
 {
     public TextMeshProUGUI UsernameText;
-    public TextMeshProUGUI KillScoreText;
+    public TextMeshProUGUI ScoreText;
 }

@@ -47,13 +47,7 @@ public class LobbyManager : MonoBehaviour
     {
         if (UnityServices.State != ServicesInitializationState.Initialized)
         {
-            InitializationOptions initializationOptions = new InitializationOptions();
-            string testProfile = UnityEngine.Random.Range(0, 1000).ToString();
-            Debug.Log(testProfile);
-
-            initializationOptions.SetProfile(testProfile);
-
-            await UnityServices.InitializeAsync(initializationOptions);
+            await UnityServices.InitializeAsync();
             await AuthenticationService.Instance.SignInAnonymouslyAsync();
         }
 

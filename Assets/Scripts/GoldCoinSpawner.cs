@@ -7,8 +7,8 @@ using System;
 public class GoldCoinSpawner : NetworkBehaviour
 {
     [SerializeField] private Vector2 _areaSpawn;
+    [SerializeField] private float _spawnTimerMax;
     private NetworkVariable<float> _spawnTimer = new NetworkVariable<float>();
-    private float _spawnTimerMax = 10f;
 
 
     private void Update()

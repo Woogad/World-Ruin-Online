@@ -6,7 +6,7 @@ public class ResetStaticEvent : MonoBehaviour
 {
     private void Awake()
     {
-        ClearCounter.ResetStaticEvent();
+        GoldCoinScore.ResetStaticEvent();
         ItemShopCounter.ResetStaticEvent();
         GunShopCounter.ResetStaticEvent();
         CoinTrader.ResetStaticEvent();

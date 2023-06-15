@@ -9,9 +9,9 @@ public class ScoreBoardManager : NetworkBehaviour
 {
     public static ScoreBoardManager Instance { get; private set; }
 
-    public event EventHandler<OnScoreBoardScoreChangedArgs> OnDeleteScoreBoardItem;
-    public event EventHandler<OnScoreBoardScoreChangedArgs> OnScoreBoardKillChanged;
-    public class OnScoreBoardScoreChangedArgs : EventArgs
+    public event EventHandler<OnScoreBoardChangedArgs> OnDeleteScoreBoardItem;
+    public event EventHandler<OnScoreBoardChangedArgs> OnScoreBoardChanged;
+    public class OnScoreBoardChangedArgs : EventArgs
     {
         public ulong ClientID;
         public int Value = default;
@@ -27,7 +27,7 @@ public class ScoreBoardManager : NetworkBehaviour
     private void Start()
     {
         NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManagerOnClientDisConnectCallback;
-        DebugLogConsole.AddCommand<ulong>("AddScoreKill", "To add kill with clientID", AddKillScoreServerRpc);
+        DebugLogConsole.AddCommand<ulong>("AddScoreKill", "To add kill with clientID", AddScoreByKillServerRpc);
         if (Player.LocalInstance != null)
         {
             Player.LocalInstance.OnDead += PlayerOnDead;
@@ -55,7 +55,7 @@ public class ScoreBoardManager : NetworkBehaviour
 
     private void PlayerOnDead(object sender, Player.OnDeadArgs e)
     {
-        AddKillScoreServerRpc(e.KillerClientID);
+        AddScoreByKillServerRpc(e.KillerClientID);
     }
 
     private void NetworkManagerOnClientDisConnectCallback(ulong clientID)
@@ -64,9 +64,9 @@ public class ScoreBoardManager : NetworkBehaviour
     }
 
     [ServerRpc(RequireOwnership = false)]
-    public void AddKillScoreServerRpc(ulong shootOwnerClientID)
+    public void AddScoreServerRpc(int score, ServerRpcParams serverRpcParams = default)
     {
-        if (!NetworkManager.Singleton.ConnectedClients.TryGetValue(shootOwnerClientID, out NetworkClient networkClient))
+        if (!NetworkManager.Singleton.ConnectedClients.TryGetValue(serverRpcParams.Receive.SenderClientId, out NetworkClient networkClient))
         {
             return;
         }
@@ -74,21 +74,36 @@ public class ScoreBoardManager : NetworkBehaviour
         {
             return;
         }
-        player.AddKillScoreNetworkVariable(_scorePerKill);
-        AddKillScoreClientRpc(shootOwnerClientID);
+        player.AddPlayerScoreNetworkVariable(score);
+        AddScoreClientRpc(score, serverRpcParams.Receive.SenderClientId);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void AddScoreByKillServerRpc(ulong killerClientID)
+    {
+        if (!NetworkManager.Singleton.ConnectedClients.TryGetValue(killerClientID, out NetworkClient networkClient))
+        {
+            return;
+        }
+        if (!networkClient.PlayerObject.TryGetComponent<Player>(out Player player))
+        {
+            return;
+        }
+        player.AddPlayerScoreNetworkVariable(_scorePerKill);
+        AddScoreClientRpc(_scorePerKill, killerClientID);
     }
 
     [ClientRpc]
-    private void AddKillScoreClientRpc(ulong shootOwnerClientID)
+    private void AddScoreClientRpc(int score, ulong ClientID)
     {
-        var newScore = _scoreBoardDictionary[shootOwnerClientID];
-        newScore.AddScoreKill(_scorePerKill);
-        _scoreBoardDictionary[shootOwnerClientID] = newScore;
+        var newScore = _scoreBoardDictionary[ClientID];
+        newScore.AddScoreKill(score);
+        _scoreBoardDictionary[ClientID] = newScore;
 
-        OnScoreBoardKillChanged?.Invoke(this, new OnScoreBoardScoreChangedArgs
+        OnScoreBoardChanged?.Invoke(this, new OnScoreBoardChangedArgs
         {
-            ClientID = shootOwnerClientID,
-            Value = _scoreBoardDictionary[shootOwnerClientID].KillScore
+            ClientID = ClientID,
+            Value = _scoreBoardDictionary[ClientID].KillScore
         });
     }
 
@@ -102,7 +117,7 @@ public class ScoreBoardManager : NetworkBehaviour
     private void DeleteScoreBoardItemClientRpc(ulong clientID)
     {
         _scoreBoardDictionary.Remove(clientID);
-        OnDeleteScoreBoardItem?.Invoke(this, new OnScoreBoardScoreChangedArgs
+        OnDeleteScoreBoardItem?.Invoke(this, new OnScoreBoardChangedArgs
         {
             ClientID = clientID
         });

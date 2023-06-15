@@ -16,6 +16,7 @@ public class MainMenuUI : MonoBehaviour
     {
         _playBn.onClick.AddListener(() =>
         {
+            GameMultiplayer.IsPlayMultiplayer = true;
             Loader.Load(Loader.Scene.LobbyScene);
         });
         _profileBn.onClick.AddListener(() =>

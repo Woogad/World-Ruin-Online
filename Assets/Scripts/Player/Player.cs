@@ -29,7 +29,7 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
     public event EventHandler OnHealthChanged;
     public event EventHandler OnPickGun;
     public event EventHandler OnTakeDamage;
-    public event EventHandler OnKillScore;
+    public event EventHandler OnPlayerScoreChanged;
     public event EventHandler<OnReSpawnArgs> OnReSpawn;
     public class OnReSpawnArgs : EventArgs
     {
@@ -66,7 +66,7 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
     private NetworkVariable<float> _playerArmor = new NetworkVariable<float>();
     private NetworkVariable<int> _playerMoney = new NetworkVariable<int>();
     private NetworkVariable<bool> _isAlive = new NetworkVariable<bool>(true);
-    private NetworkVariable<int> _killScore = new NetworkVariable<int>();
+    private NetworkVariable<int> _playerScore = new NetworkVariable<int>();
     private NetworkVariable<int> _goldCoinCount = new NetworkVariable<int>();
     private NetworkVariable<Vector3> _spawnPosition = new NetworkVariable<Vector3>();
 
@@ -101,7 +101,7 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
         _playerArmor.OnValueChanged += PlayerArmorValueChanged;
         _playerMoney.OnValueChanged += PlayerMoneyValueChanged;
         _isAlive.OnValueChanged += PlayerIsAliveValueChanged;
-        _killScore.OnValueChanged += PlayerKillScoreValueChanged;
+        _playerScore.OnValueChanged += PlayerPlayerScoreValueChanged;
         _goldCoinCount.OnValueChanged += PlayerGoldCoinCountOnValueChanged;
         _spawnPosition.OnValueChanged += PlayerSpawnPositionOnValueChanged;
         if (IsServer)
@@ -133,10 +133,10 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
         gameObject.transform.position = _spawnPosition.Value;
     }
 
-    private void PlayerKillScoreValueChanged(int previousValue, int newValue)
+    private void PlayerPlayerScoreValueChanged(int previousValue, int newValue)
     {
         if (!IsOwner) return;
-        OnKillScore?.Invoke(this, EventArgs.Empty);
+        OnPlayerScoreChanged?.Invoke(this, EventArgs.Empty);
     }
 
     private void NetworkManagerOnClientDisconnectCallback(ulong clientID)
@@ -555,9 +555,9 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
         });
     }
 
-    public void AddKillScoreNetworkVariable(int score)
+    public void AddPlayerScoreNetworkVariable(int score)
     {
-        _killScore.Value += score;
+        _playerScore.Value += score;
     }
 
     private void SetVisualToRenderOnTop(GameObject gameObject)
@@ -622,9 +622,9 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
         return this._goldCoinCount.Value;
     }
 
-    public int GetKillScore()
+    public int GetPlayerScore()
     {
-        return _killScore.Value;
+        return _playerScore.Value;
     }
 
     public bool IsAlive()

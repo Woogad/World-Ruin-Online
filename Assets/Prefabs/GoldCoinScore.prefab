@@ -91,22 +91,22 @@ PrefabInstance:
     - target: {fileID: 101524871055897955, guid: ebd275ca15e183c4e9814ac5cfc800bf,
         type: 3}
       propertyPath: m_RootOrder
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 101524871055897955, guid: ebd275ca15e183c4e9814ac5cfc800bf,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 101524871055897955, guid: ebd275ca15e183c4e9814ac5cfc800bf,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 101524871055897955, guid: ebd275ca15e183c4e9814ac5cfc800bf,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 101524871055897955, guid: ebd275ca15e183c4e9814ac5cfc800bf,
         type: 3}
@@ -157,6 +157,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 101524871055897955, guid: ebd275ca15e183c4e9814ac5cfc800bf,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 767441494965264978, guid: ebd275ca15e183c4e9814ac5cfc800bf,
         type: 3}
@@ -221,7 +226,7 @@ PrefabInstance:
     - target: {fileID: 1621873862189536089, guid: ebd275ca15e183c4e9814ac5cfc800bf,
         type: 3}
       propertyPath: m_Name
-      value: ClearCounter
+      value: GoldCoinScore
       objectReference: {fileID: 0}
     - target: {fileID: 2390798170573458189, guid: ebd275ca15e183c4e9814ac5cfc800bf,
         type: 3}
@@ -296,7 +301,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _counterTopPoint: {fileID: 580417371387332596}
-  _gunObjectSO: {fileID: 0}
 --- !u!1001 &8900591364190465595
 PrefabInstance:
   m_ObjectHideFlags: 0

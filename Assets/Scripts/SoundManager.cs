@@ -25,8 +25,15 @@ public class SoundManager : MonoBehaviour
         ItemShopCounter.OnAnyFailBuyItem += ItemShopCounterOnAnyFailBuyItem;
         CoinTrader.OnAnyTradeCoin += CoinTraderOnAnyTradeCoin;
         CoinTrader.OnAnyFailTradeCoin += CoinTraderOnAnyFailTradeCoin;
-        ClearCounter.OnAnyClearCounterPickObject += ClearCounterOnAnyPickObject;
+        GoldCoinScore.OnAnyGoldCoinScore += GoldCoinScoreOnAnyGoldCoinScore;
+        GoldCoinScore.OnAnyFailCoinScore += GoldCoinScoreOnAnyFailCoinScore;
         Player.OnAnyPlayerPickGun += PlayerOnPickGun;
+    }
+
+    private void GoldCoinScoreOnAnyFailCoinScore(object sender, System.EventArgs e)
+    {
+        GoldCoinScore goldCoinScore = sender as GoldCoinScore;
+        PlaySound(_audioClipRefsSO.FailInteract, goldCoinScore.transform.position);
     }
 
     private void ItemShopCounterOnAnyFailBuyItem(object sender, System.EventArgs e)
@@ -53,10 +60,10 @@ public class SoundManager : MonoBehaviour
         PlaySound(_audioClipRefsSO.TradeCoin, coinTrader.transform.position);
     }
 
-    private void ClearCounterOnAnyPickObject(object sender, System.EventArgs e)
+    private void GoldCoinScoreOnAnyGoldCoinScore(object sender, System.EventArgs e)
     {
-        Player player = sender as Player;
-        PlaySound(_audioClipRefsSO.PickGun, player.transform.position);
+        GoldCoinScore goldCoinScore = sender as GoldCoinScore;
+        PlaySound(_audioClipRefsSO.PickGun, goldCoinScore.transform.position);
     }
 
     private void PlayerOnPickGun(object sender, System.EventArgs e)

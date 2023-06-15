@@ -15,9 +15,7 @@ public class HelicopterRotor : MonoBehaviour
 
     private void RotateRotor()
     {
-        Vector3 rotateEuler = Vector3.up * _speed;
-        Debug.Log(rotateEuler);
-        // Vector3 rotateEuler = Vector3.up;
+        Vector3 rotateEuler = Vector3.up * (_speed * 10) * Time.deltaTime;
 
         _rotor.Rotate(rotateEuler);
         _tailRotor.Rotate(rotateEuler);

@@ -209,7 +209,7 @@ GameObject:
   - component: {fileID: 8760929607941571790}
   - component: {fileID: 5637038451007179627}
   - component: {fileID: 7628604995147972513}
-  - component: {fileID: 9215913463001387831}
+  - component: {fileID: 995955783288830335}
   m_Layer: 0
   m_Name: HelicopterV1
   m_TagString: Untagged
@@ -224,15 +224,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8277268270088658548}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 13, y: 13, z: 13}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8417442085250704511}
   - {fileID: 3264287575318138631}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5637038451007179627
 MeshFilter:
@@ -284,25 +284,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &9215913463001387831
-MeshCollider:
+--- !u!114 &995955783288830335
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8277268270088658548}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 9077394016075933765, guid: 2d478463c80ad524cb0cb1f582ea0731, type: 3}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b5802a2127cd6b42b773a1d88660c85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rotor: {fileID: 8417442085250704511}
+  _tailRotor: {fileID: 2687422862657180978}
+  _speed: 3

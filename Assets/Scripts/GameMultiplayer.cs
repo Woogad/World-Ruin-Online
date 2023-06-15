@@ -21,6 +21,7 @@ public class GameMultiplayer : NetworkBehaviour
     private NetworkList<PlayerData> _playerDataNetworkList;
     private string _playerName;
 
+    public static bool IsPlayMultiplayer;
     public const int MAX_PLAYER_LIMIT = 4;
     public const string PLAYER_PREFS_PLAYER_NAME = "PlayerName";
     private void Awake()
@@ -32,9 +33,17 @@ public class GameMultiplayer : NetworkBehaviour
         _playerDataNetworkList.OnListChanged += PlayerDataNetworkListOnListChanged;
     }
 
+    private void Start()
+    {
+        if (!IsPlayMultiplayer)
+        {
+            StartHost();
+            // Loader.Load();
+        }
+    }
+
     private void PlayerDataNetworkListOnListChanged(NetworkListEvent<PlayerData> changeEvent)
     {
-        Debug.Log("list changed");
         OnDataNetworkListChanged?.Invoke(this, EventArgs.Empty);
     }
 

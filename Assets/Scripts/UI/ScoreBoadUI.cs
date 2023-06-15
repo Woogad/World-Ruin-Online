@@ -13,7 +13,7 @@ public class ScoreBoadUI : MonoBehaviour
     private void Start()
     {
         ScoreBoardManager.Instance.OnDeleteScoreBoardItem += ScoreBoardManagerOnDeleteScoreBoardItem;
-        ScoreBoardManager.Instance.OnScoreBoardKillChanged += ScoreBoardManagerOnScoreBoardKillChanged;
+        ScoreBoardManager.Instance.OnScoreBoardChanged += ScoreBoardManagerOnScoreBoardChanged;
         GameManager.Instance.OnStateChanged += GameManagerOnStateChanged;
         GameInput.Instance.OnViewScoreBoardHoldAction += GameInputOnViewScoreBoardHoldAction;
         Hide();
@@ -27,14 +27,14 @@ public class ScoreBoadUI : MonoBehaviour
         }
     }
 
-    private void ScoreBoardManagerOnScoreBoardKillChanged(object sender, ScoreBoardManager.OnScoreBoardScoreChangedArgs e)
+    private void ScoreBoardManagerOnScoreBoardChanged(object sender, ScoreBoardManager.OnScoreBoardChangedArgs e)
     {
         ScoreBoardItemUI item = _scoreBoardItemDictionary[e.ClientID].GetComponent<ScoreBoardItemUI>();
-        item.KillScoreText.text = e.Value.ToString();
+        item.ScoreText.text = e.Value.ToString();
         _scoreBoardItemDictionary[e.ClientID] = item;
     }
 
-    private void ScoreBoardManagerOnDeleteScoreBoardItem(object sender, ScoreBoardManager.OnScoreBoardScoreChangedArgs e)
+    private void ScoreBoardManagerOnDeleteScoreBoardItem(object sender, ScoreBoardManager.OnScoreBoardChangedArgs e)
     {
         Destroy(_scoreBoardItemDictionary[e.ClientID].gameObject);
         _scoreBoardItemDictionary.Remove(e.ClientID);
@@ -59,7 +59,7 @@ public class ScoreBoadUI : MonoBehaviour
         {
             ScoreBoardItemUI item = Instantiate(_scoreBoardItemTemplate, _contrainer).GetComponent<ScoreBoardItemUI>();
             item.UsernameText.text = kvp.Value.Username.ToString();
-            item.KillScoreText.text = kvp.Value.KillScore.ToString();
+            item.ScoreText.text = kvp.Value.KillScore.ToString();
 
             _scoreBoardItemDictionary[kvp.Key] = item;
         }

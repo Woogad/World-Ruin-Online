@@ -664,6 +664,7 @@ Transform:
   - {fileID: 1602942517}
   - {fileID: 769976520}
   - {fileID: 910250294}
+  - {fileID: 1885822654}
   m_Father: {fileID: 1013794219}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4128,35 +4129,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 644566334}
     m_Modifications:
+    - target: {fileID: 995955783288830335, guid: 16ac732b58c8753419a01038b1642b0d,
+        type: 3}
+      propertyPath: _speed
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 8277268270088658548, guid: 16ac732b58c8753419a01038b1642b0d,
         type: 3}
       propertyPath: m_Name
       value: HelicopterV1
       objectReference: {fileID: 0}
-    - target: {fileID: 8277268270088658548, guid: 16ac732b58c8753419a01038b1642b0d,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8760929607941571790, guid: 16ac732b58c8753419a01038b1642b0d,
         type: 3}
       propertyPath: m_RootOrder
       value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8760929607941571790, guid: 16ac732b58c8753419a01038b1642b0d,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 8760929607941571790, guid: 16ac732b58c8753419a01038b1642b0d,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 8760929607941571790, guid: 16ac732b58c8753419a01038b1642b0d,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 8760929607941571790, guid: 16ac732b58c8753419a01038b1642b0d,
         type: 3}
@@ -4208,54 +4194,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8760929607941571790, guid: 16ac732b58c8753419a01038b1642b0d,
-        type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 9215913463001387831, guid: 16ac732b58c8753419a01038b1642b0d, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8277268270088658548, guid: 16ac732b58c8753419a01038b1642b0d,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1617092752}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 16ac732b58c8753419a01038b1642b0d, type: 3}
---- !u!1 &1617092749 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8277268270088658548, guid: 16ac732b58c8753419a01038b1642b0d,
-    type: 3}
-  m_PrefabInstance: {fileID: 1617092748}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1617092750 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2687422862657180978, guid: 16ac732b58c8753419a01038b1642b0d,
-    type: 3}
-  m_PrefabInstance: {fileID: 1617092748}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1617092751 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8417442085250704511, guid: 16ac732b58c8753419a01038b1642b0d,
-    type: 3}
-  m_PrefabInstance: {fileID: 1617092748}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1617092752
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1617092749}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b5802a2127cd6b42b773a1d88660c85, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _rotor: {fileID: 1617092751}
-  _tailRotor: {fileID: 1617092750}
-  _speed: 3
 --- !u!4 &1617092753 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8760929607941571790, guid: 16ac732b58c8753419a01038b1642b0d,
@@ -5146,6 +5089,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1817352562}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &1885822654 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4094916363087742, guid: 47555e4f5572b0d4c94e95b1b8d25596,
+    type: 3}
+  m_PrefabInstance: {fileID: 1958349821}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1956521229
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5246,7 +5195,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 267499923}
     m_Modifications:
     - target: {fileID: 1789207678412788, guid: 47555e4f5572b0d4c94e95b1b8d25596, type: 3}
       propertyPath: m_Name
@@ -5254,7 +5203,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4094916363087742, guid: 47555e4f5572b0d4c94e95b1b8d25596, type: 3}
       propertyPath: m_RootOrder
-      value: 14
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 4094916363087742, guid: 47555e4f5572b0d4c94e95b1b8d25596, type: 3}
       propertyPath: m_LocalScale.x

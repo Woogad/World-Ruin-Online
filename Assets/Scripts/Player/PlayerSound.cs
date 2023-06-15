@@ -20,7 +20,7 @@ public class PlayerSound : NetworkBehaviour
         _player.OnRelaod += PlayerOnReload;
         _player.OnShoot += PlayerOnShoot;
         _player.OnDead += PlayerOnDead;
-        _player.OnKillScore += PlayerOnKillScore;
+        _player.OnPlayerScoreChanged += PlayerOnKillScore;
         _player.OnGoldCoinChanged += PlayerOnGoldCoinChanged;
     }
 
