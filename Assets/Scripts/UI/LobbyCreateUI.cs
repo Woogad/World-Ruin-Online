@@ -29,6 +29,8 @@ public class LobbyCreateUI : MonoBehaviour
 
     private void Start()
     {
+        int characterLimit = 16;
+        _lobbyNameInput.characterLimit = characterLimit;
         Hide();
     }
 

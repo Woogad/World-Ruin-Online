@@ -10,6 +10,8 @@ public class ProfileNameUI : MonoBehaviour
 
     private void Start()
     {
+        int nameCharacterLimit = 10;
+        _playerNameInput.characterLimit = nameCharacterLimit;
         _playerNameInput.text = PlayerPrefs.GetString(GameMultiplayer.PLAYER_PREFS_PLAYER_NAME, "Player");
         _playerNameInput.onValueChanged.AddListener((string newText) =>
         {

@@ -31,7 +31,7 @@ public class CharacterLobbyRoomUI : MonoBehaviour
     {
         Lobby lobby = LobbyManager.Instance.GetLobby();
 
-        _lobbyNameText.text = "Lobby Name: " + lobby.Name;
+        _lobbyNameText.text = lobby.Name;
         _lobbyCodeText.text = "Code: " + lobby.LobbyCode;
     }
 }

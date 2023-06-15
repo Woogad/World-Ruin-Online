@@ -21,6 +21,7 @@ public class PlayerPrefabMainMenu : MonoBehaviour
     {
         _pose = (Pose)UnityEngine.Random.Range(0, Enum.GetValues(typeof(Pose)).Length);
         UpdateVisual();
+
     }
 
     private void UpdateVisual()

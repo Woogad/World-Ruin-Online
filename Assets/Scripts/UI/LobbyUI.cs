@@ -45,6 +45,8 @@ public class LobbyUI : MonoBehaviour
     private void Start()
     {
         _playerNameInput.text = GameMultiplayer.Instance.GetPlayerName();
+        int nameCharacterLimit = 10;
+        _playerNameInput.characterLimit = nameCharacterLimit;
         _playerNameInput.onValueChanged.AddListener((string newText) =>
         {
             GameMultiplayer.Instance.SetPlayerName(newText);
