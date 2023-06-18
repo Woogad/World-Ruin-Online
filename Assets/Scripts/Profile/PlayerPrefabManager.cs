@@ -8,7 +8,7 @@ public class PlayerPrefabManager : MonoBehaviour
 {
     public static PlayerPrefabManager Instance { get; private set; }
 
-    [SerializeField] List<Transform> _playerPrefabVisualList;
+    [SerializeField] PlayerPrefabsVisualListSO _playerPrefabVisualListSO;
 
     public event EventHandler OnPlayerIndexChanged;
 
@@ -24,7 +24,7 @@ public class PlayerPrefabManager : MonoBehaviour
     public void IncreaseIndex()
     {
         _playerPrefabIndex += 1;
-        if (_playerPrefabIndex >= _playerPrefabVisualList.Count)
+        if (_playerPrefabIndex >= _playerPrefabVisualListSO.PlayerPrefabVisaulList.Count)
         {
             _playerPrefabIndex = 0;
         }
@@ -37,7 +37,7 @@ public class PlayerPrefabManager : MonoBehaviour
         _playerPrefabIndex -= 1;
         if (_playerPrefabIndex < 0)
         {
-            _playerPrefabIndex = _playerPrefabVisualList.Count - 1;
+            _playerPrefabIndex = _playerPrefabVisualListSO.PlayerPrefabVisaulList.Count - 1;
         }
         PlayerPrefs.SetInt(PLAYER_PREFS_PLAYER_PREFAB_INDEX, _playerPrefabIndex);
         OnPlayerIndexChanged?.Invoke(this, EventArgs.Empty);
@@ -56,7 +56,7 @@ public class PlayerPrefabManager : MonoBehaviour
 
     public List<Transform> GetPlayerPrefabsVisualList()
     {
-        return this._playerPrefabVisualList;
+        return this._playerPrefabVisualListSO.PlayerPrefabVisaulList;
     }
 
 }
