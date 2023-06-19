@@ -33,7 +33,7 @@ public class DeadDisplayUI : MonoBehaviour
         {
             if (player.ClientID == KillerClientID)
             {
-                _killedByText.text = "Killed by " + player.PlayerName;
+                _killedByText.text = player.PlayerName.ToString();
                 break;
             }
         }

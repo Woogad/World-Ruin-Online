@@ -23,7 +23,7 @@ public class ArmorDisplayUI : MonoBehaviour
     private void UpdateVisual()
     {
         float armor = _player.GetPlayerArmor();
-        _aromrAmountText.text = armor.ToString();
+        _aromrAmountText.text = armor.ToString("F0");
     }
 
 }

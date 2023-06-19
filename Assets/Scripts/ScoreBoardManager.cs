@@ -64,9 +64,9 @@ public class ScoreBoardManager : NetworkBehaviour
     }
 
     [ServerRpc(RequireOwnership = false)]
-    public void AddScoreServerRpc(int score, ServerRpcParams serverRpcParams = default)
+    public void AddScoreServerRpc(int score, ulong ClientID)
     {
-        if (!NetworkManager.Singleton.ConnectedClients.TryGetValue(serverRpcParams.Receive.SenderClientId, out NetworkClient networkClient))
+        if (!NetworkManager.Singleton.ConnectedClients.TryGetValue(ClientID, out NetworkClient networkClient))
         {
             return;
         }
@@ -75,7 +75,7 @@ public class ScoreBoardManager : NetworkBehaviour
             return;
         }
         player.AddPlayerScoreNetworkVariable(score);
-        AddScoreClientRpc(score, serverRpcParams.Receive.SenderClientId);
+        AddScoreClientRpc(score, ClientID);
     }
 
     [ServerRpc(RequireOwnership = false)]

@@ -25,6 +25,15 @@ public class SpawnPlayerManager : NetworkBehaviour
         {
             Player.OnAnyPlayerSpawned += PlayerOnAnyPlayerSpawned;
         }
+
+        if (IsHost)
+        {
+            NetworkManager.Singleton.OnClientConnectedCallback += gg;
+        }
+    }
+
+    private void gg(ulong obj)
+    {
     }
 
     private void RespawnPlayer(object sender, Player.OnDeadArgs e)
@@ -44,8 +53,9 @@ public class SpawnPlayerManager : NetworkBehaviour
             return;
         }
 
+        int randomPosiion = UnityEngine.Random.Range(0, _spawnTransform.Count - 1);
         player.ReSpawn();
-        player.SetSpawnPosition(_spawnTransform[(int)serverRpcParams.Receive.SenderClientId].position);
+        player.SetSpawnPosition(_spawnTransform[randomPosiion].position);
     }
 
     private void PlayerOnAnyPlayerSpawned(object sender, EventArgs e)

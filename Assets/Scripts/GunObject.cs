@@ -213,7 +213,7 @@ public class GunObject : NetworkBehaviour
     private void SetupAmmoAndMagazine()
     {
         _currentAmmo = _gunObjectSO.MaxAmmmo;
-        _currentMagazine = _gunObjectSO.MaxMagazine / 2;
+        _currentMagazine = _gunObjectSO.MaxMagazine;
     }
 
     public GameObject GetGunVisual()

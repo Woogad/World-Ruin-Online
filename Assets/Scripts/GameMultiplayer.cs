@@ -38,7 +38,6 @@ public class GameMultiplayer : NetworkBehaviour
         if (!IsPlayMultiplayer)
         {
             StartHost();
-            // Loader.Load();
         }
     }
 

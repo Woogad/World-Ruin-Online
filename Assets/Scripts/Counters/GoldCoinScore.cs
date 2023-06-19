@@ -17,7 +17,7 @@ public class GoldCoinScore : BaseCounter
     {
         if (player.GetGoldCoin() > 0)
         {
-            ScoreBoardManager.Instance.AddScoreServerRpc(player.GetGoldCoin());
+            ScoreBoardManager.Instance.AddScoreServerRpc(player.GetGoldCoin(), player.OwnerClientId);
             player.AddGoldCoin(-player.GetGoldCoin());
             OnAnyGoldCoinScore?.Invoke(this, EventArgs.Empty);
         }

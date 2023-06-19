@@ -22,6 +22,6 @@ public class HealthDiplayUI : MonoBehaviour
 
     private void UpdateVisual()
     {
-        healthAmountText.text = Mathf.Round(_player.GetPlayerHealth()).ToString();
+        healthAmountText.text = Mathf.Round(_player.GetPlayerHealth()).ToString("F0");
     }
 }

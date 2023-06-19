@@ -90,7 +90,6 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
         GameInput.Instance.OnShootWeaponAction += GameInputOnShootAction;
         GameInput.Instance.OnReloadAction += GameInputOnReloadAction;
         GameInput.Instance.OnToggleWeaponModeAction += GameInputOnToggleWeaponModeAction;
-        DebugLogConsole.AddCommand<float, ulong>("TakeDamage", "Get Damage", TakeDamage);
     }
 
     public override void OnNetworkSpawn()
@@ -115,15 +114,15 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
             {
                 SetVisualToRenderOnTop(visual);
             }
+            SpawnPlayerManager.Instance.TeleportPlayerOnNetworkSpawn(GameMultiplayer.Instance.GetPlayerDataIndexFromClientID(OwnerClientId), OwnerClientId);
         }
-
-        SpawnPlayerManager.Instance.TeleportPlayerOnNetworkSpawn(GameMultiplayer.Instance.GetPlayerDataIndexFromClientID(OwnerClientId), OwnerClientId);
         OnAnyPlayerSpawned?.Invoke(this, EventArgs.Empty);
     }
 
 
     private void PlayerGoldCoinCountOnValueChanged(int previousValue, int newValue)
     {
+        if (!IsOwner) return;
         OnGoldCoinChanged?.Invoke(this, EventArgs.Empty);
     }
 

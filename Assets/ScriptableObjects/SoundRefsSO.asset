@@ -18,18 +18,18 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 4c749bd915eb32d46aae9a7322695188, type: 3}
   - {fileID: 8300000, guid: 20ca31594d1279a40a62e002c55f3046, type: 3}
   BuyObject:
-  - {fileID: 8300000, guid: 2ce2e2610324ae14ba470abd59892afe, type: 3}
-  - {fileID: 8300000, guid: 3e90d4e490d9d514f877f3cb87508d7d, type: 3}
+  - {fileID: 8300000, guid: 0cde1a7357ee84444896b7e6184ed7ca, type: 3}
+  - {fileID: 8300000, guid: 5b50acf9917031a42ba4d73ee2df0151, type: 3}
   Reload:
-  - {fileID: 8300000, guid: 53cb6c3d3ccfbf04f9ee1dad71f5fedb, type: 3}
-  - {fileID: 8300000, guid: 1d08cc7ae9ed9e0468ee617a9d645be8, type: 3}
+  - {fileID: 8300000, guid: 9fdd5f16eabc50e4f9c8a5822185265b, type: 3}
+  - {fileID: 8300000, guid: e4798369c84a7424d9c254b45b37fd8a, type: 3}
   GunShoot:
   - {fileID: 8300000, guid: 523d947f38680f745878024df1a38bff, type: 3}
   - {fileID: 8300000, guid: eab952cabb0f25342af01f7f46cf1c34, type: 3}
-  EmptyShoot: {fileID: 8300000, guid: 70d3ca6def0bf5f45bf14841fc79bba5, type: 3}
-  PickGun: {fileID: 8300000, guid: 006107f7b321e3d4a960ee0d33f81e9d, type: 3}
-  PlayerDead: {fileID: 8300000, guid: bb9821fd19a1df34cad3abba7894c559, type: 3}
+  EmptyShoot: {fileID: 8300000, guid: 10ad00d0c061c5d47953b2a0f45579da, type: 3}
+  PickGun: {fileID: 8300000, guid: 70e5fdadeafb97b41a55513ef526f95e, type: 3}
+  PlayerDead: {fileID: 8300000, guid: 81e3445f5abe02b47b85ed0da038291a, type: 3}
   TradeCoin: {fileID: 8300000, guid: fbb09c2c804765d46b472d99c7d76609, type: 3}
   KillScore: {fileID: 8300000, guid: 18c59b144ea5f4d4f977108137f35611, type: 3}
-  FailInteract: {fileID: 8300000, guid: 42a9af135326e9f448938776d85f5c28, type: 3}
-  PickGoldCoin: {fileID: 8300000, guid: 1f3ca8f3d8512a540886e17e36da5b87, type: 3}
+  FailInteract: {fileID: 8300000, guid: 746fe61f34a10f54f98fbba6a5830d3f, type: 3}
+  PickGoldCoin: {fileID: 8300000, guid: e805939f5611e0b4283777cfd2aee4f4, type: 3}

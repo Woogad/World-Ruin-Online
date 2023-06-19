@@ -19,17 +19,9 @@ public class AmmoDisplayUI : MonoBehaviour
         UpdateVisual();
     }
 
-    private void PlayerOnInteractClientAmmo(object sender, EventArgs e)
-    {
-        Invoke("UpdateVisualClient", 0.5f);
-    }
-
     private void PlayerOnInteract(object sender, EventArgs e)
     {
-        if (_player.HasGunObject())
-        {
-            UpdateVisual();
-        }
+        UpdateVisual();
     }
 
     private void PlayerOnUpdateAmmo(object sender, EventArgs e)
@@ -49,10 +41,11 @@ public class AmmoDisplayUI : MonoBehaviour
         }
         _ammoAmountText.text = _player.GetGunObject().getCurrentAmmo().ToString();
         _magazineAmountText.text = _player.GetGunObject().getCurrentMagazine().ToString();
+        UpdateVisualLate();
     }
 
     private void UpdateVisualLate()
     {
-        Invoke("UpdateVisual", 0.5f);
+        Invoke("UpdateVisual", 0.8f);
     }
 }
