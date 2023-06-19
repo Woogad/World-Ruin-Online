@@ -71,7 +71,7 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
     private NetworkVariable<Vector3> _spawnPosition = new NetworkVariable<Vector3>();
 
     private float defaultHealth = 100f;
-    private float defaultAromr = 40f;
+    private float defaultAromr = 10f;
     private bool defaultIsAlive = true;
     private int defaulMoney = 200;
 

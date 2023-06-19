@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MusicManager : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class MusicManager : MonoBehaviour
 
     private AudioSource _audioSource;
     private float _volume = 0.3f;
+
 
     private void Awake()
     {
@@ -22,6 +24,23 @@ public class MusicManager : MonoBehaviour
     private void Start()
     {
         _audioSource.volume = _volume;
+        if (SceneManager.GetActiveScene().name == Loader.Scene.GameScene.ToString())
+        {
+            StartCoroutine(StartFadeMusic(3f));
+        }
+    }
+
+    private IEnumerator StartFadeMusic(float duration)
+    {
+        float FadeTimer = 0;
+        float start = 0;
+        while (FadeTimer < duration)
+        {
+            FadeTimer += Time.deltaTime;
+            _audioSource.volume = Mathf.Lerp(start, _volume, FadeTimer / duration);
+            yield return null;
+        }
+        yield break;
     }
 
     public void UpVolume()
@@ -33,6 +52,7 @@ public class MusicManager : MonoBehaviour
         {
             _volume = 0f;
         }
+
         _audioSource.volume = _volume;
 
         PlayerPrefs.SetFloat(PLAYER_PREFS_MUSIC_VOLUME, _volume);
@@ -47,6 +67,7 @@ public class MusicManager : MonoBehaviour
         {
             _volume = 1f;
         }
+
         _audioSource.volume = _volume;
 
         PlayerPrefs.SetFloat(PLAYER_PREFS_MUSIC_VOLUME, _volume);
@@ -57,4 +78,5 @@ public class MusicManager : MonoBehaviour
     {
         return this._volume;
     }
+
 }
