@@ -10,9 +10,13 @@ public class AmmoDisplayUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _ammoAmountText;
     [SerializeField] private TextMeshProUGUI _magazineAmountText;
 
+    private event Action _updateVisualName;
+
 
     private void Start()
     {
+        _updateVisualName = this.UpdateVisual;
+
         _player.OnAmmoChanged += PlayerOnUpdateAmmo;
         _player.OnInteract += PlayerOnInteract;
 
@@ -46,6 +50,6 @@ public class AmmoDisplayUI : MonoBehaviour
 
     private void UpdateVisualLate()
     {
-        Invoke("UpdateVisual", 0.8f);
+        Invoke(_updateVisualName.Method.Name, 0.8f);
     }
 }

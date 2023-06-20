@@ -36,7 +36,7 @@ public class PlayerSound : NetworkBehaviour
         SoundManager.Instance.PlayKillScoreSound(_player.transform.position, volume);
     }
 
-    private void PlayerOnDead(object sender, EventArgs e)
+    private void PlayerOnDead(object sender, Player.OnDeadArgs e)
     {
         float volume = 1f;
         SoundManager.Instance.PlayPlayerDeadSound(_player.transform.position, volume);

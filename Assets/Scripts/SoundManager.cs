@@ -6,7 +6,7 @@ public class SoundManager : MonoBehaviour
 {
     public static SoundManager Instance { get; private set; }
 
-    private const string PLAYER_PREFS_SOUND_EFFECT_VOLUME = "SoundEffectVolume";
+    public const string PLAYER_PREFS_SOUND_EFFECT_VOLUME = "SoundEffectVolume";
 
     [SerializeField] private AudioClipRefsSO _audioClipRefsSO;
 

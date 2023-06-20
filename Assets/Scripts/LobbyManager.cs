@@ -47,6 +47,11 @@ public class LobbyManager : MonoBehaviour
     {
         if (UnityServices.State != ServicesInitializationState.Initialized)
         {
+            //! For Test multiple player
+            // InitializationOptions initializationOptions = new InitializationOptions();
+            // int random = UnityEngine.Random.Range(0, 1000);
+            // initializationOptions.SetProfile(random.ToString());
+            //!
             await UnityServices.InitializeAsync();
             await AuthenticationService.Instance.SignInAnonymouslyAsync();
         }

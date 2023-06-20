@@ -477,8 +477,8 @@ Transform:
   - {fileID: 6623293636466029732}
   - {fileID: 4730866822230595376}
   - {fileID: 5798104089628702474}
-  - {fileID: 1557696798614565059}
   - {fileID: 3234516927396743656}
+  - {fileID: 1557696798614565059}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

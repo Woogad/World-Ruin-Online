@@ -80,7 +80,7 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
     private float _reloadCountdown;
     private BaseCounter _selectedCounter;
     private GunObject _gunObject;
-    private ulong _killerClientID;
+    private ulong _shooterClientID;
 
 
     private void Start()
@@ -103,6 +103,7 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
         _playerScore.OnValueChanged += PlayerPlayerScoreValueChanged;
         _goldCoinCount.OnValueChanged += PlayerGoldCoinCountOnValueChanged;
         _spawnPosition.OnValueChanged += PlayerSpawnPositionOnValueChanged;
+
         if (IsServer)
         {
             NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManagerOnClientDisconnectCallback;
@@ -118,7 +119,6 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
         }
         OnAnyPlayerSpawned?.Invoke(this, EventArgs.Empty);
     }
-
 
     private void PlayerGoldCoinCountOnValueChanged(int previousValue, int newValue)
     {
@@ -148,20 +148,19 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
 
     private void PlayerIsAliveValueChanged(bool previousValue, bool newValue)
     {
-        if (!_isAlive.Value)
-        {
-            OnDead?.Invoke(this, new OnDeadArgs
-            {
-                KillerClientID = _killerClientID,
-            });
-
-        }
-
         if (newValue)
         {
             OnReSpawn?.Invoke(this, new OnReSpawnArgs
             {
                 IsProtection = true
+            });
+        }
+        else
+        {
+            Dead();
+            OnDead?.Invoke(this, new OnDeadArgs
+            {
+                KillerClientID = _shooterClientID
             });
         }
     }
@@ -210,7 +209,7 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
 
             if (CanShootAuto())
             {
-                GetGunObject().Shoot(OwnerClientId);
+                GetGunObject().Shoot();
 
                 OnShoot?.Invoke(this, EventArgs.Empty);
                 OnAmmoChanged?.Invoke(this, EventArgs.Empty);
@@ -232,7 +231,7 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
             if (GetGunObject().GetGunMode() != GunObject.GunMode.Semi) return;
             if (GetGunObject().TryShoot())
             {
-                GetGunObject().Shoot(OwnerClientId);
+                GetGunObject().Shoot();
                 OnShoot?.Invoke(this, EventArgs.Empty);
                 OnAmmoChanged?.Invoke(this, EventArgs.Empty);
             }
@@ -488,21 +487,22 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
         }
     }
 
-    public void TakeDamage(float damage, ulong shootOwnerClientID)
+    public void TakeDamage(float damage, ulong shooterClientID)
     {
-        TakeDamageServerRpc(damage, shootOwnerClientID);
+        TakeDamageServerRpc(damage, shooterClientID);
+        _shooterClientID = shooterClientID;
         OnTakeDamage?.Invoke(this, EventArgs.Empty);
 
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void TakeDamageServerRpc(float damage, ulong shootOwnerClientID)
+    private void TakeDamageServerRpc(float damage, ulong shooterClientID)
     {
         if (!_isAlive.Value) return;
         float damageResistance = 0.4f; //* 40%
         float damageReduce = damageResistance * damage;
 
-        if (_playerArmor.Value == 0)
+        if (_playerArmor.Value <= 0)
         {
             _playerHealth.Value -= damage;
         }
@@ -524,16 +524,14 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
 
         if (_playerHealth.Value <= 0)
         {
-            Dead(shootOwnerClientID);
-            _isAlive.Value = false;
             _playerHealth.Value = 0;
+            _isAlive.Value = false;
         }
     }
 
-    private void Dead(ulong clientID)
+    private void Dead()
     {
         DeadClientRpc();
-        _killerClientID = clientID;
         Vector2 goldCoinSpawnArea = new Vector2(2, 2);
         for (int i = 0; i < GetGoldCoin(); i++)
         {
@@ -541,6 +539,7 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
         }
         AddGoldCoin(-GetGoldCoin());
     }
+
 
     [ClientRpc]
     private void DeadClientRpc()
@@ -555,6 +554,12 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
     }
 
     public void AddPlayerScoreNetworkVariable(int score)
+    {
+        AddPlayerScoreNetworkVariableServerRpc(score);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void AddPlayerScoreNetworkVariableServerRpc(int score)
     {
         _playerScore.Value += score;
     }

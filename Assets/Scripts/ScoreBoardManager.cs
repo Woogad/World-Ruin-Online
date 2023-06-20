@@ -27,7 +27,6 @@ public class ScoreBoardManager : NetworkBehaviour
     private void Start()
     {
         NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManagerOnClientDisConnectCallback;
-        DebugLogConsole.AddCommand<ulong>("AddScoreKill", "To add kill with clientID", AddScoreByKillServerRpc);
         if (Player.LocalInstance != null)
         {
             Player.LocalInstance.OnDead += PlayerOnDead;
