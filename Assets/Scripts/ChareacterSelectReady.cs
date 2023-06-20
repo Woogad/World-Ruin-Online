@@ -26,8 +26,6 @@ public class ChareacterSelectReady : NetworkBehaviour
 
     private void Start()
     {
-        audioSource.volume = PlayerPrefs.GetFloat(SoundManager.PLAYER_PREFS_SOUND_EFFECT_VOLUME, 0.8f);
-
         _readyClientRpcName = this.SetPlayerReadyClientRpc;
 
         if (!IsServer) return;
