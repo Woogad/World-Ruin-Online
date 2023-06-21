@@ -128,6 +128,11 @@ public class SoundManager : MonoBehaviour
         PlaySound(_audioClipRefsSO.PickGoldCoin, position, volume);
     }
 
+    public void PlayGunModeSwitch(Vector3 position, float volume)
+    {
+        PlaySound(_audioClipRefsSO.GunModeSwitch, position, volume);
+    }
+
     public void UpVolume()
     {
         _volume += 0.1f;

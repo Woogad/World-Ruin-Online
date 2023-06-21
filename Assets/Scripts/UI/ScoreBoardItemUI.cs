@@ -8,4 +8,5 @@ public class ScoreBoardItemUI : MonoBehaviour
 {
     public TextMeshProUGUI UsernameText;
     public TextMeshProUGUI ScoreText;
+    public Image OwnerIcon;
 }

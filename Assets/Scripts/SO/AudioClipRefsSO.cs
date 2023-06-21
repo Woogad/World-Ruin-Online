@@ -16,4 +16,5 @@ public class AudioClipRefsSO : ScriptableObject
     public AudioClip KillScore;
     public AudioClip FailInteract;
     public AudioClip PickGoldCoin;
+    public AudioClip GunModeSwitch;
 }

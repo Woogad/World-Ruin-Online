@@ -22,6 +22,13 @@ public class PlayerSound : NetworkBehaviour
         _player.OnDead += PlayerOnDead;
         _player.OnPlayerScoreChanged += PlayerOnKillScore;
         _player.OnGoldCoinChanged += PlayerOnGoldCoinChanged;
+        _player.OnGunModeChanged += PlayerOnGunModeChanged;
+    }
+
+    private void PlayerOnGunModeChanged(object sender, Player.OnGunModeChangedArgs e)
+    {
+        float volume = 1f;
+        SoundManager.Instance.PlayGunModeSwitch(_player.transform.position, volume);
     }
 
     private void PlayerOnGoldCoinChanged(object sender, EventArgs e)

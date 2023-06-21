@@ -60,7 +60,7 @@ public class ScoreBoadUI : MonoBehaviour
             ScoreBoardItemUI item = Instantiate(_scoreBoardItemTemplate, _contrainer).GetComponent<ScoreBoardItemUI>();
             item.UsernameText.text = kvp.Value.Username.ToString();
             item.ScoreText.text = kvp.Value.KillScore.ToString();
-
+            item.OwnerIcon.gameObject.SetActive(kvp.Key == Player.LocalInstance.OwnerClientId);
             _scoreBoardItemDictionary[kvp.Key] = item;
         }
     }

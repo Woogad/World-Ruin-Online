@@ -33,3 +33,4 @@ MonoBehaviour:
   KillScore: {fileID: 8300000, guid: 18c59b144ea5f4d4f977108137f35611, type: 3}
   FailInteract: {fileID: 8300000, guid: 746fe61f34a10f54f98fbba6a5830d3f, type: 3}
   PickGoldCoin: {fileID: 8300000, guid: e805939f5611e0b4283777cfd2aee4f4, type: 3}
+  GunModeSwitch: {fileID: 8300000, guid: 127e84920cbf4774780a6ff765666a52, type: 3}
