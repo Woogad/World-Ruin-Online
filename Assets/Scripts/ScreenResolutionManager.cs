@@ -11,6 +11,9 @@ public class ScreenResolutionManager : MonoBehaviour
     private const string PLAYER_PREFS_SCREEN_RESOLUTION_WIDTH = "ScreenResolutionWidth";
     private const string PLAYER_PREFS_SCREEN_RESOLUTION_HEIGHT = "ScreenResolutionHeight";
     private const string PLAYER_PREFS_SCREEN_RESOLUTION_IS_FULL_SCREEN = "IsFullScreen";
+    private const int DEFAULT_SCREEN_WIDTH = 1080;
+    private const int DEFAULT_SCREEN_HEIGHT = 1920;
+    private const int DEFAULT_FULL_SCREEN = 0;
 
     private List<TMP_Dropdown.OptionData> _defultResolution = new List<TMP_Dropdown.OptionData>
     {
@@ -22,11 +25,6 @@ public class ScreenResolutionManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-    }
-
-    private void Start()
-    {
-        Screen.SetResolution(GetScreenWidth(), GetScreenHeight(), IsFullScreen(GetScreenIsFullScreenNum()));
     }
 
     public bool IsFullScreen(int IsFullScreenNum)
@@ -53,17 +51,17 @@ public class ScreenResolutionManager : MonoBehaviour
 
     public int GetScreenWidth()
     {
-        return PlayerPrefs.GetInt(PLAYER_PREFS_SCREEN_RESOLUTION_WIDTH, 1920);
+        return PlayerPrefs.GetInt(PLAYER_PREFS_SCREEN_RESOLUTION_WIDTH, DEFAULT_SCREEN_WIDTH);
     }
 
     public int GetScreenHeight()
     {
-        return PlayerPrefs.GetInt(PLAYER_PREFS_SCREEN_RESOLUTION_HEIGHT, 1080);
+        return PlayerPrefs.GetInt(PLAYER_PREFS_SCREEN_RESOLUTION_HEIGHT, DEFAULT_SCREEN_HEIGHT);
     }
 
     public int GetScreenIsFullScreenNum()
     {
-        return PlayerPrefs.GetInt(PLAYER_PREFS_SCREEN_RESOLUTION_IS_FULL_SCREEN, 0);
+        return PlayerPrefs.GetInt(PLAYER_PREFS_SCREEN_RESOLUTION_IS_FULL_SCREEN, DEFAULT_FULL_SCREEN);
     }
 
     public void SetScreenWidthValue(int width)

@@ -7977,14 +7977,14 @@ RectTransform:
   m_Children:
   - {fileID: 1256147370}
   - {fileID: 1439826170}
-  - {fileID: 1397862136}
-  - {fileID: 1434290710}
   - {fileID: 1690737854}
   - {fileID: 998588210}
   - {fileID: 2035748987}
   - {fileID: 1423602463}
   - {fileID: 1291525062}
   - {fileID: 1477794890}
+  - {fileID: 1397862136}
+  - {fileID: 1434290710}
   m_Father: {fileID: 2040934809}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

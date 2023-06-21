@@ -22,13 +22,17 @@ public class GameMultiplayer : NetworkBehaviour
     private string _playerName;
 
     public static bool IsPlayMultiplayer;
+
     public const int MAX_PLAYER_LIMIT = 4;
     public const string PLAYER_PREFS_PLAYER_NAME = "PlayerName";
+    public const string DEFAULT_NAME = "Player";
+    public const int NAME_CHARACTER_LIMIT = 10;
+
     private void Awake()
     {
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        _playerName = PlayerPrefs.GetString(PLAYER_PREFS_PLAYER_NAME, "Player");
+        _playerName = PlayerPrefs.GetString(PLAYER_PREFS_PLAYER_NAME, DEFAULT_NAME);
         _playerDataNetworkList = new NetworkList<PlayerData>();
         _playerDataNetworkList.OnListChanged += PlayerDataNetworkListOnListChanged;
     }
@@ -92,8 +96,8 @@ public class GameMultiplayer : NetworkBehaviour
         if (clientID == NetworkManager.Singleton.LocalClientId)
         {
             SetPlayerDataNetworkListServerRpc(
-                PlayerPrefs.GetInt(PlayerPrefabManager.PLAYER_PREFS_PLAYER_PREFAB_INDEX, 0),
-                PlayerPrefs.GetString(PLAYER_PREFS_PLAYER_NAME, "Player"),
+                PlayerPrefs.GetInt(PlayerPrefabManager.PLAYER_PREFS_PLAYER_PREFAB_INDEX, PlayerPrefabManager.DEFAULT_PREFAB_INDEX),
+                PlayerPrefs.GetString(PLAYER_PREFS_PLAYER_NAME, DEFAULT_NAME),
                 AuthenticationService.Instance.PlayerId
             );
         }

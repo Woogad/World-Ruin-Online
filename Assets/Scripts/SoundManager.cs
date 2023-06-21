@@ -7,15 +7,16 @@ public class SoundManager : MonoBehaviour
     public static SoundManager Instance { get; private set; }
 
     public const string PLAYER_PREFS_SOUND_EFFECT_VOLUME = "SoundEffectVolume";
+    public const float DEFAULT_VOLUME = 0.8f;
 
     [SerializeField] private AudioClipRefsSO _audioClipRefsSO;
 
-    private float _volume = 0.3f;
+    private float _volume;
 
     private void Awake()
     {
         Instance = this;
-        _volume = PlayerPrefs.GetFloat(PLAYER_PREFS_SOUND_EFFECT_VOLUME, 0.8f);
+        _volume = PlayerPrefs.GetFloat(PLAYER_PREFS_SOUND_EFFECT_VOLUME, DEFAULT_VOLUME);
     }
     private void Start()
     {

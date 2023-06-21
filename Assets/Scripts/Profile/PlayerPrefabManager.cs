@@ -13,12 +13,14 @@ public class PlayerPrefabManager : MonoBehaviour
     public event EventHandler OnPlayerIndexChanged;
 
     public const string PLAYER_PREFS_PLAYER_PREFAB_INDEX = "PlayerPrefabIndex";
+    public const int DEFAULT_PREFAB_INDEX = 0;
+
     private int _playerPrefabIndex;
 
     private void Awake()
     {
         Instance = this;
-        _playerPrefabIndex = PlayerPrefs.GetInt(PLAYER_PREFS_PLAYER_PREFAB_INDEX, 0);
+        _playerPrefabIndex = PlayerPrefs.GetInt(PLAYER_PREFS_PLAYER_PREFAB_INDEX, DEFAULT_PREFAB_INDEX);
     }
 
     public void IncreaseIndex()

@@ -26,7 +26,7 @@ public class PlayerPrefabMainMenu : MonoBehaviour
 
     private void UpdateVisual()
     {
-        int playerPrefabIndex = PlayerPrefs.GetInt(PlayerPrefabManager.PLAYER_PREFS_PLAYER_PREFAB_INDEX, 0);
+        int playerPrefabIndex = PlayerPrefs.GetInt(PlayerPrefabManager.PLAYER_PREFS_PLAYER_PREFAB_INDEX, PlayerPrefabManager.DEFAULT_PREFAB_INDEX);
         Transform prefabTransform = Instantiate(_playerPrefabsVisualListSO.PlayerPrefabVisaulList[playerPrefabIndex], gameObject.transform);
         Transform playerVisual = prefabTransform.Find(PLAYER_VISUAL);
         Animator animator = playerVisual.GetComponent<Animator>();

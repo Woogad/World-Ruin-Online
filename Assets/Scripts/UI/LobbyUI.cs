@@ -20,13 +20,15 @@ public class LobbyUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _lobbyCountText;
     [SerializeField] private Button _pasteBn;
 
+    private const int JOIN_CODE_CHARACTER_LIMIT = 6;
+
     private void Awake()
     {
-        int nameCharacterLimit = 10;
-        _playerNameInput.characterLimit = nameCharacterLimit;
+        _playerNameInput.characterLimit = GameMultiplayer.NAME_CHARACTER_LIMIT;
+        _lobbyCodeInput.characterLimit = JOIN_CODE_CHARACTER_LIMIT;
 
-        int joinByCodeCharacterLimit = 6;
-        _lobbyCodeInput.characterLimit = joinByCodeCharacterLimit;
+        _lobbyCodeInput.contentType = TMP_InputField.ContentType.Alphanumeric;
+        _playerNameInput.contentType = TMP_InputField.ContentType.Alphanumeric;
 
         _mainMenuBn.onClick.AddListener(() =>
         {
@@ -63,6 +65,16 @@ public class LobbyUI : MonoBehaviour
         {
             GameMultiplayer.Instance.SetPlayerName(newText);
         });
+
+        _playerNameInput.onEndEdit.AddListener((string text) =>
+        {
+            if (string.IsNullOrEmpty(_playerNameInput.text))
+            {
+                _playerNameInput.text = GameMultiplayer.DEFAULT_NAME;
+                GameMultiplayer.Instance.SetPlayerName(GameMultiplayer.DEFAULT_NAME);
+            }
+        });
+
         LobbyManager.Instance.OnLobbiesListChanged += LobbyManagerOnlobbiesListChanged;
         UpdateLobbyList(new List<Lobby>());
     }

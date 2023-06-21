@@ -11,8 +11,13 @@ public class LobbyCreateUI : MonoBehaviour
     [SerializeField] Button _createPrivateBn;
     [SerializeField] TMP_InputField _lobbyNameInput;
 
+    private const int LOBBY_NAME_CHARACTER_LIMIT = 16;
+    private const string DEFAULT_LOBBY_NAME = "Lobby Name";
+
     private void Awake()
     {
+        _lobbyNameInput.characterLimit = LOBBY_NAME_CHARACTER_LIMIT;
+
         _closeBn.onClick.AddListener(() =>
         {
             Hide();
@@ -29,8 +34,17 @@ public class LobbyCreateUI : MonoBehaviour
 
     private void Start()
     {
-        int characterLimit = 16;
-        _lobbyNameInput.characterLimit = characterLimit;
+        _lobbyNameInput.onEndEdit.AddListener((string text) =>
+        {
+            if (string.IsNullOrEmpty(_lobbyNameInput.text))
+            {
+                _lobbyNameInput.text = DEFAULT_LOBBY_NAME;
+            }
+            else if (string.IsNullOrWhiteSpace(_lobbyNameInput.text))
+            {
+                _lobbyNameInput.text = DEFAULT_LOBBY_NAME;
+            }
+        });
         Hide();
     }
 

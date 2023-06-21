@@ -9,15 +9,16 @@ public class MusicManager : MonoBehaviour
     public static MusicManager Instance { get; private set; }
 
     public const string PLAYER_PREFS_MUSIC_VOLUME = "MusicVolume";
+    public const float DEFAULT_VOLUME = 0.5f;
 
     private AudioSource _audioSource;
-    private float _volume = 0.3f;
+    private float _volume;
 
 
     private void Awake()
     {
         Instance = this;
-        _volume = PlayerPrefs.GetFloat(PLAYER_PREFS_MUSIC_VOLUME, 0.5f);
+        _volume = PlayerPrefs.GetFloat(PLAYER_PREFS_MUSIC_VOLUME, DEFAULT_VOLUME);
         _audioSource = GetComponent<AudioSource>();
     }
 
@@ -26,7 +27,8 @@ public class MusicManager : MonoBehaviour
         _audioSource.volume = _volume;
         if (SceneManager.GetActiveScene().name == Loader.Scene.GameScene.ToString())
         {
-            StartCoroutine(StartFadeMusic(3f));
+            float fadeTime = 3f;
+            StartCoroutine(StartFadeMusic(fadeTime));
         }
     }
 
