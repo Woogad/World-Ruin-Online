@@ -18,9 +18,16 @@ public class LobbyUI : MonoBehaviour
     [SerializeField] private Transform _lobbyContainer;
     [SerializeField] private Transform _lobbyTemplate;
     [SerializeField] private TextMeshProUGUI _lobbyCountText;
+    [SerializeField] private Button _pasteBn;
 
     private void Awake()
     {
+        int nameCharacterLimit = 10;
+        _playerNameInput.characterLimit = nameCharacterLimit;
+
+        int joinByCodeCharacterLimit = 6;
+        _lobbyCodeInput.characterLimit = joinByCodeCharacterLimit;
+
         _mainMenuBn.onClick.AddListener(() =>
         {
             LobbyManager.Instance.LeaveLobby();
@@ -38,6 +45,12 @@ public class LobbyUI : MonoBehaviour
         {
             LobbyManager.Instance.JoinByCode(_lobbyCodeInput.text);
         });
+        _pasteBn.onClick.AddListener(() =>
+        {
+            TextEditor textEditor = new TextEditor();
+            textEditor.Paste();
+            _lobbyCodeInput.text = textEditor.text;
+        });
 
         _lobbyTemplate.gameObject.SetActive(false);
     }
@@ -45,8 +58,7 @@ public class LobbyUI : MonoBehaviour
     private void Start()
     {
         _playerNameInput.text = GameMultiplayer.Instance.GetPlayerName();
-        int nameCharacterLimit = 10;
-        _playerNameInput.characterLimit = nameCharacterLimit;
+
         _playerNameInput.onValueChanged.AddListener((string newText) =>
         {
             GameMultiplayer.Instance.SetPlayerName(newText);
