@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class OptionsUI : MonoBehaviour
 {
@@ -30,13 +31,31 @@ public class OptionsUI : MonoBehaviour
         });
         _musicUpperBn.onClick.AddListener(() =>
         {
-            MusicManager.Instance.UpVolume();
-            UpdateVisual();
+            if (MusicManager.Instance == null)
+            {
+                MusicManager musicManager = GameObject.FindAnyObjectByType<MusicManager>();
+                musicManager.UpVolume();
+                UpdateVisual();
+            }
+            else
+            {
+                MusicManager.Instance.UpVolume();
+                UpdateVisual();
+            }
         });
         _musicLowerBn.onClick.AddListener(() =>
         {
-            MusicManager.Instance.LowVolume();
-            UpdateVisual();
+            if (MusicManager.Instance == null)
+            {
+                MusicManager musicManager = GameObject.FindAnyObjectByType<MusicManager>();
+                musicManager.LowVolume();
+                UpdateVisual();
+            }
+            else
+            {
+                MusicManager.Instance.LowVolume();
+                UpdateVisual();
+            }
         });
         _soundUpperBn.onClick.AddListener(() =>
         {
@@ -94,7 +113,15 @@ public class OptionsUI : MonoBehaviour
 
     private void UpdateVisual()
     {
-        _musicVolumeText.text = Mathf.Round(MusicManager.Instance.GetVolume() * 10f).ToString();
+        if (MusicManager.Instance == null)
+        {
+            MusicManager musicManager = GameObject.FindAnyObjectByType<MusicManager>();
+            _musicVolumeText.text = Mathf.Round(musicManager.GetVolume() * 10f).ToString();
+        }
+        else
+        {
+            _musicVolumeText.text = Mathf.Round(MusicManager.Instance.GetVolume() * 10f).ToString();
+        }
         _soundVolumeText.text = Mathf.Round(SoundManager.Instance.GetVolume() * 10f).ToString();
         _isFullScreenToggle.isOn = ScreenResolutionManager.Instance.IsFullScreen(ScreenResolutionManager.Instance.GetScreenIsFullScreenNum());
     }
