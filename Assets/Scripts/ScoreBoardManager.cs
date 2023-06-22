@@ -27,6 +27,7 @@ public class ScoreBoardManager : NetworkBehaviour
     private void Start()
     {
         NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManagerOnClientDisConnectCallback;
+
         if (Player.LocalInstance != null)
         {
             Player.LocalInstance.OnDead += PlayerOnDead;
@@ -41,6 +42,7 @@ public class ScoreBoardManager : NetworkBehaviour
             _scoreBoardDictionary.Add(playerData.ClientID, new ScoreBoardStruct(playerData.PlayerName));
         }
     }
+
 
     private void PlayerOnAnyPlayerSpawned(object sender, EventArgs e)
     {

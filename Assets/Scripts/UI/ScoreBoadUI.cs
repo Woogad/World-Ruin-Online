@@ -36,8 +36,11 @@ public class ScoreBoadUI : MonoBehaviour
 
     private void ScoreBoardManagerOnDeleteScoreBoardItem(object sender, ScoreBoardManager.OnScoreBoardChangedArgs e)
     {
-        Destroy(_scoreBoardItemDictionary[e.ClientID].gameObject);
-        _scoreBoardItemDictionary.Remove(e.ClientID);
+        if (_scoreBoardItemDictionary.Count != 0)
+        {
+            Destroy(_scoreBoardItemDictionary[e.ClientID].gameObject);
+            _scoreBoardItemDictionary.Remove(e.ClientID);
+        }
     }
 
     private void GameInputOnViewScoreBoardHoldAction(object sender, GameInput.OnViewScoreBoardHoldActionArgs e)
