@@ -10615,6 +10615,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mainMenuBn: {fileID: 3666204799546025255}
   _optionsBn: {fileID: 8644001944888730571}
+  _optionsUI: {fileID: 6125918174293705636}
 --- !u!1 &8008066373293652888
 GameObject:
   m_ObjectHideFlags: 0

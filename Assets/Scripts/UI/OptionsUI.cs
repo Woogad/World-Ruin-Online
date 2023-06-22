@@ -8,7 +8,6 @@ using UnityEngine.SceneManagement;
 public class OptionsUI : MonoBehaviour
 {
 
-    public static OptionsUI Instance { get; private set; }
 
     [SerializeField] private TextMeshProUGUI _musicVolumeText;
     [SerializeField] private TextMeshProUGUI _soundVolumeText;
@@ -24,7 +23,6 @@ public class OptionsUI : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
         _closeBn.onClick.AddListener(() =>
         {
             Hide();

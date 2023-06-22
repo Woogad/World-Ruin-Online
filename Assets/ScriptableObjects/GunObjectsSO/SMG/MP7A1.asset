@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0c07f08734f30943b8dd6cc9f55cad7, type: 3}
   m_Name: MP7A1
   m_EditorClassIdentifier: 
-  Damage: {x: 3, y: 9}
+  Damage: {x: 2, y: 5}
   FireRate: 0.08
   Spread: {x: 0, y: 0, z: 0}
   ReloadTime: 2.3
@@ -21,5 +21,5 @@ MonoBehaviour:
     type: 3}
   MaxAmmmo: 20
   MaxMagazine: 240
-  Price: 120
+  Price: 110
   GunName: MP7A1

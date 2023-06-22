@@ -10,6 +10,7 @@ public class EscMenuDisplayUI : MonoBehaviour
 {
     [SerializeField] private Button _mainMenuBn;
     [SerializeField] private Button _optionsBn;
+    [SerializeField] private OptionsUI _optionsUI;
 
     private void Awake()
     {
@@ -20,7 +21,7 @@ public class EscMenuDisplayUI : MonoBehaviour
         });
         _optionsBn.onClick.AddListener(() =>
         {
-            OptionsUI.Instance.Show();
+            _optionsUI.Show();
         });
     }
     private void Start()
@@ -37,7 +38,7 @@ public class EscMenuDisplayUI : MonoBehaviour
         }
         else
         {
-            OptionsUI.Instance.Hide();
+            _optionsUI.Hide();
             Hide();
         }
     }

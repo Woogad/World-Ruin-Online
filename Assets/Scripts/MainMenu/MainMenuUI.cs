@@ -13,6 +13,7 @@ public class MainMenuUI : MonoBehaviour
     [SerializeField] private OptionsUI _optionsDisplay;
     [SerializeField] private HowToPlayUI _howToPlayUI;
     [SerializeField] private Button _howToPlayBn;
+    [SerializeField] private OptionsUI _optionsUI;
 
     private void Awake()
     {
@@ -31,7 +32,7 @@ public class MainMenuUI : MonoBehaviour
         });
         _optionsBn.onClick.AddListener(() =>
         {
-            OptionsUI.Instance.Show();
+            _optionsUI.Show();
         });
         _quitBn.onClick.AddListener(() =>
         {

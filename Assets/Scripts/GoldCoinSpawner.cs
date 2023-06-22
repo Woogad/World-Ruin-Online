@@ -24,10 +24,4 @@ public class GoldCoinSpawner : NetworkBehaviour
             }
         }
     }
-
-    public override void OnDestroy()
-    {
-        base.OnDestroy();
-        _spawnTimer.Dispose();
-    }
 }

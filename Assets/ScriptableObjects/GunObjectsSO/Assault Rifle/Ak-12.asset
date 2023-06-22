@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0c07f08734f30943b8dd6cc9f55cad7, type: 3}
   m_Name: Ak-12
   m_EditorClassIdentifier: 
-  Damage: {x: 12, y: 18}
-  FireRate: 0.12
+  Damage: {x: 12, y: 20}
+  FireRate: 0.15
   Spread: {x: 0.07, y: 0.07, z: 0.07}
   ReloadTime: 2.5
   Prefab: {fileID: 1073768833744428826, guid: 6f335b0692a461449b3e902b1fc58950, type: 3}
@@ -21,5 +21,5 @@ MonoBehaviour:
     type: 3}
   MaxAmmmo: 30
   MaxMagazine: 270
-  Price: 270
+  Price: 330
   GunName: Ak-12

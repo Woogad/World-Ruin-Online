@@ -3121,6 +3121,7 @@ MonoBehaviour:
   _optionsDisplay: {fileID: 1066643597}
   _howToPlayUI: {fileID: 260402271}
   _howToPlayBn: {fileID: 961845274}
+  _optionsUI: {fileID: 1066643597}
 --- !u!114 &440050720
 MonoBehaviour:
   m_ObjectHideFlags: 0

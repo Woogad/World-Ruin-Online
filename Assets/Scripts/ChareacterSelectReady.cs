@@ -39,6 +39,13 @@ public class ChareacterSelectReady : NetworkBehaviour
         NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManagerOnDisConnectCallback;
     }
 
+    public override void OnDestroy()
+    {
+        base.OnDestroy();
+        NetworkManager.Singleton.OnClientConnectedCallback -= NetworkManagerOnClientConnectedCallback;
+        NetworkManager.Singleton.OnClientDisconnectCallback -= NetworkManagerOnDisConnectCallback;
+    }
+
     private void PlayerReadyListOnlistChanged(NetworkListEvent<PlayerReady> changeEvent)
     {
         SetPlayerReadyClientRpc();

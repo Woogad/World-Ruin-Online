@@ -62,14 +62,6 @@ public class GameManager : NetworkBehaviour
         GameInput.Instance.OnInteractAction += GameInputOnInteractAction;
     }
 
-    public override void OnDestroy()
-    {
-        base.OnDestroy();
-        _state.Dispose();
-        _countdownToStartTimer.Dispose();
-        _gamePlayingTimer.Dispose();
-    }
-
     private void GameInputOnInteractAction(object sender, EventArgs e)
     {
         if (_state.Value == State.WaitingToStart)
