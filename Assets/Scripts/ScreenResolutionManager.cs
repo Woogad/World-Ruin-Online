@@ -11,15 +11,17 @@ public class ScreenResolutionManager : MonoBehaviour
     private const string PLAYER_PREFS_SCREEN_RESOLUTION_WIDTH = "ScreenResolutionWidth";
     private const string PLAYER_PREFS_SCREEN_RESOLUTION_HEIGHT = "ScreenResolutionHeight";
     private const string PLAYER_PREFS_SCREEN_RESOLUTION_IS_FULL_SCREEN = "IsFullScreen";
-    private const int DEFAULT_SCREEN_WIDTH = 1080;
-    private const int DEFAULT_SCREEN_HEIGHT = 1920;
+    private const int DEFAULT_SCREEN_WIDTH = 1920;
+    private const int DEFAULT_SCREEN_HEIGHT = 1080;
     private const int DEFAULT_FULL_SCREEN = 0;
 
     private List<TMP_Dropdown.OptionData> _defultResolution = new List<TMP_Dropdown.OptionData>
     {
-        new TMP_Dropdown.OptionData("1920x1080"),
-        new TMP_Dropdown.OptionData("1600x900"),
+        new TMP_Dropdown.OptionData("1280x720"),
         new TMP_Dropdown.OptionData("1366x768"),
+        new TMP_Dropdown.OptionData("1600x900"),
+        new TMP_Dropdown.OptionData("1920x1080"),
+        new TMP_Dropdown.OptionData("2560x1440"),
     };
 
     private void Awake()
