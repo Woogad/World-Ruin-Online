@@ -9,7 +9,8 @@ public class HowToPlayUI : MonoBehaviour
     [SerializeField] private Button _nextPage;
     [SerializeField] private Button _previousPage;
     [SerializeField] private Button _closeBn;
-    [SerializeField] private int _currentPage;
+
+    private int _currentPage;
 
     private void Awake()
     {

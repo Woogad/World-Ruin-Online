@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class MainMenuUI : MonoBehaviour
 {
@@ -13,7 +14,9 @@ public class MainMenuUI : MonoBehaviour
     [SerializeField] private OptionsUI _optionsDisplay;
     [SerializeField] private HowToPlayUI _howToPlayUI;
     [SerializeField] private Button _howToPlayBn;
-    [SerializeField] private OptionsUI _optionsUI;
+    [SerializeField] private TextMeshProUGUI _versionText;
+    [SerializeField] private Button _creditBn;
+    [SerializeField] private GameObject _creditUI;
 
     private void Awake()
     {
@@ -28,15 +31,25 @@ public class MainMenuUI : MonoBehaviour
         });
         _howToPlayBn.onClick.AddListener(() =>
         {
+            Debug.Log("hehe");
             _howToPlayUI.Show();
         });
         _optionsBn.onClick.AddListener(() =>
         {
-            _optionsUI.Show();
+            _optionsDisplay.Show();
         });
         _quitBn.onClick.AddListener(() =>
         {
             Application.Quit();
         });
+        _creditBn.onClick.AddListener(() =>
+        {
+            _creditUI.SetActive(true);
+        });
+    }
+
+    private void Start()
+    {
+        _versionText.text = "Version " + Application.version;
     }
 }
