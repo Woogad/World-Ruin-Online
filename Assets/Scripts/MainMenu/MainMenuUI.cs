@@ -11,7 +11,7 @@ public class MainMenuUI : MonoBehaviour
     [SerializeField] private Button _quitBn;
     [SerializeField] private Button _profileBn;
     [SerializeField] private Button _optionsBn;
-    [SerializeField] private OptionsUI _optionsDisplay;
+    [SerializeField] private OptionsUI _optionsUI;
     [SerializeField] private HowToPlayUI _howToPlayUI;
     [SerializeField] private Button _howToPlayBn;
     [SerializeField] private TextMeshProUGUI _versionText;
@@ -36,7 +36,7 @@ public class MainMenuUI : MonoBehaviour
         });
         _optionsBn.onClick.AddListener(() =>
         {
-            _optionsDisplay.Show();
+            _optionsUI.Show();
         });
         _quitBn.onClick.AddListener(() =>
         {
