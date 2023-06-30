@@ -7624,6 +7624,7 @@ MonoBehaviour:
   _isFullScreenToggle: {fileID: 2138856686356465828}
   _closeBn: {fileID: 6962961812897263446}
   _controllerBn: {fileID: 2530533789233523033}
+  _controllerUI: {fileID: 4440389653992950952}
 --- !u!1 &5621148733921243396
 GameObject:
   m_ObjectHideFlags: 0

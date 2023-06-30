@@ -4782,7 +4782,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Winer
+  m_text: Winner
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2941f61cec9d5024cafaa86470360505, type: 2}
   m_sharedMaterial: {fileID: 517406174718846409, guid: 2941f61cec9d5024cafaa86470360505,

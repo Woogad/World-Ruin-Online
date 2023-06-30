@@ -19,6 +19,7 @@ public class OptionsUI : MonoBehaviour
     [SerializeField] private Toggle _isFullScreenToggle;
     [SerializeField] private Button _closeBn;
     [SerializeField] private Button _controllerBn;
+    [SerializeField] private ControllerUI _controllerUI;
 
 
     private void Awake()
@@ -67,7 +68,7 @@ public class OptionsUI : MonoBehaviour
         });
         _controllerBn.onClick.AddListener(() =>
         {
-            ShowControllerUI.Instance.Show();
+            _controllerUI.Show();
         });
 
         _resolotionDropdown.onValueChanged.AddListener(DropdownOnValueChanged);

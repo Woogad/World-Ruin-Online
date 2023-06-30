@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ShowControllerUI : MonoBehaviour
+public class ControllerUI : MonoBehaviour
 {
-    public static ShowControllerUI Instance { get; private set; }
+    public static ControllerUI Instance { get; private set; }
 
     [SerializeField] private Button _closeBn;
 
