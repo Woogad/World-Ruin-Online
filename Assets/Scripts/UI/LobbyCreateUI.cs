@@ -6,10 +6,10 @@ using TMPro;
 
 public class LobbyCreateUI : MonoBehaviour
 {
-    [SerializeField] Button _closeBn;
-    [SerializeField] Button _createPublicBn;
-    [SerializeField] Button _createPrivateBn;
-    [SerializeField] TMP_InputField _lobbyNameInput;
+    [SerializeField] private Button _closeBn;
+    [SerializeField] private Button _createPublicBn;
+    [SerializeField] private Button _createPrivateBn;
+    [SerializeField] private TMP_InputField _lobbyNameInput;
 
     private const int LOBBY_NAME_CHARACTER_LIMIT = 16;
     private const string DEFAULT_LOBBY_NAME = "Lobby Name";

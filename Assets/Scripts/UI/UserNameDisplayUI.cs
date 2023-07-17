@@ -5,8 +5,8 @@ using TMPro;
 
 public class UserNameDisplayUI : MonoBehaviour
 {
-    [SerializeField] Player _player;
-    [SerializeField] TextMeshPro _userNameText;
+    [SerializeField] private Player _player;
+    [SerializeField] private TextMeshPro _userNameText;
 
     private int _playerIndex;
 

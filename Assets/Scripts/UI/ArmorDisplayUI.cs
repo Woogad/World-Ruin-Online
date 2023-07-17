@@ -6,8 +6,8 @@ using System;
 
 public class ArmorDisplayUI : MonoBehaviour
 {
-    [SerializeField] Player _player;
-    [SerializeField] TextMeshProUGUI _aromrAmountText;
+    [SerializeField] private Player _player;
+    [SerializeField] private TextMeshProUGUI _aromrAmountText;
 
     private void Start()
     {

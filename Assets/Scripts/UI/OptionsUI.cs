@@ -8,7 +8,6 @@ using UnityEngine.SceneManagement;
 public class OptionsUI : MonoBehaviour
 {
 
-
     [SerializeField] private TextMeshProUGUI _musicVolumeText;
     [SerializeField] private TextMeshProUGUI _soundVolumeText;
     [SerializeField] private Button _musicUpperBn;

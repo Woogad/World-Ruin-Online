@@ -18,6 +18,7 @@ public class ScoreBoardManager : NetworkBehaviour
     }
     private Dictionary<ulong, ScoreBoardStruct> _scoreBoardDictionary = new Dictionary<ulong, ScoreBoardStruct>();
     private int _scorePerKill = 1;
+    private int _moneyPerKill = 20;
 
     private void Awake()
     {
@@ -75,6 +76,7 @@ public class ScoreBoardManager : NetworkBehaviour
         {
             return;
         }
+
         player.AddPlayerScoreNetworkVariable(score);
         AddScoreClientRpc(score, ClientID);
     }
@@ -90,7 +92,10 @@ public class ScoreBoardManager : NetworkBehaviour
         {
             return;
         }
+
         player.AddPlayerScoreNetworkVariable(_scorePerKill);
+        player.AddPlayerMoney(_moneyPerKill);
+
         AddScoreClientRpc(_scorePerKill, killerClientID);
     }
 

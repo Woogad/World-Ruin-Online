@@ -7,7 +7,7 @@ public class Mouse3D : MonoBehaviour
 {
     public static Mouse3D Instance { get; private set; }
 
-    private Camera _cam;
+    private Camera _camera;
     private const string CamNameTag = "MainCamera";
 
     [SerializeField] private LayerMask _layerMask;
@@ -19,7 +19,7 @@ public class Mouse3D : MonoBehaviour
 
     private void Start()
     {
-        _cam = GameObject.FindGameObjectWithTag(CamNameTag).GetComponent<Camera>();
+        _camera = GameObject.FindGameObjectWithTag(CamNameTag).GetComponent<Camera>();
         GameInput.Instance.OnEscAction += GameInputOnEscAcion;
     }
 
@@ -37,7 +37,7 @@ public class Mouse3D : MonoBehaviour
 
     private void Update()
     {
-        Ray ray = _cam.ScreenPointToRay(Input.mousePosition);
+        Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit rayHit, float.MaxValue, _layerMask))
         {
             transform.position = rayHit.point;

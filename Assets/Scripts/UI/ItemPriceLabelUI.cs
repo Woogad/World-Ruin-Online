@@ -5,8 +5,8 @@ using TMPro;
 
 public class ItemPriceLabelUI : MonoBehaviour
 {
-    [SerializeField] ItemShopCounter _itemShopCounter;
-    [SerializeField] TextMeshProUGUI _priceLabelText;
+    [SerializeField] private ItemShopCounter _itemShopCounter;
+    [SerializeField] private TextMeshProUGUI _priceLabelText;
 
     private void Start()
     {

@@ -8,7 +8,7 @@ public class PlayerPrefabManager : MonoBehaviour
 {
     public static PlayerPrefabManager Instance { get; private set; }
 
-    [SerializeField] PlayerPrefabsVisualListSO _playerPrefabVisualListSO;
+    [SerializeField] private PlayerPrefabsVisualListSO _playerPrefabVisualListSO;
 
     public event EventHandler OnPlayerIndexChanged;
 

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerProtectionUI : MonoBehaviour
 {
-    [SerializeField] Player _player;
+    [SerializeField] private Player _player;
 
     private void Start()
     {

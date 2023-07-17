@@ -7,10 +7,10 @@ using System;
 
 public class PrefabSelectorUI : MonoBehaviour
 {
-    [SerializeField] Button _increaseBn;
-    [SerializeField] Button _decreaseBn;
-    [SerializeField] Button _MainMenuBn;
-    [SerializeField] TextMeshProUGUI _prefabNumberText;
+    [SerializeField] private Button _increaseBn;
+    [SerializeField] private Button _decreaseBn;
+    [SerializeField] private Button _MainMenuBn;
+    [SerializeField] private TextMeshProUGUI _prefabNumberText;
 
     private void Awake()
     {

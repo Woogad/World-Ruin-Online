@@ -35,6 +35,7 @@ public class GunShopCounter : BaseCounter
                 Buy(player);
                 GunObject.DestroyGunObject(player.GetGunObject());
                 GunObject.SpawnGunObject(_gunObjectSO, player);
+
             }
 
         }
