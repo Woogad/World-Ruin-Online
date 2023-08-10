@@ -17,7 +17,7 @@ public class PlayerSound : NetworkBehaviour
 
     private void Start()
     {
-        _player.OnRelaod += PlayerOnReload;
+        _player.OnReload += PlayerOnReload;
         _player.OnShoot += PlayerOnShoot;
         _player.OnDead += PlayerOnDead;
         _player.OnPlayerScoreChanged += PlayerOnKillScore;

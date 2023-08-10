@@ -26,14 +26,6 @@ public class SpawnPlayerManager : NetworkBehaviour
             Player.OnAnyPlayerSpawned += PlayerOnAnyPlayerSpawned;
         }
 
-        if (IsHost)
-        {
-            NetworkManager.Singleton.OnClientConnectedCallback += gg;
-        }
-    }
-
-    private void gg(ulong obj)
-    {
     }
 
     private void RespawnPlayer(object sender, Player.OnDeadArgs e)

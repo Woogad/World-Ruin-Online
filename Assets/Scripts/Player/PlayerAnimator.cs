@@ -30,7 +30,7 @@ public class PlayerAnimator : NetworkBehaviour
     private void Start()
     {
         _player.OnInteract += GunShopOnPlayerBuyGun;
-        _player.OnRelaod += PlayerOnReload;
+        _player.OnReload += PlayerOnReload;
         _player.OnShoot += PlayerOnShoot;
         _player.OnDead += PlayerOnDead;
         _player.OnReSpawn += PlayerOnReSpawn;

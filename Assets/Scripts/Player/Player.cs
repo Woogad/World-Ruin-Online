@@ -23,13 +23,14 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
     public event EventHandler OnAmmoChanged;
     public event EventHandler OnMoneyChanged;
     public event EventHandler OnGoldCoinChanged;
-    public event EventHandler OnRelaod;
+    public event EventHandler OnReload;
     public event EventHandler OnShoot;
     public event EventHandler OnArmorChanged;
     public event EventHandler OnHealthChanged;
     public event EventHandler OnPickGun;
     public event EventHandler OnTakeDamage;
     public event EventHandler OnPlayerScoreChanged;
+
     public event EventHandler<OnReSpawnArgs> OnReSpawn;
     public class OnReSpawnArgs : EventArgs
     {
@@ -261,7 +262,7 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
             {
                 StartCoroutine(GetGunObject().ReloadTimeCoroutine());
 
-                OnRelaod?.Invoke(this, EventArgs.Empty);
+                OnReload?.Invoke(this, EventArgs.Empty);
             }
         }
     }
