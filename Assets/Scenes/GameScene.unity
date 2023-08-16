@@ -36720,7 +36720,7 @@ GameObject:
   - component: {fileID: 1765572904}
   - component: {fileID: 1765572903}
   m_Layer: 0
-  m_Name: KillScoreManager
+  m_Name: ScoreBoardManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

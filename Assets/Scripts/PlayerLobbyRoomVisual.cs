@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using TMPro;
 using Unity.Netcode;
 
-public class CharacterLobbyRoomVisual : MonoBehaviour
+public class PlayerLobbyRoomVisual : MonoBehaviour
 {
     [SerializeField] private int _playerIndex;
     [SerializeField] private GameObject _readyText;
@@ -31,7 +31,7 @@ public class CharacterLobbyRoomVisual : MonoBehaviour
     private void Start()
     {
         GameMultiplayer.Instance.OnDataNetworkListChanged += GameMultiplayerOnDataNetworkListChanged;
-        ChareacterSelectReady.Instance.OnReadyChanged += ChareacterSelectReadyOnReadyChanged;
+        PlayerSelectReady.Instance.OnReadyChanged += ChareacterSelectReadyOnReadyChanged;
         foreach (Transform prefab in _playerPrefabsVisualListSO.PlayerPrefabVisaulList)
         {
             Transform prefabTrasform = Instantiate(prefab, gameObject.transform);
@@ -63,7 +63,7 @@ public class CharacterLobbyRoomVisual : MonoBehaviour
         if (GameMultiplayer.Instance.IsPlayerDataIndexConnected(_playerIndex))
         {
             PlayerData playerData = GameMultiplayer.Instance.GetPlayerDataFormPlayerIndex(_playerIndex);
-            _readyText.SetActive(ChareacterSelectReady.Instance.IsPlayerReady(playerData.ClientID));
+            _readyText.SetActive(PlayerSelectReady.Instance.IsPlayerReady(playerData.ClientID));
             _playerNameText.text = playerData.PlayerName.ToString();
 
             _currentPrefabIndex = playerData.PlayerPrefabIndex;

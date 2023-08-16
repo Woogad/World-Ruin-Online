@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 
-public class ChareacterSelectReady : NetworkBehaviour
+public class PlayerSelectReady : NetworkBehaviour
 {
-    public static ChareacterSelectReady Instance { get; private set; }
+    public static PlayerSelectReady Instance { get; private set; }
 
     public event EventHandler OnReadyChanged;
 

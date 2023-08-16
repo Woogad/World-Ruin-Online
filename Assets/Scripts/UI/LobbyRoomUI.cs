@@ -6,7 +6,7 @@ using TMPro;
 using Unity.Netcode;
 using Unity.Services.Lobbies.Models;
 
-public class CharacterLobbyRoomUI : MonoBehaviour
+public class LobbyRoomUI : MonoBehaviour
 {
     [SerializeField] private Button _mainMenuBn;
     [SerializeField] private Button _readyBn;
@@ -25,12 +25,12 @@ public class CharacterLobbyRoomUI : MonoBehaviour
         });
         _readyBn.onClick.AddListener(() =>
         {
-            ChareacterSelectReady.Instance.SetPlayerReady();
+            PlayerSelectReady.Instance.SetPlayerReady();
         });
         _copyBn.onClick.AddListener(CopyLobbyCode);
         _unReadyBn.onClick.AddListener(() =>
         {
-            ChareacterSelectReady.Instance.SetPlayerUnReady();
+            PlayerSelectReady.Instance.SetPlayerUnReady();
         });
     }
 

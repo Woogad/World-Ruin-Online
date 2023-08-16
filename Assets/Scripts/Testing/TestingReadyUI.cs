@@ -11,7 +11,7 @@ public class TestingReadyUI : MonoBehaviour
     {
         _readyBn.onClick.AddListener(() =>
         {
-            ChareacterSelectReady.Instance.SetPlayerReady();
+            PlayerSelectReady.Instance.SetPlayerReady();
         });
     }
 }
