@@ -64,6 +64,11 @@ public class PlayerSelectReady : NetworkBehaviour
                 break;
             }
         }
+
+        if (IsHost)
+        {
+            SetPlayerUnReady();
+        }
     }
 
     private void NetworkManagerOnClientConnectedCallback(ulong ClientID)

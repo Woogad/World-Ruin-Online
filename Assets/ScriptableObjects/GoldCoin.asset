@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: GoldCoin
   m_EditorClassIdentifier: 
   Prefab: {fileID: 2854087519748029874, guid: a70b068d865dc574194b7026ad7a6e32, type: 3}
-  MoneyReward: 100
+  MoneyReward: 75

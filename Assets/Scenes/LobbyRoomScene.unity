@@ -5240,7 +5240,7 @@ GameObject:
   - component: {fileID: 1862613697}
   - component: {fileID: 1862613696}
   m_Layer: 0
-  m_Name: Host
+  m_Name: Host_text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
