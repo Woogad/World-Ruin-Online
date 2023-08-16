@@ -9,23 +9,20 @@ public class AmmoDisplayUI : MonoBehaviour
     [SerializeField] private Player _player;
     [SerializeField] private TextMeshProUGUI _ammoAmountText;
     [SerializeField] private TextMeshProUGUI _magazineAmountText;
-
-    private event Action _updateVisualName;
+    [SerializeField] private string _gunName;
 
 
     private void Start()
     {
-        _updateVisualName = this.UpdateVisual;
-
         _player.OnAmmoChanged += PlayerOnUpdateAmmo;
         _player.OnInteract += PlayerOnInteract;
-
         UpdateVisual();
     }
 
     private void PlayerOnInteract(object sender, EventArgs e)
     {
         UpdateVisual();
+        StartCoroutine(LateUpdateVisual());
     }
 
     private void PlayerOnUpdateAmmo(object sender, EventArgs e)
@@ -37,19 +34,49 @@ public class AmmoDisplayUI : MonoBehaviour
     {
         if (!_player.HasGunObject())
         {
-
             _ammoAmountText.text = "0";
             _magazineAmountText.text = "0";
-            UpdateVisualLate();
             return;
         }
-        _ammoAmountText.text = _player.GetGunObject().getCurrentAmmo().ToString();
+        Debug.Log("Update Ammo");
+
+        int currentAmmo = _player.GetGunObject().getCurrentAmmo();
+
+        _gunName = _player.GetGunObject().GetGunObjectSO().GunName;
+        _ammoAmountText.text = currentAmmo.ToString();
         _magazineAmountText.text = _player.GetGunObject().getCurrentMagazine().ToString();
-        UpdateVisualLate();
+        LowAmmoVisual(currentAmmo);
     }
 
-    private void UpdateVisualLate()
+    private IEnumerator LateUpdateVisual()
     {
-        Invoke(_updateVisualName.Method.Name, 0.8f);
+        yield return new WaitForSeconds(0.2f);
+        Debug.Log("Late Update Ammo!");
+
+        if (_player.HasGunObject())
+        {
+            string tempGunName = _player.GetGunObject().GetGunObjectSO().GunName;
+
+            if (_gunName != tempGunName)
+            {
+                UpdateVisual();
+            }
+        }
+        else
+        {
+            UpdateVisual();
+        }
+    }
+
+    private void LowAmmoVisual(int ammo)
+    {
+        if (ammo < 10)
+        {
+            _ammoAmountText.color = Color.red;
+        }
+        else
+        {
+            _ammoAmountText.color = Color.white;
+        }
     }
 }
