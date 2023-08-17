@@ -9,6 +9,7 @@ public class PlayerSelectReady : NetworkBehaviour
     public static PlayerSelectReady Instance { get; private set; }
 
     public event EventHandler OnReadyChanged;
+    public event EventHandler OnAllPlayerReady;
 
     private event Action _readyClientRpcName;
 
@@ -118,6 +119,7 @@ public class PlayerSelectReady : NetworkBehaviour
         }
         if (allClientReady)
         {
+            OnAllPlayerReady?.Invoke(this, EventArgs.Empty);
             PlayStartSoundClientRpc();
             StartCoroutine(StartGameCountdown(2f));
         }

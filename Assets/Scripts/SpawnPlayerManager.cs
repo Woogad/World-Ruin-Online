@@ -91,4 +91,5 @@ public class SpawnPlayerManager : NetworkBehaviour
         yield return new WaitForSeconds(spawnTime);
         RespawnPlayerServerRpc();
     }
+
 }

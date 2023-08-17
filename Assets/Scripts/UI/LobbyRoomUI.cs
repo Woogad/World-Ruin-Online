@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using Unity.Netcode;
 using Unity.Services.Lobbies.Models;
+using System;
 
 public class LobbyRoomUI : MonoBehaviour
 {
@@ -40,6 +41,12 @@ public class LobbyRoomUI : MonoBehaviour
 
         _lobbyNameText.text = lobby.Name;
         _lobbyCodeText.text = "Code: " + lobby.LobbyCode;
+        PlayerSelectReady.Instance.OnAllPlayerReady += PlayerSelectReadyOnAllPlayerReady;
+    }
+
+    private void PlayerSelectReadyOnAllPlayerReady(object sender, EventArgs e)
+    {
+        _unReadyBn.interactable = false;
     }
 
     private void CopyLobbyCode()

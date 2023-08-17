@@ -2782,10 +2782,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pageList:
-  - {fileID: 17003198}
-  - {fileID: 1616657900}
-  - {fileID: 767372120}
   - {fileID: 1248191042}
+  - {fileID: 17003198}
+  - {fileID: 2136397718}
+  - {fileID: 1380640714}
+  - {fileID: 1616657900}
+  - {fileID: 400181872}
+  - {fileID: 767372120}
   _nextPage: {fileID: 1116929273}
   _previousPage: {fileID: 788047045}
   _closeBn: {fileID: 528629713}
@@ -16207,7 +16210,7 @@ GameObject:
   - component: {fileID: 1208903668}
   - component: {fileID: 1208903667}
   m_Layer: 5
-  m_Name: GoldCoin_text (1)
+  m_Name: GoldCoinSpawner_text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17610,7 +17613,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: Spawn Gold Coin Around Area there a treasure chest in the middle to easy
-    to spot the area
+    to spot the area, Gold Coin will Spawn every 10 second
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
