@@ -50,6 +50,7 @@ public class MainMenuUI : MonoBehaviour
 
     private void Start()
     {
+        _creditUI.SetActive(false);
         _versionText.text = "Version " + Application.version;
     }
 }
