@@ -26,11 +26,11 @@ public class EscMenuDisplayUI : MonoBehaviour
     }
     private void Start()
     {
-        GameInput.Instance.OnEscAction += GmaeInputOnEscAction;
+        GameInput.Instance.OnEscAction += GameInputOnEscAction;
         Hide();
     }
 
-    private void GmaeInputOnEscAction(object sender, GameInput.OnEscActionArgs e)
+    private void GameInputOnEscAction(object sender, GameInput.OnEscActionArgs e)
     {
         if (e.IsEscMenuOpen)
         {

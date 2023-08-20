@@ -31,7 +31,6 @@ public class MainMenuUI : MonoBehaviour
         });
         _howToPlayBn.onClick.AddListener(() =>
         {
-            Debug.Log("hehe");
             _howToPlayUI.Show();
         });
         _optionsBn.onClick.AddListener(() =>
