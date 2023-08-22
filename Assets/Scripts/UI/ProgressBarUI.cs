@@ -31,7 +31,6 @@ public class ProgressBarUI : NetworkBehaviour
     [ClientRpc]
     private void ReloadProgressBarUIClientRpc(float ReloadProgressNormalized)
     {
-        // ReloadProgressBarUIServerRpc(ReloadProgressNormalized);
         _barImage.fillAmount = ReloadProgressNormalized;
         if (_barImage.fillAmount == 0f || _barImage.fillAmount == 1f)
         {

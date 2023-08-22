@@ -15,9 +15,6 @@ public class ItemShopCounter : BaseCounter
     }
 
     [SerializeField] private ItemObjectSO _itemObjectSO;
-    private float _healthAmount = 100f;
-    private float _armorAmount = 20f;
-    private int _megazineAmount = 60;
 
     public override void Interact(Player player)
     {
@@ -27,17 +24,17 @@ public class ItemShopCounter : BaseCounter
             {
                 case ItemType.ItemTypeList.Health:
                     Buy(player);
-                    player.AddPlayerHealth(_healthAmount);
+                    player.AddPlayerHealth(_itemObjectSO.ItemValue);
                     break;
 
                 case ItemType.ItemTypeList.Armor:
                     Buy(player);
-                    player.AddPlayerArmor(_armorAmount);
+                    player.AddPlayerArmor(_itemObjectSO.ItemValue);
                     break;
 
                 case ItemType.ItemTypeList.Megazine:
                     Buy(player);
-                    player.GetGunObject().AddMagazine(_megazineAmount);
+                    player.GetGunObject().AddMagazine(Convert.ToInt16(_itemObjectSO.ItemValue));
                     break;
             }
         }
@@ -79,7 +76,7 @@ public class ItemShopCounter : BaseCounter
                         CanBuy = false;
                         break;
                     }
-                    int currentMagazine = player.GetGunObject().getCurrentMagazine();
+                    int currentMagazine = player.GetGunObject().GetCurrentMagazine();
                     if (currentMagazine == player.GetGunObject().GetGunObjectSO().MaxMagazine)
                     {
                         CanBuy = false;

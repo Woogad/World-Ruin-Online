@@ -303,9 +303,9 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
 
     private bool CanReload()
     {
-        if (GetGunObject().getCurrentAmmo() == GetGunObject().GetGunObjectSO().MaxAmmmo) return false;
+        if (GetGunObject().GetCurrentAmmo() == GetGunObject().GetGunObjectSO().MaxAmmmo) return false;
         if (GetGunObject().IsReload()) return false;
-        if (GetGunObject().getCurrentMagazine() == 0) return false;
+        if (GetGunObject().GetCurrentMagazine() == 0) return false;
         return true;
     }
 
@@ -577,7 +577,7 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
     }
 
     [ServerRpc(RequireOwnership = false)]
-    public void SetSpawnPositionServerRpc(Vector3 vector3)
+    private void SetSpawnPositionServerRpc(Vector3 vector3)
     {
         if (_spawnPosition.Value == vector3)
         {
@@ -627,19 +627,9 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
         return this._goldCoinCount.Value;
     }
 
-    public int GetPlayerScore()
-    {
-        return _playerScore.Value;
-    }
-
     public bool IsAlive()
     {
         return this._isAlive.Value;
-    }
-
-    public bool IsHoldShootAction()
-    {
-        return this._isHoldShootAction;
     }
 
     public bool IsWalking()

@@ -40,11 +40,11 @@ public class AmmoDisplayUI : MonoBehaviour
         }
         Debug.Log("Update Ammo");
 
-        int currentAmmo = _player.GetGunObject().getCurrentAmmo();
+        int currentAmmo = _player.GetGunObject().GetCurrentAmmo();
 
         _gunName = _player.GetGunObject().GetGunObjectSO().GunName;
         _ammoAmountText.text = currentAmmo.ToString();
-        _magazineAmountText.text = _player.GetGunObject().getCurrentMagazine().ToString();
+        _magazineAmountText.text = _player.GetGunObject().GetCurrentMagazine().ToString();
         LowAmmoVisual(currentAmmo);
     }
 

@@ -72,7 +72,7 @@ public class PlayerSound : NetworkBehaviour
     private void PlayerOnShootClientRpc()
     {
         float volume = 1f;
-        if (_player.GetGunObject().getCurrentAmmo() != 0)
+        if (_player.GetGunObject().GetCurrentAmmo() != 0)
         {
             SoundManager.Instance.PlayGunShootSound(_player.transform.position, volume);
         }

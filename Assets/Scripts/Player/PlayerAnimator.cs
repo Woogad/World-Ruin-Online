@@ -80,7 +80,7 @@ public class PlayerAnimator : NetworkBehaviour
         {
             if (_player.GetGunObject().GetGunMode() == GunObject.GunMode.Auto)
             {
-                _animator.SetBool(IS_SHOOT_AUTO, _isHoldShootAction && _player.GetGunObject().getCurrentAmmo() != 0);
+                _animator.SetBool(IS_SHOOT_AUTO, _isHoldShootAction && _player.GetGunObject().GetCurrentAmmo() != 0);
             }
             else
             {

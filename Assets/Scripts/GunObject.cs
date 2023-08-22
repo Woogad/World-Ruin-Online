@@ -221,11 +221,11 @@ public class GunObject : NetworkBehaviour
         return this._gunVisual;
     }
 
-    public int getCurrentAmmo()
+    public int GetCurrentAmmo()
     {
         return this._currentAmmo;
     }
-    public int getCurrentMagazine()
+    public int GetCurrentMagazine()
     {
         return this._currentMagazine;
     }
