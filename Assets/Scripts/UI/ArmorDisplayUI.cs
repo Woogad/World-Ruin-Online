@@ -11,11 +11,11 @@ public class ArmorDisplayUI : MonoBehaviour
 
     private void Start()
     {
-        _player.OnArmorChanged += PlayerOnAddArmor;
+        _player.OnArmorChanged += PlayerOnArmorChanged;
         UpdateVisual();
     }
 
-    private void PlayerOnAddArmor(object sender, EventArgs e)
+    private void PlayerOnArmorChanged(object sender, EventArgs e)
     {
         UpdateVisual();
     }

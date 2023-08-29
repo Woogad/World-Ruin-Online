@@ -7,21 +7,21 @@ using System;
 public class HealthDiplayUI : MonoBehaviour
 {
     [SerializeField] private Player _player;
-    [SerializeField] private TextMeshProUGUI healthAmountText;
+    [SerializeField] private TextMeshProUGUI _healthAmountText;
 
     private void Start()
     {
-        _player.OnHealthChanged += PlayerOnAddHealth;
+        _player.OnHealthChanged += PlayerOnHealthChanged;
         UpdateVisual();
     }
 
-    private void PlayerOnAddHealth(object sender, EventArgs e)
+    private void PlayerOnHealthChanged(object sender, EventArgs e)
     {
         UpdateVisual();
     }
 
     private void UpdateVisual()
     {
-        healthAmountText.text = Mathf.Round(_player.GetPlayerHealth()).ToString("F0");
+        _healthAmountText.text = Mathf.Round(_player.GetPlayerHealth()).ToString("F0");
     }
 }

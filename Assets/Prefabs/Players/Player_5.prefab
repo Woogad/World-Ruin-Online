@@ -1149,6 +1149,11 @@ PrefabInstance:
       propertyPath: _player
       value: 
       objectReference: {fileID: 1048427264944443607}
+    - target: {fileID: 5111342685548896919, guid: 6d36245b6d001804c9a5ccab2f0bda61,
+        type: 3}
+      propertyPath: _healthAmountText
+      value: 
+      objectReference: {fileID: 8119378208328713548}
     - target: {fileID: 7476230467206604248, guid: 6d36245b6d001804c9a5ccab2f0bda61,
         type: 3}
       propertyPath: _player
@@ -1190,6 +1195,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a3868d6ab70bb4a40bb9ebcfc4b17f5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8119378208328713548 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8291027842027254555, guid: 6d36245b6d001804c9a5ccab2f0bda61,
+    type: 3}
+  m_PrefabInstance: {fileID: 261902103458575959}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &7949738433600222688

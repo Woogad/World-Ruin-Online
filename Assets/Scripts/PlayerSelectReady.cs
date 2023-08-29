@@ -13,7 +13,7 @@ public class PlayerSelectReady : NetworkBehaviour
 
     private event Action _readyClientRpcName;
 
-    AudioSource audioSource;
+    private AudioSource audioSource;
     private NetworkList<PlayerReady> _playerReadyList;
 
 
