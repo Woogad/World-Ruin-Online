@@ -132,7 +132,6 @@ public class GameInput : MonoBehaviour
         OnReloadAction?.Invoke(this, EventArgs.Empty);
     }
 
-
     private void InteractPerformed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
         if (GameManager.Instance.IsGameWaitingPlayer())
@@ -157,6 +156,4 @@ public class GameInput : MonoBehaviour
 
         return inputVector;
     }
-
-
 }

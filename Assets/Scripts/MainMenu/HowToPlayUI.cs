@@ -25,7 +25,7 @@ public class HowToPlayUI : MonoBehaviour
             {
                 _currentPage = 0;
             }
-            IsOnPageIndex(_currentPage);
+            OnPageIndex(_currentPage);
         });
         _previousPage.onClick.AddListener(() =>
         {
@@ -34,18 +34,18 @@ public class HowToPlayUI : MonoBehaviour
             {
                 _currentPage = _pageList.Count - 1;
             }
-            IsOnPageIndex(_currentPage);
+            OnPageIndex(_currentPage);
         });
     }
 
     private void Start()
     {
         _currentPage = 0;
-        IsOnPageIndex(_currentPage);
+        OnPageIndex(_currentPage);
         Hide();
     }
 
-    private void IsOnPageIndex(int index)
+    private void OnPageIndex(int index)
     {
         foreach (var page in _pageList)
         {
