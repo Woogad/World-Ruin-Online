@@ -169,6 +169,10 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
     private void PlayerArmorValueChanged(float previousValue, float newValue)
     {
         if (!IsOwner) return;
+        if (newValue < 0)
+        {
+            _playerArmor.Value = 0;
+        }
         OnArmorChanged?.Invoke(this, EventArgs.Empty);
     }
 
@@ -181,6 +185,10 @@ public class Player : NetworkBehaviour, IGunObjectParent, IDamageable
     private void PlayerHealthValueChanged(float previousValue, float newValue)
     {
         if (!IsOwner) return;
+        if (newValue < 0)
+        {
+            _playerHealth.Value = 0;
+        }
         OnHealthChanged?.Invoke(this, EventArgs.Empty);
     }
 
