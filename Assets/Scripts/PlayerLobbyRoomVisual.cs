@@ -25,6 +25,7 @@ public class PlayerLobbyRoomVisual : MonoBehaviour
             PlayerData playerData = GameMultiplayer.Instance.GetPlayerDataFormPlayerIndex(_playerIndex);
             LobbyManager.Instance.KickPlayer(playerData.PlayerID.ToString());
             GameMultiplayer.Instance.KickPlayer(playerData.ClientID);
+            PlayerSelectReady.Instance.RemovePlayerReadyNetworkList(playerData.ClientID);
         });
     }
 

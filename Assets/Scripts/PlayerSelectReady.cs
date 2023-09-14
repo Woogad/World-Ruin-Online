@@ -22,6 +22,7 @@ public class PlayerSelectReady : NetworkBehaviour
     {
         Instance = this;
         _playerReadyList = new NetworkList<PlayerReady>();
+        _playerReadyList.OnListChanged += PlayerReadyListOnlistChanged;
         audioSource = GetComponent<AudioSource>();
     }
 
@@ -30,7 +31,6 @@ public class PlayerSelectReady : NetworkBehaviour
         _readyClientRpcName = this.SetPlayerReadyClientRpc;
 
         if (!IsServer) return;
-        _playerReadyList.OnListChanged += PlayerReadyListOnlistChanged;
         _playerReadyList.Add(new PlayerReady
         {
             ClientID = NetworkManager.ServerClientId,
@@ -54,17 +54,9 @@ public class PlayerSelectReady : NetworkBehaviour
         Invoke(_readyClientRpcName.Method.Name, 0.1f);
     }
 
-    private void NetworkManagerOnDisConnectCallback(ulong ClientID)
+    private void NetworkManagerOnDisConnectCallback(ulong clientID)
     {
-        foreach (var player in _playerReadyList)
-        {
-            if (player.ClientID == ClientID)
-            {
-                int disconnectPlayerIndex = _playerReadyList.IndexOf(player);
-                _playerReadyList.RemoveAt(disconnectPlayerIndex);
-                break;
-            }
-        }
+        RemovePlayerReadyNetworkList(clientID);
 
         if (IsHost)
         {
@@ -180,6 +172,20 @@ public class PlayerSelectReady : NetworkBehaviour
             }
         }
         return false;
+    }
+
+    public void RemovePlayerReadyNetworkList(ulong clientID)
+    {
+        Debug.Log("Remove PlayerID From ReadyList : " + clientID);
+        foreach (var player in _playerReadyList)
+        {
+            if (player.ClientID == clientID)
+            {
+                int disconnectPlayerIndex = _playerReadyList.IndexOf(player);
+                _playerReadyList.RemoveAt(disconnectPlayerIndex);
+                break;
+            }
+        }
     }
 
 }
